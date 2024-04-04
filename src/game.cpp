@@ -6,7 +6,7 @@ Game::Game(){
 };
 
 void Game::init(){
-    m_brickGrid = new BrickGrid(10, 10, 64, 32);
+    m_brickGrid = new BrickGrid(9, 14, 30, 30); // TO DO auto detect grid size from file
     m_brickGrid->initGridFromFile("grids/grid1.txt");
 }
 
