@@ -29,6 +29,7 @@ class Game{
 
     public:
         Game();
+        ~Game();
         void init(); //  Initialize SDL
         void update(); 
         void render();

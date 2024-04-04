@@ -6,13 +6,15 @@ int main(int argc, char* argv[]) {
 
     Game game;
     game.init();
-    BrickGrid& brickGrid = game.getBrickGrid();
+    // BrickGrid& brickGrid = game.getBrickGrid();
     // std::cout<<" brickgrid size " << brickGrid.getBricks()[0][0]->getPosition().x<<std::endl;
 
-    for (const std::vector<Brick>& row : brickGrid.getBricks()) {
-        std::cout<<"row" <<std::endl;
+
+
+    // Render the bricks
+    // for (const std::vector<std::unique_ptr<Brick>>& row : brickGrid.getBricks()) {
         // std::cout<<" row size " <<std::endl;
-        // for (const Brick& brick : row) {
+        // for (const std::unique_ptr<Brick>& brick : row) {
         //     std::cout<<" brick " << brick->getSize().height<<","<<brick->getSize().width <<std::endl;
         //     if (brick != nullptr) {
         //         std::cout<<"    not null brick"<<std::endl;
@@ -21,7 +23,7 @@ int main(int argc, char* argv[]) {
         //         // SDL_RenderFillRect(renderer, &rect);
         //     }
         // }
-    }
+    // }
 
 
     return 0;

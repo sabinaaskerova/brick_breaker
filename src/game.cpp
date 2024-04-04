@@ -6,12 +6,12 @@ Game::Game(){
 };
 
 void Game::init(){
-    BrickGrid brickGrid(10, 10, 64, 32);
+    m_brickGrid = new BrickGrid(10, 10, 64, 32);
+    m_brickGrid->initGridFromFile("grids/grid1.txt");
+}
 
-    brickGrid.initGridFromFile("grids/grid1.txt");
-
-    m_brickGrid = &brickGrid;
-
+Game::~Game(){
+    delete m_brickGrid;
 }
 
 BrickGrid& Game::getBrickGrid(){

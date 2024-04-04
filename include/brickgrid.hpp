@@ -5,11 +5,12 @@
 #include "brick.hpp"
 #include "gameObject.hpp"
 #include "structs.hpp"
+#include <memory>
 
 class BrickGrid
 {
     private:
-        std::vector<std::vector<Brick>> m_bricks;
+        std::vector<std::vector<std::unique_ptr<Brick>>> m_bricks;
         int m_rows;
         int m_cols;
         int m_brickWidth;
@@ -18,10 +19,8 @@ class BrickGrid
 
         void setRows(int);
         void setCols(int);
-        // void setBrickWidth(int);
-        // void setBrickHeight(int);
     public:
-        BrickGrid(int rows, int cols, int brickWidth, int brickHeight);
+        BrickGrid(size_t rows, size_t cols, size_t brickWidth, size_t brickHeight);
         ~BrickGrid();
         SDL_Renderer* getRenderer();
 
@@ -35,10 +34,11 @@ class BrickGrid
 
         void setBrickWidth(int x);
         void setBrickHeight(int y);
-        std::vector<std::vector<Brick>>& getBricks();
+        std::vector<std::vector<std::unique_ptr<Brick>>>& getBricks();
         
 
         void destroyBrick(int row, int col);
+
 };
 
 

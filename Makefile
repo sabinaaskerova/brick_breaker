@@ -1,10 +1,11 @@
-CXX = g++
+CXX = g++-11
 
 INCLUDES = -I./include
 
 OBJDIR = ./obj
 
-CPPFLAGS = -Wall -std=c++11 $(INCLUDES)
+CPPFLAGS = -Wall -std=c++14 $(INCLUDES)
+# CXXFLAGS = -std=c++14 -Wall -Wextra  $(INCLUDES) -pedantic
 
 LIBS = -lSDL2
 
