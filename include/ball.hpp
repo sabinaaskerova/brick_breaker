@@ -9,9 +9,8 @@ class Ball: public GameObject
         velocity m_velocity;
         bool m_moving;
         void setVelocity(velocity);
-        void setMoving(bool);
     public:
-        Ball(SDL_Renderer* renderer, position pos, size size, velocity vel);
+        Ball(SDL_Renderer* renderer, position pos, objectSize size, velocity vel);
         ~Ball();
         void update();
         void render();

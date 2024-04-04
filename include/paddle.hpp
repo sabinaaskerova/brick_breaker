@@ -1,14 +1,14 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 #include "gameObject.hpp"
-#include "structs.hpp"
+// #include "structs.hpp"
 
 class Paddle: public GameObject{
     private:
         int m_width;
         void setWidth(int);
     public:
-        Paddle(SDL_Renderer* renderer, position pos, size size, int speed);
+        Paddle(SDL_Renderer* renderer, position pos, objectSize size, int speed);
         ~Paddle();
         void update();
         void render();

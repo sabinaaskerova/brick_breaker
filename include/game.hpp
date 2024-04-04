@@ -7,7 +7,7 @@
 #include "brickgrid.hpp"
 #include "paddle.hpp"
 #include "ball.hpp"
-#include "structs.hpp"
+#include <iostream>
 
 enum GameStates{
     MENU,
@@ -25,6 +25,7 @@ class Game{
         SDL_Renderer* m_renderer;
         bool running;
         std::vector<GameObject*> m_gameObjects;
+        BrickGrid* m_brickGrid;
 
     public:
         Game();
@@ -40,6 +41,7 @@ class Game{
         const int& getLevel();
         const int getLives();
         const bool getRunning();
+        BrickGrid& getBrickGrid();
 
         void setRunning(bool);
         void setLives(int);   

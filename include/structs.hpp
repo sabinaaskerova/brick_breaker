@@ -1,6 +1,8 @@
+#ifndef STRUCTS_H
+#define STRUCTS_H
 typedef struct position {
-    int x;
-    int y;
+    long int x;
+    long int y;
 } position;
 
 
@@ -12,10 +14,13 @@ typedef struct velocity {
 typedef struct size {
     int width;
     int height;
-} size;
+} objectSize;
 
 enum typeBrick {
     NORMAL,
     DOUBLE,
-    TRIPLE
+    TRIPLE,
+    EMPTY
 };
+
+#endif // STRUCTS_H

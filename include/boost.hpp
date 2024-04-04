@@ -9,7 +9,7 @@ class Boost: public GameObject{
         int m_duration;
         
     public:
-        Boost(SDL_Renderer* renderer, position pos, size size, int speed, int duration);
+        Boost(SDL_Renderer* renderer, position pos, objectSize size, int speed, int duration);
         virtual ~Boost();
         virtual void update();
         virtual void render();
@@ -20,7 +20,7 @@ class Boost: public GameObject{
 // class BonusBoost: public Boost{
     
 //     public:
-//         BonusBoost(SDL_Renderer* renderer, position pos, size size, int speed, int duration);
+//         BonusBoost(SDL_Renderer* renderer, position pos, objectSize size, int speed, int duration);
 //         ~BonusBoost();
 //         void update();
 //         void render();
@@ -30,7 +30,7 @@ class Boost: public GameObject{
 
 class BonusMultiBall : public Boost{
     public:
-        BonusMultiBall(SDL_Renderer* renderer, position pos, size size, int speed, int duration);
+        BonusMultiBall(SDL_Renderer* renderer, position pos, objectSize size, int speed, int duration);
         ~BonusMultiBall();
         void update();
         void render();
