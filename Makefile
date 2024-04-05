@@ -7,7 +7,7 @@ OBJDIR = ./obj
 CPPFLAGS = -Wall -std=c++14 $(INCLUDES)
 # CXXFLAGS = -std=c++14 -Wall -Wextra  $(INCLUDES) -pedantic
 
-LIBS = -lSDL2
+LIBS = -lSDL2 -lSDL2_image
 
 # SRCS = main.cpp game.cpp gameObject.cpp brick.cpp brickgrid.cpp paddle.cpp ball.cpp
 SRCS = $(wildcard src/*.cpp)

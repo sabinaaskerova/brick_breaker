@@ -10,11 +10,12 @@ class Ball: public GameObject
         bool m_moving;
         void setVelocity(velocity);
     public:
-        Ball(SDL_Renderer* renderer, position pos, objectSize size, velocity vel);
-        ~Ball();
-        void update();
-        void render();
-        void collidesWith(GameObject* obj);
+        Ball(SDL_Renderer* renderer, position& pos, objectSize& size, velocity& vel);
+        Ball(position& pos, objectSize& size, velocity& vel);
+        ~Ball() override;
+        void update() override;
+        void render() override;
+        void collidesWith(GameObject* obj) override;
         void setVelocityX(int);
         void setVelocityY(int);
         const velocity& getVelocity();

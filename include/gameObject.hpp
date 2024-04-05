@@ -12,7 +12,8 @@ protected:
 public:
     GameObject();
     GameObject(SDL_Renderer* renderer);
-    GameObject(SDL_Renderer* renderer, position pos, objectSize size);
+    GameObject(position& pos, objectSize& size);
+    GameObject(SDL_Renderer* renderer, position& pos, objectSize& size);
     virtual ~GameObject();
     virtual void update() = 0;
     virtual void render() = 0;

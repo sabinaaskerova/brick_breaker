@@ -31,10 +31,10 @@ class Boost: public GameObject{
 class BonusMultiBall : public Boost{
     public:
         BonusMultiBall(SDL_Renderer* renderer, position pos, objectSize size, int speed, int duration);
-        ~BonusMultiBall();
-        void update();
-        void render();
-        void collidesWith(GameObject* obj);
+        ~BonusMultiBall() override;
+        void update() override;
+        void render() override;
+        void collidesWith(GameObject* obj) override;
         void applyBoost();
 };
 

@@ -8,6 +8,7 @@
 #include "paddle.hpp"
 #include "ball.hpp"
 #include <iostream>
+#include "structs.hpp"
 
 enum GameStates{
     MENU,
@@ -30,7 +31,7 @@ class Game{
     public:
         Game();
         ~Game();
-        void init(); //  Initialize SDL
+        void init();
         void update(); 
         void render();
         void handleEvents();
