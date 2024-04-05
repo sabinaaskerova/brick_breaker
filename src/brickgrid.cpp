@@ -24,7 +24,6 @@ void BrickGrid::initGridFromFile(const std::string& filename)
                     std::vector<std::unique_ptr<Brick>> row;
                     for(size_t colNumber = 0; colNumber < line.size(); colNumber++){
                         char c = line[colNumber];
-                        std::cout<<"c: "<<c<<std::endl;
                         position pos = {static_cast<size_t>(colNumber * m_brickWidth), static_cast<size_t>(rowNumber * m_brickHeight)};
                         std::unique_ptr<Brick> brick = nullptr;
                         switch(c){

@@ -71,7 +71,6 @@ int main(int argc, char* argv[]) {
     // }
 
 
-    // Render the bricks
     
     for (const std::vector<std::unique_ptr<Brick>>& row : brickGrid.getBricks()) {
         for (const std::unique_ptr<Brick>& brick : row) {
@@ -119,6 +118,7 @@ int main(int argc, char* argv[]) {
             }
         }
     }
+
 
     SDL_RenderPresent(renderer);
     // SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color

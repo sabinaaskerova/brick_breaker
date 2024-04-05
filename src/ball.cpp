@@ -1,6 +1,11 @@
 #include "ball.hpp"
 
-Ball::Ball(SDL_Renderer* renderer, position pos, objectSize size, velocity vel): GameObject(renderer, pos, size){
+
+Ball::Ball(position& pos, objectSize& size, velocity& vel): GameObject(pos, size){
+    m_velocity = vel;
+    m_moving = false;
+}
+Ball::Ball(SDL_Renderer* renderer, position& pos, objectSize& size, velocity& vel): GameObject(renderer, pos, size){
     m_velocity = vel;
     m_moving = false;
 }
