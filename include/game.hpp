@@ -28,7 +28,7 @@ class Game{
         
         Ball* m_ball;
         std::unique_ptr<Paddle> m_paddle;
-        BrickGrid* m_brickGrid;
+        std::unique_ptr<BrickGrid> m_brickGrid;
         std::vector<std::unique_ptr<Ball>> m_balls;
 
         SDL_Window* m_window;

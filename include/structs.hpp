@@ -7,8 +7,19 @@
 #define WALLSH 900
 #define WALLSX ((SCREEN_WIDTH - WALLSW) / 2)
 #define WALLSY ((SCREEN_HEIGHT - WALLSH) / 2)
-#define INITX (WALLSX) +35 
-#define INITY (WALLSY)+35
+
+#define BRICKW 35
+#define INITX (WALLSX) +BRICKW 
+#define INITY (WALLSY)+BRICKW
+
+#define PADDLEW 100
+#define PADDLEH 30
+#define PADDLEX (WALLSW-PADDLEW)/2 + WALLSX
+#define PADDLEY (WALLSY + WALLSH - PADDLEH) - 40
+
+#define BALLSIZE 25
+#define BALLX PADDLEX + BALLSIZE
+#define BALLY PADDLEY - BALLSIZE
 
 typedef struct position {
     int x;

@@ -2,14 +2,16 @@
 
 
 Game::Game(){
-    m_brickGrid = new BrickGrid(35, 35);
+    m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
     m_brickGrid->initGridFromFile("grids/grid7.txt", INITX, INITY);
-    position ballPosition = {350, 350};
-    objectSize ballSize = {25, 25};
+    
+    position ballPosition = {BALLX, BALLY};
+    objectSize ballSize = {BALLSIZE, BALLSIZE};
     velocity ballVelocity = {40, 40};
     m_balls.push_back(std::make_unique<Ball>(ballPosition, ballSize, ballVelocity));
-    position paddlePosition = {400, 400};
-    objectSize paddleSize = {60, 30};
+    
+    position paddlePosition = {PADDLEX, PADDLEY};
+    objectSize paddleSize = {PADDLEW, PADDLEH};
     m_paddle = std::make_unique<Paddle>(paddlePosition, paddleSize);
 };
 
@@ -50,6 +52,7 @@ void Game::game_loop()
 }
 
 void Game::update(){
+    // SDL_RenderClear(m_renderer);
     for(auto& ball : m_balls){
         if(ball!=nullptr){
             ball->update();
@@ -82,7 +85,8 @@ void Game::draw()
     SDL_RenderDrawRect(m_renderer, &walls);
     SDL_RenderPresent(m_renderer);
     SDL_UpdateWindowSurface(m_window);
-    // SDL_RenderClear(m_renderer);
+
+    
 
 	m_paddle->draw(m_renderer);
 	

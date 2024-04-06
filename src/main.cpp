@@ -7,14 +7,6 @@ int main(int argc, char* argv[]) {
     Game game;
     game.init();    
 
-    // SDL_Rect paddle;
-    // paddle.w = game.getPaddle()->getWidth(); 
-    // paddle.h = 20; 
-    // paddle.x = (walls.w - paddle.w) / 2 + walls.x; 
-    // paddle.y = walls.y + walls.h - paddle.h - 40; 
-    // SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    // SDL_RenderFillRect(renderer, &paddle);
-
     // SDL_Rect ball;
     // ball.w = 20; 
     // ball.h = 20;
