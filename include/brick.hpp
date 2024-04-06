@@ -2,6 +2,7 @@
 #define BRICK_H
 #include "gameObject.hpp"
 #include "structs.hpp"
+#include <iostream>
 
 class Brick : public GameObject
 {
@@ -25,7 +26,7 @@ class Brick : public GameObject
         objectSize getSize();
         const typeBrick& getType();
         void setType(typeBrick);
-
+        void printProperties() const;
 
 };
 

@@ -26,6 +26,8 @@ class Game{
         SDL_Renderer* m_renderer;
         bool running;
         std::vector<GameObject*> m_gameObjects;
+        Ball* m_ball;
+        Paddle* m_paddle;
         BrickGrid* m_brickGrid;
 
     public:

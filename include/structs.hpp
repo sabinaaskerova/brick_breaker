@@ -1,8 +1,8 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 typedef struct position {
-    long int x;
-    long int y;
+    int x;
+    int y;
 } position;
 
 

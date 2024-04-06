@@ -39,6 +39,8 @@ class BrickGrid
 
         void destroyBrick(int row, int col);
 
+        void printAllBricks() const;
+
 };
 
 

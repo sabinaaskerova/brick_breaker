@@ -8,12 +8,13 @@ class Paddle: public GameObject{
         int m_width;
         void setWidth(int);
     public:
-        Paddle(SDL_Renderer* renderer, position pos, objectSize size, int speed);
+        Paddle(SDL_Renderer* renderer, position pos, objectSize size);
+        Paddle(position& pos, objectSize& size); // & because we are not copying the object valgrind --leak-check=full ./your_program
         ~Paddle();
         void update();
         void render();
         void collidesWith(GameObject* obj);
-        void move(int);
+        void move(int x);
         const int& getWidth();
 };
 

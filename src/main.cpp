@@ -37,46 +37,42 @@ int main(int argc, char* argv[]) {
     game.init();
     BrickGrid& brickGrid = game.getBrickGrid();
     
+    // for (const std::vector<std::unique_ptr<Brick>>& row : brickGrid.getBricks()) {
+    //     for (const std::unique_ptr<Brick>& brick : row) {
     for (const std::vector<std::unique_ptr<Brick>>& row : brickGrid.getBricks()) {
         for (const std::unique_ptr<Brick>& brick : row) {
             if (brick != nullptr) {
-                // std::cout<<" brick position x " << static_cast<int>(brick->getPosition().x)<<std::endl;
-                // std::cout<<" brick position y " << static_cast<int>(brick->getPosition().y)<<std::endl;
+                std::cout<<" brick position x " << static_cast<int>(brick->getPosition().x)<<std::endl;
+                std::cout<<" brick position y " << static_cast<int>(brick->getPosition().y)<<std::endl;
                 // std::cout<<" brick width" << static_cast<int>(brick->getSize().width)<<std::endl;
                 // std::cout<<" brick height" << static_cast<int>(brick->getSize().height)<<std::endl;
+                // SDL_Rect rect2 = { (brick->getPosition().x), (brick->getPosition().y), (brick->getSize().width), (brick->getSize().height) };
+                SDL_Rect rect;
+                rect.x = brick->getPosition().x;
+                rect.y = brick->getPosition().y;
+                rect.w = brick->getSize().width;
+                rect.h = brick->getSize().height;
+                    
                 if(brick->getType() == typeBrick::NORMAL)
                 {
-                    SDL_Rect rect2 = { static_cast<int>(brick->getPosition().x), static_cast<int>(brick->getPosition().y), static_cast<int>(brick->getSize().width), static_cast<int>(brick->getSize().height) };
                     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
-                    SDL_RenderFillRect(renderer, &rect2);
-                    SDL_RenderPresent(renderer); 
                 }
                 else if(brick->getType() == typeBrick::DOUBLE)
                 {
-                    SDL_Rect rect2 = { static_cast<int>(brick->getPosition().x), static_cast<int>(brick->getPosition().y), static_cast<int>(brick->getSize().width), static_cast<int>(brick->getSize().height) };
                     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green color
-                    SDL_RenderFillRect(renderer, &rect2);
-                    SDL_RenderPresent(renderer); 
+                    
                 }
                 else if(brick->getType() == typeBrick::TRIPLE)
                 {
-                    SDL_Rect rect2 = { static_cast<int>(brick->getPosition().x), static_cast<int>(brick->getPosition().y), static_cast<int>(brick->getSize().width), static_cast<int>(brick->getSize().height) };
+                    
                     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Blue color
-                    SDL_RenderFillRect(renderer, &rect2);
-                    SDL_RenderPresent(renderer); 
                 } 
                 else{
-                    SDL_Rect rect2 = { static_cast<int>(brick->getPosition().x), static_cast<int>(brick->getPosition().y), static_cast<int>(brick->getSize().width), static_cast<int>(brick->getSize().height) };
-                    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // White color
-                    SDL_RenderFillRect(renderer, &rect2);
-                    SDL_RenderPresent(renderer);
-
+                    
+                    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); 
                 }
-            
-                // SDL_Rect rect2 = { static_cast<int>(brick->getPosition().x), static_cast<int>(brick->getPosition().y), static_cast<int>(brick->getSize().width), static_cast<int>(brick->getSize().height) };
-                // SDL_RenderFillRect(renderer, &rect2);
+                SDL_RenderFillRect(renderer, &rect);
 
-                // SDL_SetRenderDrawColor(renderer, 255, 255,0, 0);
                 
             }
         }
