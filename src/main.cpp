@@ -47,31 +47,33 @@ int main(int argc, char* argv[]) {
                 // std::cout<<" brick width" << static_cast<int>(brick->getSize().width)<<std::endl;
                 // std::cout<<" brick height" << static_cast<int>(brick->getSize().height)<<std::endl;
                 // SDL_Rect rect2 = { (brick->getPosition().x), (brick->getPosition().y), (brick->getSize().width), (brick->getSize().height) };
-                SDL_Rect rect;
-                rect.x = brick->getPosition().x;
-                rect.y = brick->getPosition().y;
-                rect.w = brick->getSize().width;
-                rect.h = brick->getSize().height;
-                    
-                if(brick->getType() == typeBrick::NORMAL)
-                {
-                    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+                
+                if(brick->getType()!=typeBrick::EMPTY){
+                    SDL_Rect rect;
+                    rect.x = brick->getPosition().x;
+                    rect.y = brick->getPosition().y;
+                    rect.w = brick->getSize().width;
+                    rect.h = brick->getSize().height;
+                    if(brick->getType() == typeBrick::NORMAL)
+                    {
+                        
+                        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+                    }
+                    else if(brick->getType() == typeBrick::DOUBLE)
+                    {
+                        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green color
+                        
+                    }
+                    else if(brick->getType() == typeBrick::TRIPLE)
+                    {
+                        
+                        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Blue color
+                    } 
+                    SDL_RenderFillRect(renderer, &rect);
                 }
-                else if(brick->getType() == typeBrick::DOUBLE)
-                {
-                    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green color
-                    
-                }
-                else if(brick->getType() == typeBrick::TRIPLE)
-                {
-                    
-                    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Blue color
-                } 
-                else{
-                    
-                    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); 
-                }
-                SDL_RenderFillRect(renderer, &rect);
+                
+                
+                
 
                 
             }
