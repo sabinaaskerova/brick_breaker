@@ -28,3 +28,9 @@ void Paddle::move(int x){
 const int& Paddle::getWidth(){
     return m_width;
 }
+
+void Paddle::draw(SDL_Renderer* renderer){
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_Rect rect = {m_position.x, m_position.y, m_size.width, m_size.height};
+    SDL_RenderFillRect(renderer, &rect);
+}

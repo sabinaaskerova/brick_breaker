@@ -5,12 +5,16 @@ BrickGrid::BrickGrid(size_t rows, size_t cols, size_t brickWidth, size_t brickHe
         m_rows(rows), m_cols(cols), m_brickWidth{brickWidth}, m_brickHeight(brickHeight)
 {
 }
+BrickGrid::BrickGrid(size_t brickWidth, size_t brickHeight) : 
+        m_brickWidth{brickWidth}, m_brickHeight(brickHeight)
+{
+}
 
 BrickGrid::~BrickGrid()
 {
 }
 
-void BrickGrid::initGridFromFile(const std::string& filename)
+void BrickGrid::initGridFromFile(const std::string& filename, const int initX, const int initY)
         {
             const int padding = 5;
             std::ifstream file(filename);
@@ -26,39 +30,31 @@ void BrickGrid::initGridFromFile(const std::string& filename)
                     for(int colNumber = 0; colNumber < static_cast<int>(line.size()); colNumber++){
                         char c = line[colNumber];
                         
-                        position pos = {(colNumber * m_brickWidth), (rowNumber * m_brickHeight)};
+                        position pos = {(colNumber * m_brickWidth)+initX, (rowNumber * m_brickHeight)+initY};
                         std::unique_ptr<Brick> brick = nullptr;
                         switch(c){
                             case '#':{
                                 brick=std::make_unique<Brick>(pos, size, typeBrick::NORMAL);
                                 row.push_back(std::move(brick));
-                                std::cout << NORMAL ;
                                 break;
                             }
                             case '*':{
                                 brick=std::make_unique<Brick>(pos, size, typeBrick::DOUBLE);
                                 row.push_back(std::move(brick));
-                                std::cout << DOUBLE;
                                 break;
                             }
                             case '@':{
                                 brick=std::make_unique<Brick>(pos, size, typeBrick::TRIPLE);
                                 row.push_back(std::move(brick));
-                                std::cout << TRIPLE;
                                 break;
                             }
                             case ' ':
                                 brick=std::make_unique<Brick>(pos, size, typeBrick::EMPTY);
                                 row.push_back(std::move(brick));
-                                std::cout << EMPTY;
                                 break;
-                            
-                            // default:
-                            //     break;
                         }
                         
                     }
-                    std::cout << std::endl;
                     m_bricks.push_back(std::move(row));
                     rowNumber++;
                 }
@@ -82,5 +78,15 @@ void BrickGrid::printAllBricks() const {
             }
         }
         std::cout << std::endl;
+    }
+}
+
+void BrickGrid::update(){
+    for (auto& row : m_bricks) {
+        for (auto& brick : row) {
+            if (brick != nullptr) {
+                brick->update();
+            }
+        }
     }
 }

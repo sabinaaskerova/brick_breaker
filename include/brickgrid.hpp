@@ -11,9 +11,9 @@ class BrickGrid
 {
     private:
         std::vector<std::vector<std::unique_ptr<Brick>>> m_bricks;
-        int m_rows;
-        int m_cols;
-        int m_brickWidth;
+        int m_rows; // TO DO : define from grid file. or impose grid file format (with spaces)
+        int m_cols;// TO DO : define from grid file. or impose grid file format (with spaces)
+        int m_brickWidth; 
         int m_brickHeight;
         SDL_Renderer* m_renderer;
 
@@ -21,10 +21,11 @@ class BrickGrid
         void setCols(int);
     public:
         BrickGrid(size_t rows, size_t cols, size_t brickWidth, size_t brickHeight);
+        BrickGrid(size_t brickWidth, size_t brickHeight);
         ~BrickGrid();
         SDL_Renderer* getRenderer();
 
-        void initGridFromFile(const std::string& filename);
+        void initGridFromFile(const std::string& filename, const int initX, const int initY);
 
         void update();
         void render();

@@ -27,8 +27,11 @@ class Game{
         bool running;
         std::vector<GameObject*> m_gameObjects;
         Ball* m_ball;
-        Paddle* m_paddle;
+        std::unique_ptr<Paddle> m_paddle;
         BrickGrid* m_brickGrid;
+        SDL_Texture  *m_image;
+        SDL_Rect      m_render_viewport;
+        SDL_Event     m_window_event;
 
     public:
         Game();
@@ -46,6 +49,9 @@ class Game{
         const int getLives();
         const bool getRunning();
         BrickGrid& getBrickGrid();
+
+        std::unique_ptr<Paddle>& getPaddle();
+
 
         void setRunning(bool);
         void setLives(int);   
