@@ -32,7 +32,7 @@ void Game::init(){
     assert (m_renderer != nullptr); // TO DO: delete this line
     if (m_renderer == nullptr) {
         std::cerr << "Failed to create renderer: " << SDL_GetError() << std::endl;
-        return ; // TO DO: throw an exception
+        return ; // TO DO: throw an exception throw std::runtime_error(SDL_GetError());
     }
     
 }
@@ -60,6 +60,7 @@ void Game::game_loop()
 }
 
 void Game::update(){
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
     SDL_RenderClear(m_renderer);
     for(auto& ball : m_balls){
         if(ball!=nullptr){
