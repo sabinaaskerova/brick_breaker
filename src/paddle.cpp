@@ -30,7 +30,17 @@ const int& Paddle::getWidth(){
 }
 
 void Paddle::draw(SDL_Renderer* renderer){
+    SDL_Rect paddle = {m_position.x, m_position.y, m_size.width, m_size.height};
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_Rect rect = {m_position.x, m_position.y, m_size.width, m_size.height};
-    SDL_RenderFillRect(renderer, &rect);
+    SDL_RenderFillRect(renderer, &paddle);
+}
+
+void Paddle::handle_input(SDL_Event const &event)
+{
+    switch(event.type)
+    {
+        case SDL_MOUSEMOTION:
+            m_position.x = event.motion.x;
+            break;
+    }
 }

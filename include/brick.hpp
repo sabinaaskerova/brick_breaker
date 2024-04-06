@@ -18,15 +18,19 @@ class Brick : public GameObject
     public:
         Brick(position pos, objectSize size, typeBrick type);
         ~Brick();
+
         void update() override;
         void render() override;
         void draw(SDL_Renderer* renderer) override;
+
         void collidesWith(GameObject* obj);
         bool isDestroyed();
-        position getPosition(); // const ? if the size of window changes then no
+
+        position getPosition(); // const 
         objectSize getSize();
         const typeBrick& getType();
         void setType(typeBrick);
+        
         void printProperties() const;
 
 };

@@ -12,13 +12,36 @@ void Game::init(){
     position ballPosition = {350, 350};
     objectSize ballSize = {25, 25};
     velocity ballVelocity = {40, 40}; 
-    m_ball = new Ball(ballPosition, ballSize, ballVelocity);
+    // m_ball = new Ball(ballPosition, ballSize, ballVelocity);
+    m_balls.push_back(std::make_unique<Ball>(ballPosition, ballSize, ballVelocity));
     position paddlePosition = {400, 400};
     objectSize paddleSize = {60, 30};
     // m_paddle = new Paddle(paddlePosition, paddleSize);
     m_paddle = std::make_unique<Paddle>(paddlePosition, paddleSize);
     
     
+}
+
+
+void Game::game_loop()
+{
+    bool keep_running = true;
+    while(keep_running)
+    {
+		while(SDL_PollEvent(&m_window_event) > 0)
+		{
+			switch(m_window_event.type)
+			{
+			case SDL_QUIT:
+				keep_running = false;
+			}
+
+			m_paddle->handle_input(m_window_event);
+		}
+
+		update();
+		draw();
+    }
 }
 
 void Game::update(){
@@ -28,8 +51,11 @@ void Game::update(){
 }
 
 Game::~Game(){
-    delete m_brickGrid;
-    delete m_ball;
+    // if(m_brickGrid != nullptr){
+        // delete m_brickGrid;
+    // }
+   
+    
 }
 
 BrickGrid& Game::getBrickGrid(){
@@ -40,3 +66,12 @@ std::unique_ptr<Paddle>& Game::getPaddle() {
     return m_paddle;
 }
 
+
+void Game::draw()
+{
+    SDL_RenderClear(m_renderer);
+
+	m_paddle->draw(m_renderer);
+	
+    SDL_RenderPresent(m_renderer);
+}

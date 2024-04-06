@@ -61,3 +61,11 @@ void Ball::setMoving(bool moving){
 void Ball::collidesWith(GameObject* obj){
 
 }
+
+void Ball::render(){
+    // draw(m_renderer);
+}
+
+void Ball::setVelocityX(int x){
+    m_velocity.x = x;
+}

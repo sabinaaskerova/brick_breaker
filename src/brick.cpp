@@ -45,6 +45,6 @@ void Brick::collidesWith(GameObject* obj) {
 void Brick::printProperties() const {
         std::cout <<  static_cast<int>(m_type) ;
 }
-void draw(SDL_Renderer* renderer) {
+void Brick::draw(SDL_Renderer* renderer) {
        
-    }
+}

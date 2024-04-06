@@ -22,13 +22,15 @@ class Game{
         int level;
         int lives;
         bool gameOver;
-        SDL_Window* m_window;
-        SDL_Renderer* m_renderer;
         bool running;
-        std::vector<GameObject*> m_gameObjects;
+        
         Ball* m_ball;
         std::unique_ptr<Paddle> m_paddle;
         BrickGrid* m_brickGrid;
+        std::vector<std::unique_ptr<Ball>> m_balls;
+
+        SDL_Window* m_window;
+        SDL_Renderer* m_renderer;
         SDL_Texture  *m_image;
         SDL_Rect      m_render_viewport;
         SDL_Event     m_window_event;
@@ -37,10 +39,13 @@ class Game{
         Game();
         ~Game();
         void init();
+        void game_loop();
         void update(); 
         void render();
         void handleEvents();
         void clean();
+        void draw();    
+
 
         void setGameOver(bool);
         const bool getGameOver();

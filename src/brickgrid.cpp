@@ -82,11 +82,11 @@ void BrickGrid::printAllBricks() const {
 }
 
 void BrickGrid::update(){
-    for (auto& row : m_bricks) {
-        for (auto& brick : row) {
-            if (brick != nullptr) {
-                brick->update();
-            }
-        }
-    }
+    // for (auto& row : m_bricks) {
+    //     for (auto& brick : row) {
+    //         if (brick != nullptr) {
+    //             brick->update();
+    //         }
+    //     }
+    // }
 }
