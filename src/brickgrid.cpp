@@ -86,17 +86,17 @@ void BrickGrid::draw(SDL_Renderer* renderer){
                     if(brick->getType() == typeBrick::NORMAL)
                     {
                         
-                        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+                        SDL_SetRenderDrawColor(renderer, 255, 204, 255, 50); 
                     }
                     else if(brick->getType() == typeBrick::DOUBLE)
                     {
-                        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green color
+                        SDL_SetRenderDrawColor(renderer, 255, 51, 153, 250); 
                         
                     }
                     else if(brick->getType() == typeBrick::TRIPLE)
                     {
                         
-                        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Blue color
+                        SDL_SetRenderDrawColor(renderer, 153, 0, 153, 255);
                     } 
                     SDL_RenderFillRect(renderer, &rect);
                 }

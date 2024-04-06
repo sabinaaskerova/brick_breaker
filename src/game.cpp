@@ -8,8 +8,7 @@ Game::Game(){
     position ballPosition = {BALLX, BALLY};
     objectSize ballSize = {BALLSIZE, BALLSIZE};
     velocity ballVelocity = {40, 40};
-    m_balls.push_back(std::make_unique<Ball>(ballPosition, ballSize, ballVelocity));
-    
+    m_balls.push_back(std::make_unique<Ball>(ballPosition, ballSize, ballVelocity)); 
     position paddlePosition = {PADDLEX, PADDLEY};
     objectSize paddleSize = {PADDLEW, PADDLEH};
     m_paddle = std::make_unique<Paddle>(paddlePosition, paddleSize);
@@ -33,6 +32,11 @@ void Game::init(){
     if (m_renderer == nullptr) {
         std::cerr << "Failed to create renderer: " << SDL_GetError() << std::endl;
         return ; // TO DO: throw an exception throw std::runtime_error(SDL_GetError());
+    }
+    for(auto& ball : m_balls){
+        // ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
+        ball->init(m_renderer, BALLX, BALLY);       
+        // std::cout << BALLX << "," << BALLY << std::endl;
     }
     
 }
@@ -71,9 +75,6 @@ void Game::update(){
     m_brickGrid->update();
 }
 
-
-
-
 void Game::draw()
 {
     SDL_Rect walls;
@@ -92,7 +93,21 @@ void Game::draw()
         SDL_RenderDrawRect(m_renderer, &thickWalls);
     }
     SDL_RenderDrawRect(m_renderer, &walls);
-    SDL_UpdateWindowSurface(m_window);    
+    SDL_UpdateWindowSurface(m_window);
+    m_brickGrid->draw(m_renderer);
+    for(auto& ball : m_balls){
+        if(ball!=nullptr){
+            ball->draw(m_renderer);
+        }
+    }
+    // SDL_Rect ball;
+    // ball.w = BALLSIZE; 
+    // ball.h = BALLSIZE;
+    // ball.x = PADDLEX + (PADDLEW - BALLSIZE) / 2;
+    // ball.y = PADDLEY - BALLSIZE-20;
+    // SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
+    // SDL_RenderFillRect(m_renderer, &ball);
+
 	m_paddle->draw(m_renderer);
     SDL_RenderPresent(m_renderer);
 }
@@ -113,6 +128,4 @@ Game::~Game(){
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
-   
-    
 }

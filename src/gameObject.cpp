@@ -21,6 +21,9 @@ GameObject::GameObject(SDL_Renderer* renderer, position& pos, objectSize& size) 
     m_size.width = size.width;
 }
 
+position& GameObject::getPosition(){
+    return m_position;
+}
 GameObject::~GameObject() {}
 
 

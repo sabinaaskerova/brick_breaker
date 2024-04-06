@@ -1,9 +1,10 @@
 #include "ball.hpp"
-
+#include <iostream>
 
 Ball::Ball(position& pos, objectSize& size, velocity& vel): GameObject(pos, size){
     m_velocity = vel;
     m_moving = false;
+    m_gameStarted = false;
     m_x = m_position.x;
     m_y = m_position.y;
 }
@@ -15,21 +16,36 @@ Ball::Ball(SDL_Renderer* renderer, position& pos, objectSize& size, velocity& ve
 Ball::~Ball(){}
 
 void Ball::update(){
-    if(m_moving){
-        m_position.x += m_velocity.x;
-        m_position.y += m_velocity.y;
+    if (!m_gameStarted) {
+        m_y = m_y + m_velocity.y*1/60;
+        m_position.y = m_y;
+    }
+    else if(m_moving){
+        m_x = m_x +  m_velocity.x;
+        m_y = m_y - m_velocity.y;
+        m_position.x = m_x;
+        m_position.y = m_y;
     }
 
 }
 
-
 void Ball::init(SDL_Renderer *renderer, int x, int y)
 {
     IMG_Init(IMG_INIT_PNG);
+    
 
     SDL_Surface *image = IMG_Load("./img/ball.png");
+    if (!image) {
+        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+        return;
+    }
+    
     
     m_image = SDL_CreateTextureFromSurface(renderer, image);
+    if (!m_image) {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+        return;
+    }
     SDL_FreeSurface(image);
 
     IMG_Quit();
@@ -63,7 +79,6 @@ void Ball::collidesWith(GameObject* obj){
 }
 
 void Ball::render(){
-    // draw(m_renderer);
 }
 
 void Ball::setVelocityX(int x){

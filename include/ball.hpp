@@ -10,6 +10,7 @@ class Ball: public GameObject
         bool m_moving;
         int m_x;
         int m_y;
+        bool m_gameStarted;
         
         void setVelocity(velocity);
     public:

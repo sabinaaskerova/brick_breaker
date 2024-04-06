@@ -4,7 +4,7 @@
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 1000
 #define WALLSW 600
-#define WALLSH 900
+#define WALLSH 800
 #define WALLSX ((SCREEN_WIDTH - WALLSW) / 2)
 #define WALLSY ((SCREEN_HEIGHT - WALLSH) / 2)
 
@@ -18,7 +18,7 @@
 #define PADDLEY (WALLSY + WALLSH - PADDLEH) - 40
 
 #define BALLSIZE 25
-#define BALLX PADDLEX + BALLSIZE
+#define BALLX PADDLEX + PADDLEW/2 - BALLSIZE/2
 #define BALLY PADDLEY - BALLSIZE
 
 typedef struct position {
