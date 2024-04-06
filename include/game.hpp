@@ -9,6 +9,8 @@
 #include "ball.hpp"
 #include <iostream>
 #include "structs.hpp"
+#include <memory>
+#include <cassert>
 
 enum GameStates{
     MENU,

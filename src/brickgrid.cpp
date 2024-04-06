@@ -61,6 +61,52 @@ void BrickGrid::initGridFromFile(const std::string& filename, const int initX, c
             }
         }
 
+
+
+void BrickGrid::update(){
+    // for (auto& row : m_bricks) {
+    //     for (auto& brick : row) {
+    //         if (brick != nullptr) {
+    //             brick->update();
+    //         }
+    //     }
+    // }
+}
+
+void BrickGrid::draw(SDL_Renderer* renderer){
+    for (const std::vector<std::unique_ptr<Brick>>& row : m_bricks) {
+        for (const std::unique_ptr<Brick>& brick : row) {
+            if (brick != nullptr) {
+                if(brick->getType()!=typeBrick::EMPTY){
+                    SDL_Rect rect;
+                    rect.x = brick->getPosition().x;
+                    rect.y = brick->getPosition().y;
+                    rect.w = brick->getSize().width;
+                    rect.h = brick->getSize().height;
+                    if(brick->getType() == typeBrick::NORMAL)
+                    {
+                        
+                        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+                    }
+                    else if(brick->getType() == typeBrick::DOUBLE)
+                    {
+                        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green color
+                        
+                    }
+                    else if(brick->getType() == typeBrick::TRIPLE)
+                    {
+                        
+                        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Blue color
+                    } 
+                    SDL_RenderFillRect(renderer, &rect);
+                }
+
+            }
+        }
+    }
+}
+
+
 std::vector<std::vector<std::unique_ptr<Brick>>>& BrickGrid::getBricks()
 {
     return m_bricks;
@@ -79,14 +125,4 @@ void BrickGrid::printAllBricks() const {
         }
         std::cout << std::endl;
     }
-}
-
-void BrickGrid::update(){
-    // for (auto& row : m_bricks) {
-    //     for (auto& brick : row) {
-    //         if (brick != nullptr) {
-    //             brick->update();
-    //         }
-    //     }
-    // }
 }

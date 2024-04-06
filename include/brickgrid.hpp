@@ -30,6 +30,8 @@ class BrickGrid
         void update();
         void render();
         void collidesWith(GameObject* obj);
+        void draw(SDL_Renderer* renderer);
+
         void setBrick(int row, int col, typeBrick type);
         void setBrick(int row, int col, Brick* brick);
 
