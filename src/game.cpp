@@ -24,25 +24,6 @@ void Game::init(){
 
     m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
     assert (m_renderer != nullptr);
-
-    SDL_Rect walls;
-    walls.x = WALLSX;
-    walls.y = WALLSY;
-    walls.w = WALLSW; 
-    walls.h = WALLSH;
-
-    SDL_SetRenderDrawColor(m_renderer, 204, 153, 255, 255);
-    for (int i = 0; i < 5; i++) {
-        SDL_Rect thickWalls;
-        thickWalls.x = walls.x - i;
-        thickWalls.y = walls.y - i;
-        thickWalls.w = walls.w + 2 * i;
-        thickWalls.h = walls.h + 2 * i;
-        SDL_RenderDrawRect(m_renderer, &thickWalls);
-    }
-    // SDL_RenderDrawRect(m_renderer, &walls);
-    // SDL_RenderPresent(m_renderer);
-    // SDL_UpdateWindowSurface(m_window);
     
 }
 
@@ -83,6 +64,24 @@ void Game::update(){
 
 void Game::draw()
 {
+    SDL_Rect walls;
+    walls.x = WALLSX;
+    walls.y = WALLSY;
+    walls.w = WALLSW; 
+    walls.h = WALLSH;
+
+    SDL_SetRenderDrawColor(m_renderer, 204, 153, 255, 255);
+    for (int i = 0; i < 5; i++) {
+        SDL_Rect thickWalls;
+        thickWalls.x = walls.x - i;
+        thickWalls.y = walls.y - i;
+        thickWalls.w = walls.w + 2 * i;
+        thickWalls.h = walls.h + 2 * i;
+        SDL_RenderDrawRect(m_renderer, &thickWalls);
+    }
+    SDL_RenderDrawRect(m_renderer, &walls);
+    SDL_RenderPresent(m_renderer);
+    SDL_UpdateWindowSurface(m_window);
     // SDL_RenderClear(m_renderer);
 
 	m_paddle->draw(m_renderer);
