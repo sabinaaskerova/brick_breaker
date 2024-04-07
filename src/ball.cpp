@@ -84,3 +84,7 @@ void Ball::render(){
 void Ball::setVelocityX(int x){
     m_velocity.x = x;
 }
+
+void Ball::setVelocityY(int y){
+    m_velocity.y = y;
+}

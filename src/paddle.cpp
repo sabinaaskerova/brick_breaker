@@ -3,6 +3,7 @@
 
 Paddle::Paddle(position& pos, objectSize& size): GameObject(pos, size){
     m_width = size.width;
+    m_height = size.height;
     
 }
 Paddle::~Paddle(){
@@ -40,6 +41,7 @@ void Paddle::handle_input(SDL_Event const &event)
     switch(event.type)
     {
         case SDL_MOUSEMOTION:
+        if (event.motion.y >= m_position.y && event.motion.y <= m_position.y + m_height) {
             m_position.x = event.motion.x - m_width / 2; // center the paddle on the mouse
 
             // Clamp the paddle's position to the screen boundaries
@@ -48,6 +50,7 @@ void Paddle::handle_input(SDL_Event const &event)
             } else if (m_position.x + m_width > WALLSX + WALLSW) {
                 m_position.x = WALLSX + WALLSW - m_width;
             }
+        }
             break;
     }
 }

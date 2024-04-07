@@ -6,6 +6,7 @@
 class Paddle: public GameObject{
     private:
         int m_width;
+        int m_height;
         void setWidth(int);
     public:
         Paddle(SDL_Renderer* renderer, position pos, objectSize size);

@@ -3,7 +3,7 @@
 
 Game::Game(){
     m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
-    m_brickGrid->initGridFromFile("grids/grid7.txt", INITX, INITY);
+    m_brickGrid->initGridFromFile("grids/grid3.txt", INITX, INITY);
     
     position ballPosition = {BALLX, BALLY};
     objectSize ballSize = {BALLSIZE, BALLSIZE};
@@ -34,9 +34,10 @@ void Game::init(){
         return ; // TO DO: throw an exception throw std::runtime_error(SDL_GetError());
     }
     for(auto& ball : m_balls){
-        // ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
-        ball->init(m_renderer, BALLX, BALLY);       
-        // std::cout << BALLX << "," << BALLY << std::endl;
+        ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
+        ball->setMoving(true);
+        ball->setVelocityX(5);
+        ball->setVelocityY(-5);
     }
     
 }
@@ -100,13 +101,6 @@ void Game::draw()
             ball->draw(m_renderer);
         }
     }
-    // SDL_Rect ball;
-    // ball.w = BALLSIZE; 
-    // ball.h = BALLSIZE;
-    // ball.x = PADDLEX + (PADDLEW - BALLSIZE) / 2;
-    // ball.y = PADDLEY - BALLSIZE-20;
-    // SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
-    // SDL_RenderFillRect(m_renderer, &ball);
 
 	m_paddle->draw(m_renderer);
     SDL_RenderPresent(m_renderer);

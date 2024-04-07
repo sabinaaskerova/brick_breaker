@@ -9,8 +9,8 @@
 #define WALLSY ((SCREEN_HEIGHT - WALLSH) / 2)
 
 #define BRICKW 35
-#define INITX (WALLSX) +BRICKW 
-#define INITY (WALLSY)+BRICKW
+#define INITX (WALLSX) + (BRICKW)
+#define INITY (WALLSY) + (BRICKW)
 
 #define PADDLEW 100
 #define PADDLEH 30
