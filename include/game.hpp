@@ -35,6 +35,7 @@ class Game{
 
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;
+        SDL_Texture* backgroundImage;
         SDL_Texture  *m_image;
         SDL_Rect      m_render_viewport;
         SDL_Event     m_window_event;

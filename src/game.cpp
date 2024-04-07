@@ -22,20 +22,25 @@ void Game::init(){
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return ;
     }
-
+  
     m_window = SDL_CreateWindow("Kirpish syndyru", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    assert (m_window != nullptr); // TO DO: delete this line
     if (m_window == nullptr) {
         std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;
         return ; // TO DO: throw an exception
     }
 
     m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
-    assert (m_renderer != nullptr); // TO DO: delete this line
     if (m_renderer == nullptr) {
         std::cerr << "Failed to create renderer: " << SDL_GetError() << std::endl;
         return ; // TO DO: throw an exception throw std::runtime_error(SDL_GetError());
     }
+
+    backgroundImage = IMG_LoadTexture(m_renderer, "img/qazaqyurt.png");
+    if (backgroundImage == nullptr) {
+        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+        return;
+    }
+   
     for(auto& ball : m_balls){
         ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
         ball->setMoving(true);
@@ -43,7 +48,8 @@ void Game::init(){
         ball->setVelocityY(-2);
         ball->startGame();
     }  
-
+    // SDL_RenderPresent(m_renderer);
+    
     
     
 }
@@ -73,6 +79,7 @@ void Game::game_loop()
 void Game::update(){
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
     SDL_RenderClear(m_renderer);
+    
     for(auto& ball : m_balls){
         if(ball!=nullptr){
             ball->update();
@@ -136,7 +143,7 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
 void Game::draw()
 {
     SDL_RenderClear(m_renderer);
-
+    SDL_RenderCopy(m_renderer, backgroundImage, nullptr, nullptr);
     m_wall->draw(m_renderer);
     m_brickGrid->draw(m_renderer);
     m_paddle->draw(m_renderer);
@@ -146,7 +153,8 @@ void Game::draw()
             ball->draw(m_renderer);
         }
     }
-
+    
+    
     SDL_RenderPresent(m_renderer);
     SDL_UpdateWindowSurface(m_window);
 }
