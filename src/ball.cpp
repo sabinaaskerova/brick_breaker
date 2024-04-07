@@ -52,9 +52,9 @@ void Ball::update(){
     }
     else if(m_moving){
         m_position.x += m_velocity.x/90.0;
-        m_position.y -= m_velocity.y/90.0;
-        std::cout << "Ball x: " << m_position.x << " Ball y: " << m_position.y << std::endl;
-        std::cout << "Ball velocity x: " << m_velocity.x << " Ball velocity y: " << m_velocity.y << std::endl;
+        m_position.y += m_velocity.y/90.0;
+        // std::cout << "Ball x: " << m_position.x << " Ball y: " << m_position.y << std::endl;
+        // std::cout << "Ball velocity x: " << m_velocity.x << " Ball velocity y: " << m_velocity.y << std::endl;
     }
 }
 void Ball::draw(SDL_Renderer *renderer)
@@ -75,7 +75,6 @@ void Ball::setMoving(bool moving){
 bool Ball::collidesWith(const GameObject& obj) const{
     SDL_Rect ballBox = getBoundingBox();
     SDL_Rect objBox = obj.getBoundingBox();
-
     return SDL_HasIntersection(&ballBox, &objBox);
 }
 

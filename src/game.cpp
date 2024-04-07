@@ -68,18 +68,19 @@ void Game::update(){
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
     SDL_RenderClear(m_renderer);
     for(auto& ball : m_balls){
-        
-
         if(ball!=nullptr){
             ball->update();
-            
             if(ball->collidesWith(*m_paddle)){
                 handleCollision(ball.get(), m_paddle.get());
             }
             for(auto& brick_vector : m_brickGrid->getBricks()){
                 for(auto& brick : brick_vector){
-                    if(!brick->isDestroyed() && ball->collidesWith(*brick.get())){
-                        handleCollision(ball.get(), brick.get());
+                    // std::cout << brick->getPosition().x << " " << brick->getPosition().y << " " << brick->getSize().width << " " << brick->getSize().height << std::endl;
+                    if(ball->collidesWith(*brick.get()) ){
+                        if(!brick->isDestroyed()){
+                            handleCollision(ball.get(), brick.get());
+                        }
+                        
                     }
                 }
             }
@@ -95,12 +96,16 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
 
     Brick* brick = dynamic_cast<Brick*>(gameObject);
     if (brick != nullptr) { // if the object is a brick
+        
         if(brick->getType() == typeBrick::NORMAL){
             brick->setDestroyed(true);
         }else if(brick->getType() == typeBrick::DOUBLE){
             brick->setType(typeBrick::NORMAL);
         }else if(brick->getType() == typeBrick::TRIPLE){
             brick->setType(typeBrick::DOUBLE);
+        }
+        else{
+            
         }
     }
 }

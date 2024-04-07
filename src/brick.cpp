@@ -51,3 +51,7 @@ void Brick::draw(SDL_Renderer* renderer) {
 void Brick::setDestroyed(bool destroyed){
     m_destroyed = destroyed;
 }
+
+SDL_Rect Brick::getBoundingBox() const{
+    return {(int)m_position.x, (int)m_position.y, (int)m_size.width, (int)m_size.height};
+}

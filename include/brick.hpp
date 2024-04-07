@@ -7,12 +7,8 @@
 class Brick : public GameObject
 {
     protected:
-        position m_position;
-        objectSize m_size;
         typeBrick m_type;
         bool m_destroyed;
-        SDL_Renderer* m_renderer;
-
     
     public:
         Brick(position pos, objectSize size, typeBrick type);
@@ -30,7 +26,7 @@ class Brick : public GameObject
         const typeBrick& getType();
         void setType(typeBrick);
         void setDestroyed(bool destroyed);
-        
+        SDL_Rect getBoundingBox() const;
         void printProperties() const;
 
 
