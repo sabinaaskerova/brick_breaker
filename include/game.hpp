@@ -56,6 +56,7 @@ class Game{
         const int getLives();
         const bool getRunning();
         BrickGrid& getBrickGrid();
+        void handleCollision(Ball* ball, GameObject* gameObject);
 
         std::unique_ptr<Paddle>& getPaddle();
 

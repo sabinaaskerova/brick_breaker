@@ -18,7 +18,7 @@ position Brick::getPosition()
     return m_position;
 }
 
-bool Brick::isDestroyed(){
+bool Brick::isDestroyed() const {
     return m_destroyed;
 }
 
@@ -47,4 +47,7 @@ void Brick::printProperties() const {
 }
 void Brick::draw(SDL_Renderer* renderer) {
        
+}
+void Brick::setDestroyed(bool destroyed){
+    m_destroyed = destroyed;
 }

@@ -93,3 +93,11 @@ void Ball::setVelocityY(double y){
 void Ball::startGame() {
     m_gameStarted = true;
 }
+
+double Ball::getVelocityX(){
+    return m_velocity.x;
+}
+
+double Ball::getVelocityY(){
+    return m_velocity.y;
+}

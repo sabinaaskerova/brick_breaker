@@ -1,6 +1,5 @@
 #include "game.hpp"
 
-
 Game::Game(){
     m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
     m_brickGrid->initGridFromFile("grids/grid3.txt", INITX, INITY);
@@ -37,7 +36,7 @@ void Game::init(){
         ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
         ball->setMoving(true);
         ball->setVelocityX(0);
-        ball->setVelocityY(2);
+        ball->setVelocityY(-2);
         ball->startGame();
     }
     
@@ -69,12 +68,41 @@ void Game::update(){
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
     SDL_RenderClear(m_renderer);
     for(auto& ball : m_balls){
+        
+
         if(ball!=nullptr){
             ball->update();
+            
+            if(ball->collidesWith(*m_paddle)){
+                handleCollision(ball.get(), m_paddle.get());
+            }
+            for(auto& brick_vector : m_brickGrid->getBricks()){
+                for(auto& brick : brick_vector){
+                    if(!brick->isDestroyed() && ball->collidesWith(*brick.get())){
+                        handleCollision(ball.get(), brick.get());
+                    }
+                }
+            }
         }
     }
     // m_paddle->update();
     // m_brickGrid->update();
+}
+
+void Game::handleCollision(Ball* ball, GameObject* gameObject){
+    ball->setVelocityX(-ball->getVelocityX());
+    ball->setVelocityY(-ball->getVelocityY());
+
+    Brick* brick = dynamic_cast<Brick*>(gameObject);
+    if (brick != nullptr) { // if the object is a brick
+        if(brick->getType() == typeBrick::NORMAL){
+            brick->setDestroyed(true);
+        }else if(brick->getType() == typeBrick::DOUBLE){
+            brick->setType(typeBrick::NORMAL);
+        }else if(brick->getType() == typeBrick::TRIPLE){
+            brick->setType(typeBrick::DOUBLE);
+        }
+    }
 }
 
 void Game::draw()

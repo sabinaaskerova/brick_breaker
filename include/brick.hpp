@@ -12,7 +12,6 @@ class Brick : public GameObject
         typeBrick m_type;
         bool m_destroyed;
         SDL_Renderer* m_renderer;
-        void setDestroyed(bool);
 
     
     public:
@@ -24,14 +23,17 @@ class Brick : public GameObject
         void draw(SDL_Renderer* renderer) override;
 
         bool collidesWith(const GameObject& obj) const override;
-        bool isDestroyed();
+        bool isDestroyed() const;
 
         position getPosition(); // const 
         objectSize getSize();
         const typeBrick& getType();
         void setType(typeBrick);
+        void setDestroyed(bool destroyed);
         
         void printProperties() const;
+
+
 
 };
 
