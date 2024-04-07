@@ -23,7 +23,7 @@ class Brick : public GameObject
         void render() override;
         void draw(SDL_Renderer* renderer) override;
 
-        void collidesWith(GameObject* obj);
+        bool collidesWith(const GameObject& obj) const override;
         bool isDestroyed();
 
         position getPosition(); // const 

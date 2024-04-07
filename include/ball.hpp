@@ -17,14 +17,16 @@ class Ball: public GameObject
         Ball(SDL_Renderer* renderer, position& pos, objectSize& size, velocity& vel);
         Ball(position& pos, objectSize& size, velocity& vel);
         ~Ball() override;
-        void init(SDL_Renderer *renderer, int x, int y);
+        void init(SDL_Renderer *renderer, double x, double y);
         void update() override;
         void render() override;
         void draw(SDL_Renderer* renderer) override;
         
-        void collidesWith(GameObject* obj) override;
-        void setVelocityX(int);
-        void setVelocityY(int);
+        bool collidesWith(const GameObject& obj) const override;
+
+        void startGame();
+        void setVelocityX(double x);
+        void setVelocityY(double y);
         const velocity& getVelocity();
         bool isMoving();
         void setMoving(bool);

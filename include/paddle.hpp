@@ -17,7 +17,7 @@ class Paddle: public GameObject{
         void draw(SDL_Renderer* renderer) override;
         void handle_input(SDL_Event const &event);
 
-        void collidesWith(GameObject* obj);
+        bool collidesWith(const GameObject& obj) const override;
         void move(int x);
         const int& getWidth();
 };

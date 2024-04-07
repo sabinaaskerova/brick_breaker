@@ -39,7 +39,7 @@ void Brick::setType(typeBrick type){
 void Brick::update() {
 }
 
-void Brick::collidesWith(GameObject* obj) {
+bool Brick::collidesWith(const GameObject& obj) const{
 }
 
 void Brick::printProperties() const {

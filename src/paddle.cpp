@@ -18,7 +18,7 @@ void Paddle::update(){
 
 }
 
-void Paddle::collidesWith(GameObject* obj){
+bool Paddle::collidesWith(const GameObject& obj) const{
 
 }
 
@@ -41,16 +41,14 @@ void Paddle::handle_input(SDL_Event const &event)
     switch(event.type)
     {
         case SDL_MOUSEMOTION:
-        if (event.motion.y >= m_position.y && event.motion.y <= m_position.y + m_height) {
+        
             m_position.x = event.motion.x - m_width / 2; // center the paddle on the mouse
-
-            // Clamp the paddle's position to the screen boundaries
             if (m_position.x < WALLSX) {
                 m_position.x = WALLSX;
             } else if (m_position.x + m_width > WALLSX + WALLSW) {
                 m_position.x = WALLSX + WALLSW - m_width;
             }
-        }
+        
             break;
     }
 }

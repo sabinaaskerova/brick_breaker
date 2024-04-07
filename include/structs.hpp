@@ -20,16 +20,17 @@
 #define BALLSIZE 25
 #define BALLX PADDLEX + PADDLEW/2 - BALLSIZE/2
 #define BALLY PADDLEY - BALLSIZE
+#define BALLSPEED 0.5
 
 typedef struct position {
-    int x;
-    int y;
+    double x;
+    double y;
 } position;
 
 
 typedef struct velocity {
-    int x;
-    int y;
+    double x;
+    double y;
 } velocity;
 
 typedef struct size {

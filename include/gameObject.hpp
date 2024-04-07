@@ -16,11 +16,12 @@ public:
     GameObject(SDL_Renderer* renderer);
     GameObject(position& pos, objectSize& size);
     GameObject(SDL_Renderer* renderer, position& pos, objectSize& size);
+    SDL_Rect getBoundingBox() const;
     virtual ~GameObject();
     virtual void update() = 0;
     virtual void render() = 0;
     virtual void draw(SDL_Renderer* renderer) = 0;
-    virtual void collidesWith(GameObject* obj) = 0;
+    virtual bool collidesWith( const GameObject& obj) const = 0;
 
     position& getPosition();
 

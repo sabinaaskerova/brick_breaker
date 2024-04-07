@@ -21,6 +21,11 @@ GameObject::GameObject(SDL_Renderer* renderer, position& pos, objectSize& size) 
     m_size.width = size.width;
 }
 
+
+SDL_Rect GameObject::getBoundingBox() const {
+    return {m_position.x, m_position.y, m_size.width, m_size.height};
+}
+
 position& GameObject::getPosition(){
     return m_position;
 }

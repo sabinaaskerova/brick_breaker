@@ -36,8 +36,9 @@ void Game::init(){
     for(auto& ball : m_balls){
         ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
         ball->setMoving(true);
-        ball->setVelocityX(5);
-        ball->setVelocityY(-5);
+        ball->setVelocityX(0.5);
+        ball->setVelocityY(-0.5);
+        ball->startGame();
     }
     
 }
@@ -72,12 +73,13 @@ void Game::update(){
             ball->update();
         }
     }
-    m_paddle->update();
-    m_brickGrid->update();
+    // m_paddle->update();
+    // m_brickGrid->update();
 }
 
 void Game::draw()
 {
+    SDL_RenderClear(m_renderer);
     SDL_Rect walls;
     walls.x = WALLSX;
     walls.y = WALLSY;
@@ -94,7 +96,7 @@ void Game::draw()
         SDL_RenderDrawRect(m_renderer, &thickWalls);
     }
     SDL_RenderDrawRect(m_renderer, &walls);
-    SDL_UpdateWindowSurface(m_window);
+    
     m_brickGrid->draw(m_renderer);
     for(auto& ball : m_balls){
         if(ball!=nullptr){
@@ -104,6 +106,7 @@ void Game::draw()
 
 	m_paddle->draw(m_renderer);
     SDL_RenderPresent(m_renderer);
+    SDL_UpdateWindowSurface(m_window);
 }
 
 
