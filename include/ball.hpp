@@ -8,8 +8,7 @@ class Ball: public GameObject
     private:
         velocity m_velocity;
         bool m_moving;
-        int m_x;
-        int m_y;
+
         bool m_gameStarted;
         
         void setVelocity(velocity);

@@ -5,8 +5,6 @@ Ball::Ball(position& pos, objectSize& size, velocity& vel): GameObject(pos, size
     m_velocity = vel;
     m_moving = false;
     m_gameStarted = false;
-    m_x = m_position.x;
-    m_y = m_position.y;
 }
 Ball::Ball(SDL_Renderer* renderer, position& pos, objectSize& size, velocity& vel): GameObject(renderer, pos, size){
     m_velocity = vel;
@@ -38,8 +36,6 @@ void Ball::init(SDL_Renderer *renderer, double x, double y)
 
     m_position.x = x;
     m_position.y = y;
-    m_x = m_position.x;
-    m_y = m_position.y;
 
     int posX = static_cast<int>(m_position.x);
     int posY = static_cast<int>(m_position.y);
@@ -51,26 +47,26 @@ void Ball::init(SDL_Renderer *renderer, double x, double y)
 }
 
 void Ball::update(){
-    // if (!m_gameStarted) {
-    //     m_y = m_y + m_velocity.y*1/60;
-    //     m_position.y = m_y;
-    // }
-    // else if(m_moving){
-        m_x = m_x +  (m_velocity.x*1/60);
-        m_y = m_y - (m_velocity.y*1/60);
-        m_position.x = m_x;
-        m_position.y = m_y;
-        std::cout << "Ball x: " << m_x << " Ball y: " << m_y << std::endl;
+    if (!m_gameStarted) {
+        m_position.y += m_velocity.y/60.0;
+    }
+    else if(m_moving){
+        m_position.x += m_velocity.x/90.0;
+        m_position.y -= m_velocity.y/90.0;
+        std::cout << "Ball x: " << m_position.x << " Ball y: " << m_position.y << std::endl;
         std::cout << "Ball velocity x: " << m_velocity.x << " Ball velocity y: " << m_velocity.y << std::endl;
-    // }
-
+    }
 }
-
 void Ball::draw(SDL_Renderer *renderer)
 {
-    SDL_RenderCopy(renderer, m_image, nullptr, (SDL_Rect*)&m_position);
-}
+    SDL_Rect rect;
+    rect.x = static_cast<int>(m_position.x);
+    rect.y = static_cast<int>(m_position.y);
+    rect.w = m_size.width;
+    rect.h = m_size.height;
 
+    SDL_RenderCopy(renderer, m_image, nullptr, &rect);
+}
 
 void Ball::setMoving(bool moving){
     m_moving = moving;

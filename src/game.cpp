@@ -36,8 +36,8 @@ void Game::init(){
     for(auto& ball : m_balls){
         ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
         ball->setMoving(true);
-        ball->setVelocityX(0.5);
-        ball->setVelocityY(-0.5);
+        ball->setVelocityX(0);
+        ball->setVelocityY(2);
         ball->startGame();
     }
     
