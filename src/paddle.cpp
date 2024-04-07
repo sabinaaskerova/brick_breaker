@@ -19,7 +19,7 @@ void Paddle::update(){
 }
 
 bool Paddle::collidesWith(const GameObject& obj) const{
-
+    return false;
 }
 
 void Paddle::move(int x){
@@ -31,7 +31,7 @@ const int& Paddle::getWidth(){
 }
 
 void Paddle::draw(SDL_Renderer* renderer){
-    SDL_Rect paddle = {m_position.x, m_position.y, m_size.width, m_size.height};
+    SDL_Rect paddle = {static_cast<int>(m_position.x), static_cast<int>(m_position.y), m_size.width, m_size.height};
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderFillRect(renderer, &paddle);
 }

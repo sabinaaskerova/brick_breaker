@@ -29,6 +29,9 @@ SDL_Rect GameObject::getBoundingBox() const {
 position& GameObject::getPosition(){
     return m_position;
 }
+objectSize& GameObject::getSize(){
+    return m_size;
+}
 GameObject::~GameObject() {}
 
 

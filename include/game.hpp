@@ -7,6 +7,7 @@
 #include "brickgrid.hpp"
 #include "paddle.hpp"
 #include "ball.hpp"
+#include "wall.hpp"
 #include <iostream>
 #include "structs.hpp"
 #include <memory>
@@ -30,6 +31,7 @@ class Game{
         std::unique_ptr<Paddle> m_paddle;
         std::unique_ptr<BrickGrid> m_brickGrid;
         std::vector<std::unique_ptr<Ball>> m_balls;
+        std::unique_ptr<Wall> m_wall;
 
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;

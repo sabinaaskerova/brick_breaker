@@ -77,7 +77,7 @@ void BrickGrid::draw(SDL_Renderer* renderer){
     for (const std::vector<std::unique_ptr<Brick>>& row : m_bricks) {
         for (const std::unique_ptr<Brick>& brick : row) {
             if (brick != nullptr) {
-                if(brick->getType()!=typeBrick::EMPTY){
+                if(brick->getType()!=typeBrick::EMPTY && !brick->isDestroyed()){
                     SDL_Rect rect;
                     rect.x = brick->getPosition().x;
                     rect.y = brick->getPosition().y;

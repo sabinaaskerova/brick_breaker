@@ -11,6 +11,10 @@ Game::Game(){
     position paddlePosition = {PADDLEX, PADDLEY};
     objectSize paddleSize = {PADDLEW, PADDLEH};
     m_paddle = std::make_unique<Paddle>(paddlePosition, paddleSize);
+
+    position wallPosition = {WALLSX, WALLSY};
+    objectSize wallSize = {WALLSW, WALLSH};
+    m_wall = std::make_unique<Wall>(wallPosition, wallSize);
 };
 
 void Game::init(){
@@ -38,7 +42,9 @@ void Game::init(){
         ball->setVelocityX(0);
         ball->setVelocityY(-2);
         ball->startGame();
-    }
+    }  
+
+    
     
 }
 
@@ -70,6 +76,15 @@ void Game::update(){
     for(auto& ball : m_balls){
         if(ball!=nullptr){
             ball->update();
+
+            // Check for collision with walls
+            if(ball->getPosition().x < 0 || ball->getPosition().x + ball->getSize().width > SCREEN_WIDTH){
+                ball->setVelocityX(-ball->getVelocityX());
+            }
+            if(ball->getPosition().y < 0 || ball->getPosition().y + ball->getSize().height > SCREEN_HEIGHT){
+                ball->setVelocityY(-ball->getVelocityY());
+            }
+            
             if(ball->collidesWith(*m_paddle)){
                 handleCollision(ball.get(), m_paddle.get());
             }
@@ -84,60 +99,54 @@ void Game::update(){
                     }
                 }
             }
+            // if (ball->collidesWith(*m_wall)) {
+            //     // std::cout << "Collided with wall" << std::endl;
+            //     ball->setVelocityX(-ball->getVelocityX());
+            //     ball->setVelocityY(-ball->getVelocityY());
+            // }
         }
     }
+    
     // m_paddle->update();
     // m_brickGrid->update();
 }
 
 void Game::handleCollision(Ball* ball, GameObject* gameObject){
-    ball->setVelocityX(-ball->getVelocityX());
-    ball->setVelocityY(-ball->getVelocityY());
+    
 
     Brick* brick = dynamic_cast<Brick*>(gameObject);
     if (brick != nullptr) { // if the object is a brick
-        
-        if(brick->getType() == typeBrick::NORMAL){
+        if(brick->getType() == typeBrick::EMPTY){
+            // If the brick is of type EMPTY, return without changing the ball's direction
+            return;
+        }
+        else if(brick->getType() == typeBrick::NORMAL){
             brick->setDestroyed(true);
         }else if(brick->getType() == typeBrick::DOUBLE){
             brick->setType(typeBrick::NORMAL);
         }else if(brick->getType() == typeBrick::TRIPLE){
             brick->setType(typeBrick::DOUBLE);
         }
-        else{
-            
-        }
     }
+
+    ball->setVelocityX(-ball->getVelocityX());
+    ball->setVelocityY(-ball->getVelocityY());
 }
 
 void Game::draw()
 {
     SDL_RenderClear(m_renderer);
-    SDL_Rect walls;
-    walls.x = WALLSX;
-    walls.y = WALLSY;
-    walls.w = WALLSW; 
-    walls.h = WALLSH;
 
-    SDL_SetRenderDrawColor(m_renderer, 204, 153, 255, 255);
-    for (int i = 0; i < 5; i++) {
-        SDL_Rect thickWalls;
-        thickWalls.x = walls.x - i;
-        thickWalls.y = walls.y - i;
-        thickWalls.w = walls.w + 2 * i;
-        thickWalls.h = walls.h + 2 * i;
-        SDL_RenderDrawRect(m_renderer, &thickWalls);
-    }
-    SDL_RenderDrawRect(m_renderer, &walls);
-    
+    m_wall->draw(m_renderer);
     m_brickGrid->draw(m_renderer);
+    m_paddle->draw(m_renderer);
+
     for(auto& ball : m_balls){
         if(ball!=nullptr){
             ball->draw(m_renderer);
         }
     }
 
-	m_paddle->draw(m_renderer);
     SDL_RenderPresent(m_renderer);
     SDL_UpdateWindowSurface(m_window);
 }
@@ -152,9 +161,6 @@ std::unique_ptr<Paddle>& Game::getPaddle() {
 }
 
 Game::~Game(){
-    // if(m_brickGrid != nullptr){
-        // delete m_brickGrid;
-    // }
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();

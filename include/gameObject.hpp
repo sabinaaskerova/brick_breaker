@@ -24,6 +24,7 @@ public:
     virtual bool collidesWith( const GameObject& obj) const = 0;
 
     position& getPosition();
+    objectSize& getSize();
 
 };
 #endif // GAMEOBJECT_H
