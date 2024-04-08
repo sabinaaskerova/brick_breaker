@@ -8,6 +8,7 @@ Game::Game(){
     objectSize ballSize = {BALLSIZE, BALLSIZE};
     velocity ballVelocity = {40, 40};
     m_balls.push_back(std::make_unique<Ball>(ballPosition, ballSize, ballVelocity)); 
+    
     position paddlePosition = {PADDLEX, PADDLEY};
     objectSize paddleSize = {PADDLEW, PADDLEH};
     m_paddle = std::make_unique<Paddle>(paddlePosition, paddleSize);
@@ -47,11 +48,7 @@ void Game::init(){
         ball->setVelocityX(0);
         ball->setVelocityY(-2);
         ball->startGame();
-    }  
-    // SDL_RenderPresent(m_renderer);
-    
-    
-    
+    }
 }
 
 
@@ -85,10 +82,10 @@ void Game::update(){
             ball->update();
 
             // Check for collision with walls
-            if(ball->getPosition().x < 0 || ball->getPosition().x + ball->getSize().width > SCREEN_WIDTH){
+            if(ball->getPosition().x < 0 || ball->getPosition().x + ball->getSize().width > SCREEN_WIDTH - WALLSX){
                 ball->setVelocityX(-ball->getVelocityX());
             }
-            if(ball->getPosition().y < 0 || ball->getPosition().y + ball->getSize().height > SCREEN_HEIGHT){
+            if(ball->getPosition().y < 0 || ball->getPosition().y + ball->getSize().height > SCREEN_HEIGHT-WALLSY){
                 ball->setVelocityY(-ball->getVelocityY());
             }
             
@@ -135,17 +132,22 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
             brick->setType(typeBrick::DOUBLE);
         }
     }
+    double impact = (ball->getPosition().x - gameObject->getPosition().x) / gameObject->getSize().width;
+    // double impact = (ball->getPosition().x - (gameObject->getPosition().x + gameObject->getSize().width / 2)) / gameObject->getSize().width;
 
-    ball->setVelocityX(-ball->getVelocityX());
-    ball->setVelocityY(-ball->getVelocityY());
+    ball->setVelocityX((impact - 0.5) * 2 * BALLSPEED);
+    ball->setVelocityY(-sqrt(abs(BALLSPEED * BALLSPEED - ball->getVelocityX() * ball->getVelocityX())));
+    // ball->setVelocityX(-ball->getVelocityX());
+    // ball->setVelocityY(-ball->getVelocityY());
 }
 
 void Game::draw()
 {
     SDL_RenderClear(m_renderer);
-    SDL_RenderCopy(m_renderer, backgroundImage, nullptr, nullptr);
-    m_wall->draw(m_renderer);
+    // SDL_RenderCopy(m_renderer, backgroundImage, nullptr, nullptr); // background image
+    
     m_brickGrid->draw(m_renderer);
+    m_wall->draw(m_renderer);
     m_paddle->draw(m_renderer);
 
     for(auto& ball : m_balls){
@@ -153,7 +155,6 @@ void Game::draw()
             ball->draw(m_renderer);
         }
     }
-    
     
     SDL_RenderPresent(m_renderer);
     SDL_UpdateWindowSurface(m_window);
