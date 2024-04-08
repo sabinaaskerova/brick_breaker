@@ -100,3 +100,11 @@ double Ball::getVelocityX(){
 double Ball::getVelocityY(){
     return m_velocity.y;
 }
+
+void Ball::setPositionX(double x){
+    m_position.x = x;
+}
+
+void Ball::setPositionY(double y){
+    m_position.y = y;
+}

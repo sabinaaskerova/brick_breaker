@@ -45,7 +45,9 @@ class Game{
         ~Game();
         void init();
         void game_loop();
-        void update(); 
+        void update();
+        void NewFunction(std::unique_ptr<Ball> &ball);
+
         void render();
         void handleEvents();
         void clean();

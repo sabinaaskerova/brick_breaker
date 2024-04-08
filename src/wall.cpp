@@ -20,12 +20,16 @@ void Wall::draw(SDL_Renderer* renderer) {
         SDL_RenderDrawRect(renderer, &thickWallRect);
     }
 }
-
 bool Wall::collidesWith(const GameObject& obj) const {
-    // SDL_Rect wallBox = getBoundingBox();
-    // SDL_Rect objBox = obj.getBoundingBox();
-    // if(obj->getPosition().x + obj->getSize() > m_position.x){
-    //     return true;
-    // }
-    // return SDL_HasIntersection(&wallBox, &objBox);
+    SDL_Rect wallBox = getBoundingBox();
+    SDL_Rect objBox = obj.getBoundingBox();
+
+    if (objBox.x < wallBox.x + wallBox.w &&
+        objBox.x + objBox.w > wallBox.x &&
+        objBox.y < wallBox.y + wallBox.h &&
+        objBox.y + objBox.h > wallBox.y) {
+        return true;
+    }
+
+    return false;
 }

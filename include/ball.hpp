@@ -26,6 +26,9 @@ class Ball: public GameObject
         void startGame();
         void setVelocityX(double x);
         void setVelocityY(double y);
+        void setPositionX(double x);
+        void setPositionY(double y);
+        
         double getVelocityX();
         double getVelocityY();
         const velocity& getVelocity();

@@ -82,16 +82,17 @@ void Game::update(){
             ball->update();
 
             // Check for collision with walls
-            if(ball->getPosition().x < 0 || ball->getPosition().x + ball->getSize().width > SCREEN_WIDTH - WALLSX){
+            if(ball->getPosition().x < WALLSX || ball->getPosition().x + ball->getSize().width > SCREEN_WIDTH - WALLSX){
                 ball->setVelocityX(-ball->getVelocityX());
             }
-            if(ball->getPosition().y < 0 || ball->getPosition().y + ball->getSize().height > SCREEN_HEIGHT-WALLSY){
+            if(ball->getPosition().y < WALLSY || ball->getPosition().y + ball->getSize().height > SCREEN_HEIGHT-WALLSY){
                 ball->setVelocityY(-ball->getVelocityY());
             }
             
             if(ball->collidesWith(*m_paddle)){
                 handleCollision(ball.get(), m_paddle.get());
             }
+
             for(auto& brick_vector : m_brickGrid->getBricks()){
                 for(auto& brick : brick_vector){
                     // std::cout << brick->getPosition().x << " " << brick->getPosition().y << " " << brick->getSize().width << " " << brick->getSize().height << std::endl;
@@ -103,23 +104,25 @@ void Game::update(){
                     }
                 }
             }
-            // if (ball->collidesWith(*m_wall)) {
-            //     // std::cout << "Collided with wall" << std::endl;
-            //     ball->setVelocityX(-ball->getVelocityX());
-            //     ball->setVelocityY(-ball->getVelocityY());
-            // }
+       
         }
+        
     }
-    
-    // m_paddle->update();
-    // m_brickGrid->update();
 }
 
 void Game::handleCollision(Ball* ball, GameObject* gameObject){
     
-
+    
     Brick* brick = dynamic_cast<Brick*>(gameObject);
+    Paddle* paddle = dynamic_cast<Paddle*>(gameObject);
     if (brick != nullptr) { // if the object is a brick
+        double ballCenterX = ball->getPosition().x + ball->getSize().width / 2;
+        double ballCenterY = ball->getPosition().y + ball->getSize().height / 2;
+        double brickCenterX = brick->getPosition().x + brick->getSize().width / 2;
+        double brickCenterY = brick->getPosition().y + brick->getSize().height / 2;
+
+        double dx = ballCenterX - brickCenterX;
+        double dy = ballCenterY - brickCenterY;
         if(brick->getType() == typeBrick::EMPTY){
             // If the brick is of type EMPTY, return without changing the ball's direction
             return;
@@ -131,14 +134,31 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
         }else if(brick->getType() == typeBrick::TRIPLE){
             brick->setType(typeBrick::DOUBLE);
         }
+        
+        if (std::abs(dx) > std::abs(dy)) {
+            // Reverse the ball's horizontal direction
+            ball->setVelocityX(-ball->getVelocityX());
+        } else {
+            // Reverse the ball's vertical direction
+            ball->setVelocityY(-ball->getVelocityY());
+        }
     }
-    double impact = (ball->getPosition().x - gameObject->getPosition().x) / gameObject->getSize().width;
-    // double impact = (ball->getPosition().x - (gameObject->getPosition().x + gameObject->getSize().width / 2)) / gameObject->getSize().width;
+    else if(paddle != nullptr){
+        double impact = (ball->getPosition().x - paddle->getPosition().x) / paddle->getSize().width;
+        ball->setVelocityX((impact - 0.5) * 2 * BALLSPEED);
+        ball->setVelocityY(-sqrt(abs(BALLSPEED - ball->getVelocityX() * ball->getVelocityX())));
+    }
+    
+    else{
+        double impact = (ball->getPosition().x - gameObject->getPosition().x) / gameObject->getSize().width;
+        // double impact = (ball->getPosition().x - (gameObject->getPosition().x + gameObject->getSize().width / 2)) / gameObject->getSize().width;
 
-    ball->setVelocityX((impact - 0.5) * 2 * BALLSPEED);
-    ball->setVelocityY(-sqrt(abs(BALLSPEED * BALLSPEED - ball->getVelocityX() * ball->getVelocityX())));
-    // ball->setVelocityX(-ball->getVelocityX());
-    // ball->setVelocityY(-ball->getVelocityY());
+        // ball->setVelocityX((impact - 0.5) * 2 * BALLSPEED);
+        // ball->setVelocityY(-sqrt(abs(BALLSPEED * BALLSPEED - ball->getVelocityX() * ball->getVelocityX())));
+        ball->setVelocityX(-ball->getVelocityX());
+        ball->setVelocityY(-ball->getVelocityY());
+    }
+
 }
 
 void Game::draw()
