@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 #include <SDL2/SDL.h>
-// #include <SDL_ttf.h>
 
 #include <vector>
 #include "gameObject.hpp"
@@ -12,7 +11,7 @@
 #include "wall.hpp"
 #include <iostream>
 #include "structs.hpp"
-#include <SDL_ttf.h>
+#include </usr/include/SDL2/SDL_ttf.h>
 #include <memory>
 #include <cassert>
 

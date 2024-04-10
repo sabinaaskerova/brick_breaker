@@ -182,8 +182,6 @@ void Game::draw()
         }
     }
     
-
-    
     SDL_RenderPresent(m_renderer);
     SDL_UpdateWindowSurface(m_window);
 }

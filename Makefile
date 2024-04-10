@@ -1,10 +1,10 @@
 CXX = g++-11
 
-INCLUDES = -I./include -I/usr/include/SDL2
+INCLUDES = -I./include 
 
 OBJDIR = ./obj
 
-CPPFLAGS = -Wall -std=c++14 $(INCLUDES)
+CPPFLAGS = -Wall -std=c++14 $(INCLUDES) -I/usr/include/SDL2 -I/usr/include/SDL2/SDL_ttf.h
 # CXXFLAGS = -std=c++14 -Wall -Wextra  $(INCLUDES) -pedantic
 
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
