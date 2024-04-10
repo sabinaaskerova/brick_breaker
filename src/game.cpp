@@ -56,9 +56,15 @@ void Game::init(){
 
 void Game::game_loop()
 {
+    const int FPS = 60;
+    const int frameDelay = 1000 / FPS;
+
+    Uint32 frameStart;
+    int frameTime;
     bool keep_running = true;
     while(keep_running)
     {
+        frameStart = SDL_GetTicks();
 		while(SDL_PollEvent(&m_window_event) > 0)
 		{
 			switch(m_window_event.type)
@@ -75,6 +81,12 @@ void Game::game_loop()
 		    
         }
         draw();
+        frameTime = SDL_GetTicks() - frameStart;
+
+        if(frameDelay > frameTime)
+        {
+            SDL_Delay(frameDelay - frameTime);
+        }
 		
     }
 }
@@ -164,11 +176,7 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
 
 void Game::draw()
 {
-    SDL_RenderClear(m_renderer);
     if (m_numBalls == 0) {
-        SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
-        SDL_Rect thickWallRect = {0, 0, 40, 40 };
-        SDL_RenderDrawRect(m_renderer, &thickWallRect);
         drawText("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
     }
     // SDL_RenderCopy(m_renderer, backgroundImage, nullptr, nullptr); // background image
@@ -183,7 +191,6 @@ void Game::draw()
     }
     
     SDL_RenderPresent(m_renderer);
-    SDL_UpdateWindowSurface(m_window);
 }
 
 void Game::drawText(const std::string& text, int x, int y) {
