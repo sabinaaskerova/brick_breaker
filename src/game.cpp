@@ -2,7 +2,7 @@
 
 Game::Game(){
     m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
-    m_brickGrid->initGridFromFile("grids/grid3.txt", INITX, INITY);
+    m_brickGrid->initGridFromFile("grids/grid8.txt", INITX, INITY);
     
     position ballPosition = {BALLX, BALLY};
     objectSize ballSize = {BALLSIZE, BALLSIZE};
@@ -17,6 +17,7 @@ Game::Game(){
     position wallPosition = {WALLSX, WALLSY};
     objectSize wallSize = {WALLSW, WALLSH};
     m_wall = std::make_unique<Wall>(wallPosition, wallSize);
+    m_isWinner = false;
 
 };
 
@@ -25,15 +26,11 @@ void Game::init(){
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return ;
     }
-    
-
-        // Initialize SDL_ttf
     if(TTF_Init() == -1) {
         printf("TTF_Init: %s\n", TTF_GetError());
         exit(2);
     }
 
-  
     m_window = SDL_CreateWindow("Kirpish syndyru", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (m_window == nullptr) {
         std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;
@@ -111,6 +108,10 @@ void Game::update(){
                 std::cout << "Game Over" << std::endl;
                 m_numBalls=0;
             }
+            if(m_brickGrid->allBricksDestroyed()){
+                m_isWinner = true;
+            }
+
             if(ball->getPosition().x < WALLSX || ball->getPosition().x + ball->getSize().width > SCREEN_WIDTH - WALLSX){
                 ball->setVelocityX(-ball->getVelocityX());
             }
@@ -141,6 +142,17 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
     Brick* brick = dynamic_cast<Brick*>(gameObject);
     Paddle* paddle = dynamic_cast<Paddle*>(gameObject);
     if (brick != nullptr) { // if the object is a brick
+        if(brick->getType() == typeBrick::EMPTY){
+            return;
+        }
+        else if(brick->getType() == typeBrick::NORMAL){
+            brick->setDestroyed(true);
+        }else if(brick->getType() == typeBrick::DOUBLE){
+            brick->setType(typeBrick::NORMAL);
+        }else if(brick->getType() == typeBrick::TRIPLE){
+            brick->setType(typeBrick::DOUBLE);
+        }
+        
         double ballCenterX = ball->getPosition().x + ball->getSize().width / 2;
         double ballCenterY = ball->getPosition().y + ball->getSize().height / 2;
         double brickCenterX = brick->getPosition().x + brick->getSize().width / 2;
@@ -153,17 +165,6 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
             ball->setVelocityX(-ball->getVelocityX());
         } else {
             ball->setVelocityY(-ball->getVelocityY());
-        }
-
-        if(brick->getType() == typeBrick::EMPTY){
-            return;
-        }
-        else if(brick->getType() == typeBrick::NORMAL){
-            brick->setDestroyed(true);
-        }else if(brick->getType() == typeBrick::DOUBLE){
-            brick->setType(typeBrick::NORMAL);
-        }else if(brick->getType() == typeBrick::TRIPLE){
-            brick->setType(typeBrick::DOUBLE);
         }
     }
     else if(paddle != nullptr){
@@ -195,7 +196,9 @@ void Game::draw()
             ball->draw(m_renderer);
         }
     }
-    if (m_numBalls == 0) {
+    if (m_isWinner) {
+        drawText("You Win!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    } else if (m_numBalls == 0) {
         drawText("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
     }
     SDL_RenderPresent(m_renderer);

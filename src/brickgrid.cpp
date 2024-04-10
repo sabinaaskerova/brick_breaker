@@ -126,3 +126,15 @@ void BrickGrid::printAllBricks() const {
         std::cout << std::endl;
     }
 }
+
+
+bool BrickGrid::allBricksDestroyed() {
+    for(auto& brick_vector : m_bricks){
+        for(auto& brick : brick_vector){
+            if(!brick->isDestroyed() && brick->getType()!=typeBrick::EMPTY){
+                return false;
+            }
+        }
+    }
+    return true;
+}

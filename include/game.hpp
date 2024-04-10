@@ -27,6 +27,7 @@ class Game{
         int level;
         int lives;
         bool running;
+        bool m_isWinner;
         
         std::unique_ptr<Paddle> m_paddle;
         std::unique_ptr<BrickGrid> m_brickGrid;

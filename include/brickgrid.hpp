@@ -38,7 +38,7 @@ class BrickGrid
         void setBrickWidth(int x);
         void setBrickHeight(int y);
         std::vector<std::vector<std::unique_ptr<Brick>>>& getBricks();
-        
+        bool allBricksDestroyed();
 
         void destroyBrick(int row, int col);
 
