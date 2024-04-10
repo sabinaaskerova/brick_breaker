@@ -1,13 +1,13 @@
 CXX = g++-11
 
-INCLUDES = -I./include
+INCLUDES = -I./include -I/usr/include/SDL2
 
 OBJDIR = ./obj
 
 CPPFLAGS = -Wall -std=c++14 $(INCLUDES)
 # CXXFLAGS = -std=c++14 -Wall -Wextra  $(INCLUDES) -pedantic
 
-LIBS = -lSDL2 -lSDL2_image
+LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
 
 # SRCS = main.cpp game.cpp gameObject.cpp brick.cpp brickgrid.cpp paddle.cpp ball.cpp
 SRCS = $(wildcard src/*.cpp)

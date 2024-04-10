@@ -2,12 +2,13 @@
 
 Game::Game(){
     m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
-    m_brickGrid->initGridFromFile("grids/grid6.txt", INITX, INITY);
+    m_brickGrid->initGridFromFile("grids/grid3.txt", INITX, INITY);
     
     position ballPosition = {BALLX, BALLY};
     objectSize ballSize = {BALLSIZE, BALLSIZE};
     velocity ballVelocity = {40, 40};
     m_balls.push_back(std::make_unique<Ball>(ballPosition, ballSize, ballVelocity)); 
+    m_numBalls = 1;
     
     position paddlePosition = {PADDLEX, PADDLEY};
     objectSize paddleSize = {PADDLEW, PADDLEH};
@@ -16,6 +17,7 @@ Game::Game(){
     position wallPosition = {WALLSX, WALLSY};
     objectSize wallSize = {WALLSW, WALLSH};
     m_wall = std::make_unique<Wall>(wallPosition, wallSize);
+
 };
 
 void Game::init(){
@@ -46,7 +48,7 @@ void Game::init(){
         ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
         ball->setMoving(true);
         ball->setVelocityX(0);
-        ball->setVelocityY(-2);
+        ball->setVelocityY(-BALLSPEED);
         ball->startGame();
     }
 }
@@ -67,14 +69,13 @@ void Game::game_loop()
 
 			m_paddle->handle_input(m_window_event);
 		}
-        if (gameOver) {
-
-        } else {
-
+        
+        if(m_numBalls>0){
+            update();
+		    
         }
-
-		update();
-		draw();
+        draw();
+		
     }
 }
 
@@ -86,8 +87,9 @@ void Game::update(){
         if(ball!=nullptr){
             ball->update();
 
-            if (m_balls.size() == 1 && m_balls[0]->getPosition().y + m_balls[0]->getSize().height > SCREEN_HEIGHT - WALLSY) {
-                gameOver = true;
+           if(m_numBalls==1 && m_balls[0]->getPosition().y - m_balls[0]->getSize().height > SCREEN_HEIGHT){
+                std::cout << "Game Over" << std::endl;
+                m_numBalls=0;
             }
             if(ball->getPosition().x < WALLSX || ball->getPosition().x + ball->getSize().width > SCREEN_WIDTH - WALLSX){
                 ball->setVelocityX(-ball->getVelocityX());
@@ -110,9 +112,7 @@ void Game::update(){
                     }
                 }
             }
-       
         }
-        
     }
 }
 
@@ -128,6 +128,12 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
 
         double dx = ballCenterX - brickCenterX;
         double dy = ballCenterY - brickCenterY;
+        
+        if (std::abs(dx) > std::abs(dy)) {
+            ball->setVelocityX(-ball->getVelocityX());
+        } else {
+            ball->setVelocityY(-ball->getVelocityY());
+        }
 
         if(brick->getType() == typeBrick::EMPTY){
             return;
@@ -138,12 +144,6 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
             brick->setType(typeBrick::NORMAL);
         }else if(brick->getType() == typeBrick::TRIPLE){
             brick->setType(typeBrick::DOUBLE);
-        }
-        
-        if (std::abs(dx) > std::abs(dy)) {
-            ball->setVelocityX(-ball->getVelocityX());
-        } else {
-            ball->setVelocityY(-ball->getVelocityY());
         }
     }
     else if(paddle != nullptr){
@@ -165,8 +165,13 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
 void Game::draw()
 {
     SDL_RenderClear(m_renderer);
+    if (m_numBalls == 0) {
+        SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
+        SDL_Rect thickWallRect = {0, 0, 40, 40 };
+        SDL_RenderDrawRect(m_renderer, &thickWallRect);
+        drawText("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    }
     // SDL_RenderCopy(m_renderer, backgroundImage, nullptr, nullptr); // background image
-    
     m_brickGrid->draw(m_renderer);
     m_wall->draw(m_renderer);
     m_paddle->draw(m_renderer);
@@ -177,10 +182,30 @@ void Game::draw()
         }
     }
     
+
+    
     SDL_RenderPresent(m_renderer);
     SDL_UpdateWindowSurface(m_window);
 }
 
+void Game::drawText(const std::string& text, int x, int y) {
+    TTF_Font* font = TTF_OpenFont("LoveDays-2v7Oe.ttf", 10);
+    SDL_Color color = {0,255,0,255}; 
+
+    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, surface);
+
+    SDL_Rect dst;
+    dst.x = x;
+    dst.y = y;
+    SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h);
+
+    SDL_RenderCopy(m_renderer, texture, NULL, &dst);
+
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
+    TTF_CloseFont(font);
+}
 
 BrickGrid& Game::getBrickGrid(){
     return *m_brickGrid;

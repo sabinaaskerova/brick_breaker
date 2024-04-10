@@ -12,6 +12,7 @@
 #include "wall.hpp"
 #include <iostream>
 #include "structs.hpp"
+#include <SDL_ttf.h>
 #include <memory>
 #include <cassert>
 
@@ -26,13 +27,12 @@ class Game{
         int score;
         int level;
         int lives;
-        bool gameOver;
         bool running;
         
-        Ball* m_ball;
         std::unique_ptr<Paddle> m_paddle;
         std::unique_ptr<BrickGrid> m_brickGrid;
         std::vector<std::unique_ptr<Ball>> m_balls;
+        int m_numBalls;
         std::unique_ptr<Wall> m_wall;
 
         SDL_Window* m_window;
@@ -48,12 +48,12 @@ class Game{
         void init();
         void game_loop();
         void update();
-        void NewFunction(std::unique_ptr<Ball> &ball);
 
         void render();
         void handleEvents();
         void clean();
-        void draw();    
+        void draw();  
+        void drawText(const std::string& text, int x, int y);  
 
 
         void setGameOver(bool);
