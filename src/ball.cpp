@@ -47,15 +47,8 @@ void Ball::init(SDL_Renderer *renderer, double x, double y)
 }
 
 void Ball::update(){
-    // if (!m_gameStarted) {
-    //     m_position.y += m_velocity.y/80.0;
-    // }
-    // else if(m_moving){
-        // m_position.x += m_velocity.x/100.0;
-        // m_position.y += m_velocity.y/100.0;
-         m_position.x += m_velocity.x;
-        m_position.y += m_velocity.y;
-    // }
+    m_position.x += m_velocity.x;
+    m_position.y += m_velocity.y;
 }
 void Ball::draw(SDL_Renderer *renderer)
 {

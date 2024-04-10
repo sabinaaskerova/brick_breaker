@@ -25,6 +25,14 @@ void Game::init(){
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return ;
     }
+    
+
+        // Initialize SDL_ttf
+    if(TTF_Init() == -1) {
+        printf("TTF_Init: %s\n", TTF_GetError());
+        exit(2);
+    }
+
   
     m_window = SDL_CreateWindow("Kirpish syndyru", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (m_window == nullptr) {
@@ -176,9 +184,7 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
 
 void Game::draw()
 {
-    if (m_numBalls == 0) {
-        drawText("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-    }
+    
     // SDL_RenderCopy(m_renderer, backgroundImage, nullptr, nullptr); // background image
     m_brickGrid->draw(m_renderer);
     m_wall->draw(m_renderer);
@@ -189,13 +195,15 @@ void Game::draw()
             ball->draw(m_renderer);
         }
     }
-    
+    if (m_numBalls == 0) {
+        drawText("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    }
     SDL_RenderPresent(m_renderer);
 }
 
 void Game::drawText(const std::string& text, int x, int y) {
-    TTF_Font* font = TTF_OpenFont("LoveDays-2v7Oe.ttf", 10);
-    SDL_Color color = {0,255,0,255}; 
+    TTF_Font* font = TTF_OpenFont("./LoveDays-2v7Oe.ttf", 10);
+    SDL_Color color = {255,204,255,255}; 
 
     SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, surface);
