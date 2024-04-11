@@ -3,39 +3,32 @@
 #include "structs.hpp"
 #include "gameObject.hpp"
 #include "ball.hpp"
-
+#include <type_traits>
 class Boost: public GameObject{
     protected:
         int m_duration;
+        velocity m_speed;
         
     public:
-        Boost(SDL_Renderer* renderer, position pos, objectSize size, int speed, int duration);
+        Boost(SDL_Renderer* renderer, position pos, objectSize size, velocity speed, int duration);
         virtual ~Boost();
         virtual void update();
         virtual void render();
-        virtual void collidesWith(GameObject* obj);
-        virtual void applyBoost();
+        virtual void draw(SDL_Renderer* renderer);
+        virtual bool collidesWith( const GameObject& obj) const;
+        virtual void applyBoost() = 0;
 };
 
-// class BonusBoost: public Boost{
-    
-//     public:
-//         BonusBoost(SDL_Renderer* renderer, position pos, objectSize size, int speed, int duration);
-//         ~BonusBoost();
-//         void update();
-//         void render();
-//         void collidesWith(GameObject* obj);
-//         void applyBoost();
-// };
 
 class BonusMultiBall : public Boost{
     public:
-        BonusMultiBall(SDL_Renderer* renderer, position pos, objectSize size, int speed, int duration);
+        BonusMultiBall(SDL_Renderer* renderer, position pos, objectSize size, velocity speed, int duration);
         ~BonusMultiBall() override;
         void update() override;
         void render() override;
-        void collidesWith(GameObject* obj) override;
-        void applyBoost();
+        void draw(SDL_Renderer* renderer) override;
+        bool collidesWith(const GameObject& obj) const override;
+        void applyBoost() override;
 };
 
 #endif // BOOST_H

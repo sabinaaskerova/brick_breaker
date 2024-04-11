@@ -22,6 +22,10 @@
 #define BALLY PADDLEY - BALLSIZE
 #define BALLSPEED 10
 
+#define BOOSTSIZE BALLSIZE
+#define BOOSTDURATION 5000 
+#define BOOSTSPEED BALLSPEED
+
 typedef struct position {
     double x;
     double y;

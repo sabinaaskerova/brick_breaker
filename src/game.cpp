@@ -1,6 +1,8 @@
 #include "game.hpp"
 
-Game::Game(){
+Game::Game() : m_distribution(5000, 10000){
+    m_boostTimer = m_distribution(m_randomEngine);
+
     m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
     m_brickGrid->initGridFromFile("grids/grid8.txt", INITX, INITY);
     
@@ -34,13 +36,15 @@ void Game::init(){
     m_window = SDL_CreateWindow("Kirpish syndyru", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (m_window == nullptr) {
         std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;
-        return ; // TO DO: throw an exception
+        throw std::runtime_error(SDL_GetError());
+        return;
     }
 
     m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
     if (m_renderer == nullptr) {
         std::cerr << "Failed to create renderer: " << SDL_GetError() << std::endl;
-        return ; // TO DO: throw an exception throw std::runtime_error(SDL_GetError());
+        throw std::runtime_error(SDL_GetError());
+        return ;
     }
 
     backgroundImage = IMG_LoadTexture(m_renderer, "img/qazaqyurt.png");
@@ -50,11 +54,14 @@ void Game::init(){
     }
    
     for(auto& ball : m_balls){
-        ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
-        ball->setMoving(true);
-        ball->setVelocityX(0);
-        ball->setVelocityY(-BALLSPEED);
-        ball->startGame();
+        if(ball!=nullptr){
+            ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
+            ball->setMoving(true);
+            ball->setVelocityX(0);
+            ball->setVelocityY(-BALLSPEED);
+            ball->startGame();
+        }
+        
     }
 }
 
@@ -64,12 +71,11 @@ void Game::game_loop()
     const int FPS = 60;
     const int frameDelay = 1000 / FPS;
 
-    Uint32 frameStart;
     int frameTime;
     bool keep_running = true;
     while(keep_running)
     {
-        frameStart = SDL_GetTicks();
+        m_frameStart = SDL_GetTicks();
 		while(SDL_PollEvent(&m_window_event) > 0)
 		{
 			switch(m_window_event.type)
@@ -86,7 +92,7 @@ void Game::game_loop()
 		    
         }
         draw();
-        frameTime = SDL_GetTicks() - frameStart;
+        frameTime = SDL_GetTicks() - m_frameStart;
 
         if(frameDelay > frameTime)
         {
@@ -97,6 +103,10 @@ void Game::game_loop()
 }
 
 void Game::update(){
+    Uint32 currentFrameTime = SDL_GetTicks();
+    float deltaTime = (currentFrameTime - m_frameStart) / 1000.0f; // Convert to seconds
+    m_frameStart = currentFrameTime;
+
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
     SDL_RenderClear(m_renderer);
     
@@ -134,6 +144,21 @@ void Game::update(){
                 }
             }
         }
+        m_boostTimer -= deltaTime;
+    }
+
+    m_boostTimer -= deltaTime; // deltaTime is the time since the last frame
+    if (m_boostTimer <= 0) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(WALLSX, SCREEN_WIDTH - WALLSX - BALLSIZE); 
+
+        int randomX = dis(gen);
+        position boostPosition = {randomX, 0}; 
+        objectSize boostSize = {BOOSTSIZE, BOOSTSIZE};
+        velocity boostVelocity = {0, BOOSTSPEED}; 
+        // m_boosts.push_back(std::make_unique<BonusMultiBall>(m_renderer, boostPosition, boostSize, boostVelocity, BOOSTDURATION));
+        m_boostTimer = m_distribution(m_randomEngine);
     }
 }
 
@@ -171,21 +196,18 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
         ball->setVelocityY(-sqrt(abs(BALLSPEED - ball->getVelocityX() * ball->getVelocityX())));
         double impact = (ball->getPosition().x - paddle->getPosition().x) / paddle->getSize().width;
         ball->setVelocityX((impact - 0.5) * BALLSPEED);
-        // ball->setVelocityY(-sqrt(abs(BALLSPEED - ball->getVelocityX() * ball->getVelocityX())));
     }
     
-    // else{
-    //     double impact = (ball->getPosition().x - gameObject->getPosition().x) / gameObject->getSize().width;
-    //     // double impact = (ball->getPosition().x - (gameObject->getPosition().x + gameObject->getSize().width / 2)) / gameObject->getSize().width;
-    //     ball->setVelocityX((impact - 0.5) * 2 * BALLSPEED);
-    //     ball->setVelocityY(-sqrt(abs( BALLSPEED - ball->getVelocityX() * ball->getVelocityX())));
-    // }
+    else{
+        double impact = (ball->getPosition().x - gameObject->getPosition().x) / gameObject->getSize().width;
+        ball->setVelocityX((impact - 0.5) * 2 * BALLSPEED);
+        ball->setVelocityY(-sqrt(abs( BALLSPEED - ball->getVelocityX() * ball->getVelocityX())));
+    }
 
 }
 
 void Game::draw()
 {
-    
     // SDL_RenderCopy(m_renderer, backgroundImage, nullptr, nullptr); // background image
     m_brickGrid->draw(m_renderer);
     m_wall->draw(m_renderer);
@@ -197,14 +219,14 @@ void Game::draw()
         }
     }
     if (m_isWinner) {
-        drawText("You Win!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+        drawMessage("You Win!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
     } else if (m_numBalls == 0) {
-        drawText("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+        drawMessage("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
     }
     SDL_RenderPresent(m_renderer);
 }
 
-void Game::drawText(const std::string& text, int x, int y) {
+void Game::drawMessage(const std::string& text, int x, int y) {
     TTF_Font* font = TTF_OpenFont("./LoveDays-2v7Oe.ttf", 10);
     SDL_Color color = {255,204,255,255}; 
 
@@ -215,9 +237,7 @@ void Game::drawText(const std::string& text, int x, int y) {
     dst.x = x;
     dst.y = y;
     SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h);
-
     SDL_RenderCopy(m_renderer, texture, NULL, &dst);
-
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
     TTF_CloseFont(font);

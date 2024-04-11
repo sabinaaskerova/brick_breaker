@@ -9,11 +9,14 @@
 #include "paddle.hpp"
 #include "ball.hpp"
 #include "wall.hpp"
+#include "boost.hpp"
 #include <iostream>
 #include "structs.hpp"
 #include </usr/include/SDL2/SDL_ttf.h>
 #include <memory>
 #include <cassert>
+#include <deque>
+#include <random>
 
 enum GameStates{
     MENU,
@@ -28,12 +31,18 @@ class Game{
         int lives;
         bool running;
         bool m_isWinner;
+        Uint32 m_frameStart;
+
+        std::default_random_engine m_randomEngine;
+        std::uniform_int_distribution<int> m_distribution;
+        int m_boostTimer;
         
         std::unique_ptr<Paddle> m_paddle;
         std::unique_ptr<BrickGrid> m_brickGrid;
         std::vector<std::unique_ptr<Ball>> m_balls;
         int m_numBalls;
         std::unique_ptr<Wall> m_wall;
+        std::deque<std::unique_ptr<Boost>> m_boosts;
 
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;
@@ -53,7 +62,7 @@ class Game{
         void handleEvents();
         void clean();
         void draw();  
-        void drawText(const std::string& text, int x, int y);  
+        void drawMessage(const std::string& text, int x, int y);  
 
 
         void setGameOver(bool);
