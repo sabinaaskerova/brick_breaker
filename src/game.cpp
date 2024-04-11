@@ -1,5 +1,6 @@
 #include "game.hpp"
 
+
 Game::Game() : m_distribution(5000, 10000){
     m_boostTimer = m_distribution(m_randomEngine);
 
@@ -108,17 +109,20 @@ void Game::update(){
     m_frameStart = currentFrameTime;
 
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
-    SDL_RenderClear(m_renderer);
-    
+    SDL_RenderClear(m_renderer);    
+
+    m_boosts.erase(std::remove_if(m_boosts.begin(), m_boosts.end(), [](const auto& boost) { return boost == nullptr; }), m_boosts.end());
     for(auto& ball : m_balls){
         if(ball!=nullptr){
             ball->update();
 
            if(m_numBalls==1 && m_balls[0]->getPosition().y - m_balls[0]->getSize().height > SCREEN_HEIGHT){
+                SDL_RenderClear(m_renderer);   
                 std::cout << "Game Over" << std::endl;
                 m_numBalls=0;
             }
             if(m_brickGrid->allBricksDestroyed()){
+                SDL_RenderClear(m_renderer);   
                 m_isWinner = true;
             }
 
@@ -152,12 +156,29 @@ void Game::update(){
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dis(WALLSX, SCREEN_WIDTH - WALLSX - BALLSIZE); 
+        std::uniform_int_distribution<> disBoostType(0, 2); // Generate a number between 0 and 2
 
         int randomX = dis(gen);
-        position boostPosition = {randomX, 0}; 
+        position boostPosition = {static_cast<double>(randomX), WALLSY}; 
         objectSize boostSize = {BOOSTSIZE, BOOSTSIZE};
         velocity boostVelocity = {0, BOOSTSPEED}; 
-        // m_boosts.push_back(std::make_unique<BonusMultiBall>(m_renderer, boostPosition, boostSize, boostVelocity, BOOSTDURATION));
+
+        BoostType randomBoostType = static_cast<BoostType>(disBoostType(gen));
+
+        std::unique_ptr<Boost> boost;
+        switch (randomBoostType) {
+            case BoostType::MultiBall:
+                boost = std::make_unique<BonusMultiBall>(m_renderer, boostPosition, boostSize, boostVelocity, BOOSTDURATION);
+                break;
+            case BoostType::WidePaddle:
+                boost = std::make_unique<BonusWidePaddle>(m_renderer, boostPosition, boostSize, boostVelocity, BOOSTDURATION);
+                break;
+            case BoostType::NarrowPaddle:
+                boost = std::make_unique<MalusNarrowPaddle>(m_renderer, boostPosition, boostSize, boostVelocity, BOOSTDURATION);
+                break;
+        }
+
+        m_boosts.push_back(std::move(boost));
         m_boostTimer = m_distribution(m_randomEngine);
     }
 }
@@ -218,16 +239,23 @@ void Game::draw()
             ball->draw(m_renderer);
         }
     }
+    for (auto& boost : m_boosts) {
+        if (boost != nullptr) {
+            boost->draw(m_renderer);
+        }
+    }
     if (m_isWinner) {
-        drawMessage("You Win!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+        SDL_RenderClear(m_renderer);   
+        drawMessage("You Win!", WALLSW / 2 + WALLSX/2, SCREEN_HEIGHT / 2);
     } else if (m_numBalls == 0) {
-        drawMessage("Game Over", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+        SDL_RenderClear(m_renderer);   
+        drawMessage("Game Over", WALLSW / 2 + WALLSX/2, SCREEN_HEIGHT / 2);
     }
     SDL_RenderPresent(m_renderer);
 }
 
 void Game::drawMessage(const std::string& text, int x, int y) {
-    TTF_Font* font = TTF_OpenFont("./LoveDays-2v7Oe.ttf", 10);
+    TTF_Font* font = TTF_OpenFont("./LoveDays-2v7Oe.ttf", 20);
     SDL_Color color = {255,204,255,255}; 
 
     SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);

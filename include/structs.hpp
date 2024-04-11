@@ -26,6 +26,8 @@
 #define BOOSTDURATION 5000 
 #define BOOSTSPEED BALLSPEED
 
+
+
 typedef struct position {
     double x;
     double y;
@@ -47,6 +49,13 @@ enum typeBrick {
     DOUBLE,
     TRIPLE,
     EMPTY
+};
+
+
+enum class BoostType {
+    MultiBall,
+    WidePaddle,
+    NarrowPaddle
 };
 
 #endif // STRUCTS_H

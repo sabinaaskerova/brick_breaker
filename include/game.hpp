@@ -17,6 +17,7 @@
 #include <cassert>
 #include <deque>
 #include <random>
+#include <algorithm>
 
 enum GameStates{
     MENU,
@@ -39,7 +40,7 @@ class Game{
         
         std::unique_ptr<Paddle> m_paddle;
         std::unique_ptr<BrickGrid> m_brickGrid;
-        std::vector<std::unique_ptr<Ball>> m_balls;
+        std::deque<std::unique_ptr<Ball>> m_balls;
         int m_numBalls;
         std::unique_ptr<Wall> m_wall;
         std::deque<std::unique_ptr<Boost>> m_boosts;
