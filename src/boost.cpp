@@ -110,8 +110,6 @@ void BonusWidePaddle::draw(SDL_Renderer* renderer){
     dest.y = m_position.y;
     dest.w = m_size.width;
     dest.h = m_size.height;
-
-    // Load the image into m_image before rendering
     SDL_Surface* tempSurface = IMG_Load("./img/ball.png");
     m_image = SDL_CreateTextureFromSurface(m_renderer, tempSurface);
     SDL_FreeSurface(tempSurface);
@@ -152,7 +150,6 @@ void MalusNarrowPaddle::draw(SDL_Renderer* renderer){
     dest.w = m_size.width;
     dest.h = m_size.height;
 
-    // Load the image into m_image before rendering
     SDL_Surface* tempSurface = IMG_Load("./img/ball.png");
     m_image = SDL_CreateTextureFromSurface(m_renderer, tempSurface);
     SDL_FreeSurface(tempSurface);

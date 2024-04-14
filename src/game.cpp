@@ -96,12 +96,9 @@ void Game::game_loop()
         {
             SDL_Delay(frameDelay - frameTime);
         }
-        
         Uint32 currentFrameTime = SDL_GetTicks();
-        float deltaTime = (currentFrameTime - m_frameStart) ;/// 1000.0f; // Convert to seconds
-        // std::cout << m_frameStart << std::endl;
+        float deltaTime = (currentFrameTime - m_frameStart) ; // / 10.0f;
         m_frameStart = currentFrameTime;
-        //  std::cout << currentFrameTime << std::endl;
         m_boostTimer -= deltaTime; // deltaTime is the time since the last frame
         std::cout << m_boostTimer << std::endl;
     }
@@ -180,6 +177,15 @@ void Game::update(){
 
         m_boosts.push_back(std::move(boost));
         m_boostTimer = m_distribution(m_randomEngine);
+    }
+
+    for (auto& boost : m_boosts) {
+        if (boost != nullptr) {
+            boost->update();
+            if (boost->collidesWith(*m_paddle)) {
+                boost->applyBoost();
+            }
+        }
     }
 }
 
