@@ -30,6 +30,10 @@ const int& Paddle::getWidth(){
     return m_width;
 }
 
+void Paddle::setWidth(int width){
+    m_width = width;
+}
+
 void Paddle::draw(SDL_Renderer* renderer){
     SDL_Rect paddle = {static_cast<int>(m_position.x), static_cast<int>(m_position.y), m_size.width, m_size.height};
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

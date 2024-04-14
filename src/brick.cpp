@@ -27,9 +27,9 @@ const typeBrick& Brick::getType(){
 }
 
 void Brick::render(){
-    SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
-    SDL_Rect rect = {m_position.x, m_position.y, m_size.width, m_size.height};
-    SDL_RenderFillRect(m_renderer, &rect);
+    // SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
+    // SDL_Rect rect = {m_position.x, m_position.y, m_size.width, m_size.height};
+    // SDL_RenderFillRect(m_renderer, &rect);
 }
 
 void Brick::setType(typeBrick type){

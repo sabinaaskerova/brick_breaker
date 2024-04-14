@@ -85,7 +85,6 @@ void BrickGrid::draw(SDL_Renderer* renderer){
                     rect.h = brick->getSize().height;
                     if(brick->getType() == typeBrick::NORMAL)
                     {
-                        
                         SDL_SetRenderDrawColor(renderer, 255, 204, 255, 50); 
                     }
                     else if(brick->getType() == typeBrick::DOUBLE)

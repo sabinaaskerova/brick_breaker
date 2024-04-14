@@ -100,7 +100,6 @@ void Game::game_loop()
         float deltaTime = (currentFrameTime - m_frameStart) ; // / 10.0f;
         m_frameStart = currentFrameTime;
         m_boostTimer -= deltaTime; // deltaTime is the time since the last frame
-        std::cout << m_boostTimer << std::endl;
     }
 }
 
@@ -182,8 +181,8 @@ void Game::update(){
     for (auto& boost : m_boosts) {
         if (boost != nullptr) {
             boost->update();
-            if (boost->collidesWith(*m_paddle)) {
-                boost->applyBoost();
+            if (boost->collidesWith(*m_paddle.get())) {
+                applyBoost(boost, m_paddle.get());
             }
         }
     }
@@ -244,6 +243,8 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
 void Game::draw()
 {
     // SDL_RenderCopy(m_renderer, backgroundImage, nullptr, nullptr); // background image
+    // SDL_SetRenderDrawColor(m_renderer, 250, 212, 216, 255);
+    // SDL_RenderClear(m_renderer);
     m_brickGrid->draw(m_renderer);
     m_wall->draw(m_renderer);
     m_paddle->draw(m_renderer);
@@ -265,6 +266,7 @@ void Game::draw()
         SDL_RenderClear(m_renderer);   
         drawMessage("Game Over", WALLSW / 2 + WALLSX/2, SCREEN_HEIGHT / 2);
     }
+    
     SDL_RenderPresent(m_renderer);
 }
 
@@ -283,6 +285,24 @@ void Game::drawMessage(const std::string& text, int x, int y) {
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
     TTF_CloseFont(font);
+}
+
+template <typename T>
+void Game::applyBoost(T& boost, GameObject* obj){
+    velocity ballVelocity = {40, 40};
+    if (dynamic_cast<BonusMultiBall*>(boost.get())) {
+        std::cout << "MultiBall" << std::endl;
+        m_balls.push_back(std::make_unique<Ball>(obj->getPosition(), obj->getSize(), ballVelocity));
+        m_numBalls++;
+    }
+    else if (dynamic_cast<BonusWidePaddle*>(boost.get())) {
+        std::cout << "WidePaddle" << std::endl;
+        m_paddle->setWidth(m_paddle->getWidth() + 10);
+    }
+    else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
+        std::cout << "NarrowPaddle" << std::endl;
+        m_paddle->setWidth(m_paddle->getWidth() - 10);
+    }
 }
 
 BrickGrid& Game::getBrickGrid(){

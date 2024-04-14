@@ -15,7 +15,7 @@ class Boost: public GameObject{
         virtual void update();
         virtual void render();
         virtual void draw(SDL_Renderer* renderer);
-        virtual bool collidesWith( const GameObject& obj) const;
+        bool collidesWith( const GameObject& obj) const;
         virtual void applyBoost() = 0;
 };
 
@@ -27,7 +27,7 @@ class BonusMultiBall : public Boost{
         void update() override;
         void render() override;
         void draw(SDL_Renderer* renderer) override;
-        bool collidesWith(const GameObject& obj) const override;
+        // bool collidesWith(const GameObject& obj) const override;
         void applyBoost() override;
 };
 
@@ -38,7 +38,7 @@ class BonusWidePaddle : public Boost{
         void update() override;
         void render() override;
         void draw(SDL_Renderer* renderer) override;
-        bool collidesWith(const GameObject& obj) const override;
+        // bool collidesWith(const GameObject& obj) const override;
         void applyBoost() override;
 };
 
@@ -49,7 +49,7 @@ class MalusNarrowPaddle : public Boost{
         void update() override;
         void render() override;
         void draw(SDL_Renderer* renderer) override;
-        bool collidesWith(const GameObject& obj) const override;
+        // bool collidesWith(const GameObject& obj) const override;
         void applyBoost() override;
 };
 

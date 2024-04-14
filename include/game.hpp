@@ -75,6 +75,9 @@ class Game{
         BrickGrid& getBrickGrid();
         void handleCollision(Ball* ball, GameObject* gameObject);
 
+        template <typename T>
+        void applyBoost(T& boost, GameObject* obj);
+
         std::unique_ptr<Paddle>& getPaddle();
 
 
