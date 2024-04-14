@@ -1,11 +1,10 @@
 #include "game.hpp"
 
-
 Game::Game() : m_distribution(5000, 10000){
     m_boostTimer = m_distribution(m_randomEngine);
 
     m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
-    m_brickGrid->initGridFromFile("grids/grid8.txt", INITX, INITY);
+    m_brickGrid->initGridFromFile("grids/grid3.txt", INITX, INITY);
     
     position ballPosition = {BALLX, BALLY};
     objectSize ballSize = {BALLSIZE, BALLSIZE};
@@ -21,7 +20,6 @@ Game::Game() : m_distribution(5000, 10000){
     objectSize wallSize = {WALLSW, WALLSH};
     m_wall = std::make_unique<Wall>(wallPosition, wallSize);
     m_isWinner = false;
-
 };
 
 void Game::init(){
@@ -62,7 +60,6 @@ void Game::init(){
             ball->setVelocityY(-BALLSPEED);
             ball->startGame();
         }
-        
     }
 }
 
@@ -99,15 +96,18 @@ void Game::game_loop()
         {
             SDL_Delay(frameDelay - frameTime);
         }
-		
+        
+        Uint32 currentFrameTime = SDL_GetTicks();
+        float deltaTime = (currentFrameTime - m_frameStart) ;/// 1000.0f; // Convert to seconds
+        // std::cout << m_frameStart << std::endl;
+        m_frameStart = currentFrameTime;
+        //  std::cout << currentFrameTime << std::endl;
+        m_boostTimer -= deltaTime; // deltaTime is the time since the last frame
+        std::cout << m_boostTimer << std::endl;
     }
 }
 
 void Game::update(){
-    Uint32 currentFrameTime = SDL_GetTicks();
-    float deltaTime = (currentFrameTime - m_frameStart) / 1000.0f; // Convert to seconds
-    m_frameStart = currentFrameTime;
-
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
     SDL_RenderClear(m_renderer);    
 
@@ -148,10 +148,10 @@ void Game::update(){
                 }
             }
         }
-        m_boostTimer -= deltaTime;
     }
 
-    m_boostTimer -= deltaTime; // deltaTime is the time since the last frame
+
+   
     if (m_boostTimer <= 0) {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -221,7 +221,6 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
         double magnitude = sqrt(ball->getVelocityX() * ball->getVelocityX() + ball->getVelocityY() * ball->getVelocityY());
         double normalizedX = ball->getVelocityX() / magnitude;
         double normalizedY = ball->getVelocityY() / magnitude;
-
         // ball velocity is the normalized vector multiplied by the desired speed
         double desiredSpeed = BALLSPEED;
         ball->setVelocityX(normalizedX * desiredSpeed);
