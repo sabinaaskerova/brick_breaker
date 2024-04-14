@@ -100,6 +100,18 @@ void Game::game_loop()
         float deltaTime = (currentFrameTime - m_frameStart) ; // / 10.0f;
         m_frameStart = currentFrameTime;
         m_boostTimer -= deltaTime; // deltaTime is the time since the last frame
+        
+        for (auto& boost : m_boosts) {  
+            if(boost!=nullptr){
+                if (boost->collidesWith(*m_paddle.get())) {
+                    applyBoost(boost, m_paddle.get());
+                    boost = nullptr;
+                    m_boosts.erase(std::remove_if(m_boosts.begin(), m_boosts.end(), [&](const auto& boost) { return boost == nullptr; }), m_boosts.end());
+                }
+            }          
+            
+        }
+    
     }
 }
 
@@ -181,9 +193,6 @@ void Game::update(){
     for (auto& boost : m_boosts) {
         if (boost != nullptr) {
             boost->update();
-            if (boost->collidesWith(*m_paddle.get())) {
-                applyBoost(boost, m_paddle.get());
-            }
         }
     }
 }
