@@ -217,6 +217,15 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
         ball->setVelocityY(-sqrt(abs(BALLSPEED - ball->getVelocityX() * ball->getVelocityX())));
         double impact = (ball->getPosition().x - paddle->getPosition().x) / paddle->getSize().width;
         ball->setVelocityX((impact - 0.5) * BALLSPEED);
+        // Normalizing the speed vector so that the ball maintains a constant speed regardless of where it hits the paddle
+        double magnitude = sqrt(ball->getVelocityX() * ball->getVelocityX() + ball->getVelocityY() * ball->getVelocityY());
+        double normalizedX = ball->getVelocityX() / magnitude;
+        double normalizedY = ball->getVelocityY() / magnitude;
+
+        // ball velocity is the normalized vector multiplied by the desired speed
+        double desiredSpeed = BALLSPEED;
+        ball->setVelocityX(normalizedX * desiredSpeed);
+        ball->setVelocityY(normalizedY * desiredSpeed);
     }
     
     else{
