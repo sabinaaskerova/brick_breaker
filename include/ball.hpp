@@ -18,7 +18,7 @@ class Ball: public GameObject
         ~Ball() override;
         void init(SDL_Renderer *renderer, double x, double y);
         void update() override;
-        void render() override;
+        // void render() override;
         void draw(SDL_Renderer* renderer) override;
         
         bool collidesWith(const GameObject& obj) const override;

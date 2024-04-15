@@ -15,7 +15,7 @@ class Brick : public GameObject
         ~Brick();
 
         void update() override;
-        void render() override;
+        // void render() override;
         void draw(SDL_Renderer* renderer) override;
 
         bool collidesWith(const GameObject& obj) const override;

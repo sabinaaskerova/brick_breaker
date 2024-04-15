@@ -19,7 +19,7 @@ public:
     SDL_Rect getBoundingBox() const;
     virtual ~GameObject();
     virtual void update() = 0;
-    virtual void render() = 0;
+    // virtual void render() = 0;
     virtual void draw(SDL_Renderer* renderer) = 0;
     virtual bool collidesWith( const GameObject& obj) const = 0;
 

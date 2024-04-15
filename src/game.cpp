@@ -115,6 +115,7 @@ void Game::game_loop()
     }
 }
 
+
 void Game::update(){
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
     SDL_RenderClear(m_renderer);    
@@ -299,18 +300,21 @@ void Game::drawMessage(const std::string& text, int x, int y) {
 template <typename T>
 void Game::applyBoost(T& boost, GameObject* obj){
     velocity ballVelocity = {40, 40};
+    objectSize ballsize = {BALLSIZE, BALLSIZE};
     if (dynamic_cast<BonusMultiBall*>(boost.get())) {
         std::cout << "MultiBall" << std::endl;
-        m_balls.push_back(std::make_unique<Ball>(obj->getPosition(), obj->getSize(), ballVelocity));
+        m_balls.push_back(std::make_unique<Ball>(m_balls[0]->getPosition(), ballsize, ballVelocity));
+        std::cout << "Ball pushed" << std::endl;
+        std::cout << m_balls[0]->getPosition().x << "," <<m_balls[0]->getPosition().y << std::endl; 
         m_numBalls++;
     }
     else if (dynamic_cast<BonusWidePaddle*>(boost.get())) {
         std::cout << "WidePaddle" << std::endl;
-        m_paddle->setWidth(m_paddle->getWidth() + 10);
+        m_paddle->setWidth(m_paddle->getWidth() + 90);
     }
     else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
         std::cout << "NarrowPaddle" << std::endl;
-        m_paddle->setWidth(m_paddle->getWidth() - 10);
+        m_paddle->setWidth(m_paddle->getWidth() - 30);
     }
 }
 

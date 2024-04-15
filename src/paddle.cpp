@@ -2,15 +2,10 @@
 
 
 Paddle::Paddle(position& pos, objectSize& size): GameObject(pos, size){
-    m_width = size.width;
-    m_height = size.height;
-    
+    m_size.width = size.width;
+    m_size.height = size.height;
 }
 Paddle::~Paddle(){
-
-}
-
-void Paddle::render(){
 
 }
 
@@ -27,11 +22,11 @@ void Paddle::move(int x){
 }
 
 const int& Paddle::getWidth(){
-    return m_width;
+    return m_size.width;
 }
 
 void Paddle::setWidth(int width){
-    m_width = width;
+    m_size.width = width;
 }
 
 void Paddle::draw(SDL_Renderer* renderer){
@@ -46,11 +41,11 @@ void Paddle::handle_input(SDL_Event const &event)
     {
         case SDL_MOUSEMOTION:
         
-            m_position.x = event.motion.x - m_width / 2; // center the paddle on the mouse
+            m_position.x = event.motion.x - m_size.width / 2; // center the paddle on the mouse
             if (m_position.x < WALLSX) {
                 m_position.x = WALLSX;
-            } else if (m_position.x + m_width > WALLSX + WALLSW) {
-                m_position.x = WALLSX + WALLSW - m_width;
+            } else if (m_position.x + m_size.width > WALLSX + WALLSW) {
+                m_position.x = WALLSX + WALLSW - m_size.width;
             }
         
             break;

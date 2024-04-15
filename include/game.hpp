@@ -58,8 +58,18 @@ class Game{
         void init();
         void game_loop();
         void update();
+        void clearRenderer();
+        void removeNullBoosts();
+        void updateBalls();
+        void generateBoosts();
+        void updateBoosts();
+        void checkGameOver();
+        void checkWinner();
+        void handleWallCollisions(Ball* ball);
+        void handlePaddleCollisions(Ball* ball);
+        void handleBrickCollisions(Ball* ball);
+        void createRandomBoost();
 
-        void render();
         void handleEvents();
         void clean();
         void draw();  
