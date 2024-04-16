@@ -26,12 +26,6 @@ const typeBrick& Brick::getType(){
     return m_type;
 }
 
-// void Brick::render(){
-//     // SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
-//     // SDL_Rect rect = {m_position.x, m_position.y, m_size.width, m_size.height};
-//     // SDL_RenderFillRect(m_renderer, &rect);
-// }
-
 void Brick::setType(typeBrick type){
     m_type = type;
 }

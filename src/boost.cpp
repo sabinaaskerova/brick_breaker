@@ -60,10 +60,6 @@ void BonusMultiBall::update()
 //     } 
 // }
 
-// void BonusMultiBall::render()
-// {
-// }
-
 void BonusMultiBall::draw(SDL_Renderer* renderer){
     SDL_SetRenderDrawColor(m_renderer, 144, 255, 117, 255); 
     SDL_Rect dest;
@@ -72,7 +68,7 @@ void BonusMultiBall::draw(SDL_Renderer* renderer){
     dest.w = m_size.width;
     dest.h = m_size.height;
 
-    SDL_Surface* tempSurface = IMG_Load("./img/shanyraq.png");
+    SDL_Surface* tempSurface = IMG_Load("./img/ball_yellow.png");
     m_image = SDL_CreateTextureFromSurface(m_renderer, tempSurface);
     SDL_FreeSurface(tempSurface);
 
@@ -97,16 +93,13 @@ void BonusWidePaddle::update()
     m_position.y += 1;
 }
 
-// void BonusWidePaddle::render()
-// {
-// }
 void BonusWidePaddle::draw(SDL_Renderer* renderer){
     SDL_Rect dest;
     dest.x = m_position.x;
     dest.y = m_position.y;
     dest.w = m_size.width;
     dest.h = m_size.height;
-    SDL_Surface* tempSurface = IMG_Load("./img/shanyraq.png");
+    SDL_Surface* tempSurface = IMG_Load("./img/ball_green.png");
     m_image = SDL_CreateTextureFromSurface(m_renderer, tempSurface);
     SDL_FreeSurface(tempSurface);
 
@@ -127,9 +120,6 @@ void MalusNarrowPaddle::update()
     m_position.y += 1;
 }
 
-// void MalusNarrowPaddle::render()
-// {
-// }
 void MalusNarrowPaddle::draw(SDL_Renderer* renderer){
     SDL_Rect dest;
     dest.x = m_position.x;
@@ -137,7 +127,7 @@ void MalusNarrowPaddle::draw(SDL_Renderer* renderer){
     dest.w = m_size.width;
     dest.h = m_size.height;
 
-    SDL_Surface* tempSurface = IMG_Load("./img/shanyraq.png");
+    SDL_Surface* tempSurface = IMG_Load("./img/ball_red.png");
     m_image = SDL_CreateTextureFromSurface(m_renderer, tempSurface);
     SDL_FreeSurface(tempSurface);
 

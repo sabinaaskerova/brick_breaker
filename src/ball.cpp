@@ -71,9 +71,6 @@ bool Ball::collidesWith(const GameObject& obj) const{
     return SDL_HasIntersection(&ballBox, &objBox);
 }
 
-// void Ball::render(){
-// }
-
 void Ball::setVelocityX(double x){
     m_velocity.x = x;
 }

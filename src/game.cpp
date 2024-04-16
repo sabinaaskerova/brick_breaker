@@ -104,7 +104,7 @@ void Game::game_loop()
         for (auto& boost : m_boosts) {  
             if(boost!=nullptr){
                 if (boost->collidesWith(*m_paddle.get())) {
-                    applyBoost(boost, m_paddle.get());
+                    applyBoost(boost);
                     boost = nullptr;
                     m_boosts.erase(std::remove_if(m_boosts.begin(), m_boosts.end(), [&](const auto& boost) { return boost == nullptr; }), m_boosts.end());
                 }
@@ -115,12 +115,7 @@ void Game::game_loop()
     }
 }
 
-
-void Game::update(){
-    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
-    SDL_RenderClear(m_renderer);    
-
-    m_boosts.erase(std::remove_if(m_boosts.begin(), m_boosts.end(), [](const auto& boost) { return boost == nullptr; }), m_boosts.end());
+void Game::updateBalls(){
     for(auto& ball : m_balls){
         if(ball!=nullptr){
             ball->update();
@@ -158,9 +153,11 @@ void Game::update(){
             }
         }
     }
+}
 
 
-   
+void Game::generateBoosts(){
+    m_boosts.erase(std::remove_if(m_boosts.begin(), m_boosts.end(), [](const auto& boost) { return boost == nullptr; }), m_boosts.end());
     if (m_boostTimer <= 0) {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -190,12 +187,24 @@ void Game::update(){
         m_boosts.push_back(std::move(boost));
         m_boostTimer = m_distribution(m_randomEngine);
     }
+}
 
+void Game::updateBoosts(){
     for (auto& boost : m_boosts) {
         if (boost != nullptr) {
             boost->update();
         }
     }
+}
+void Game::update(){
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
+    SDL_RenderClear(m_renderer);    
+
+    
+    updateBalls();
+    generateBoosts();
+    updateBoosts();
+
 }
 
 void Game::handleCollision(Ball* ball, GameObject* gameObject){
@@ -298,7 +307,7 @@ void Game::drawMessage(const std::string& text, int x, int y) {
 }
 
 template <typename T>
-void Game::applyBoost(T& boost, GameObject* obj){
+void Game::applyBoost(T& boost){
     velocity ballVelocity = {40, 40};
     objectSize ballsize = {BALLSIZE, BALLSIZE};
     if (dynamic_cast<BonusMultiBall*>(boost.get())) {
@@ -313,18 +322,22 @@ void Game::applyBoost(T& boost, GameObject* obj){
         m_paddle->setWidth(m_paddle->getWidth() + 90);
     }
     else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
+        // TO DO : if this Malus already applied then do nothing
         std::cout << "NarrowPaddle" << std::endl;
         m_paddle->setWidth(m_paddle->getWidth() - 30);
     }
 }
 
-BrickGrid& Game::getBrickGrid(){
-    return *m_brickGrid;
+template <typename T>
+void Game::endBoost(T& boost){
+    if (dynamic_cast<BonusWidePaddle*>(boost.get())) {
+        m_paddle->setWidth(m_paddle->getWidth() - 90);
+    }
+    else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
+        m_paddle->setWidth(m_paddle->getWidth() + 30);
+    }
 }
 
-std::unique_ptr<Paddle>& Game::getPaddle() {
-    return m_paddle;
-}
 
 Game::~Game(){
     SDL_DestroyRenderer(m_renderer);

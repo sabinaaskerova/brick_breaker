@@ -58,7 +58,7 @@ class Game{
         void init();
         void game_loop();
         void update();
-        void clearRenderer();
+        
         void removeNullBoosts();
         void updateBalls();
         void generateBoosts();
@@ -81,15 +81,14 @@ class Game{
         const int& getScore();
         const int& getLevel();
         const int getLives();
-        const bool getRunning();
-        BrickGrid& getBrickGrid();
+
         void handleCollision(Ball* ball, GameObject* gameObject);
 
         template <typename T>
-        void applyBoost(T& boost, GameObject* obj);
+        void applyBoost(T& boost);
 
-        std::unique_ptr<Paddle>& getPaddle();
-
+        template <typename T>
+        void endBoost(T& boost);
 
         void setRunning(bool);
         void setLives(int);   

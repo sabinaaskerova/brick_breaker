@@ -6,12 +6,7 @@ class Wall : public GameObject{
         Wall();
         Wall(position& pos, objectSize& size);
         void update() override;
-        // void render() override;
         void draw(SDL_Renderer* renderer) override;
         bool collidesWith(const GameObject& obj) const override;
-
-
 };
-
-
 #endif // WALL_H
