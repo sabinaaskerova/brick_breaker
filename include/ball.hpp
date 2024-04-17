@@ -21,8 +21,7 @@ class Ball: public GameObject
         void draw(SDL_Renderer* renderer) override;
         
         bool collidesWith(const GameObject& obj) const override;
-
-        void startGame();
+        
         void setVelocityX(double x);
         void setVelocityY(double y);
         void setPositionX(double x);

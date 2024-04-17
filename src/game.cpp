@@ -58,7 +58,6 @@ void Game::init(){
             ball->setMoving(true);
             ball->setVelocityX(0);
             ball->setVelocityY(-BALLSPEED);
-            ball->startGame();
         }
     }
 }
@@ -118,9 +117,12 @@ void Game::game_loop()
 void Game::updateBalls(){
     for(auto& ball : m_balls){
         if(ball!=nullptr){
+            
+            std::cout <<"Before ball update" <<std::endl;
             ball->update();
+            std::cout <<"After ball update" <<std::endl;
 
-           if(m_numBalls==1 && m_balls[0]->getPosition().y - m_balls[0]->getSize().height > SCREEN_HEIGHT){
+            if(m_numBalls==1 && m_balls[0]->getPosition().y - m_balls[0]->getSize().height > SCREEN_HEIGHT){
                 SDL_RenderClear(m_renderer);   
                 std::cout << "Game Over" << std::endl;
                 m_numBalls=0;
@@ -157,7 +159,7 @@ void Game::updateBalls(){
 
 
 void Game::generateBoosts(){
-    m_boosts.erase(std::remove_if(m_boosts.begin(), m_boosts.end(), [](const auto& boost) { return boost == nullptr; }), m_boosts.end());
+    // m_boosts.erase(std::remove_if(m_boosts.begin(), m_boosts.end(), [](const auto& boost) { return boost == nullptr; }), m_boosts.end());
     if (m_boostTimer <= 0) {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -183,7 +185,6 @@ void Game::generateBoosts(){
                 boost = std::make_unique<MalusNarrowPaddle>(m_renderer, boostPosition, boostSize, boostVelocity, BOOSTDURATION);
                 break;
         }
-
         m_boosts.push_back(std::move(boost));
         m_boostTimer = m_distribution(m_randomEngine);
     }
@@ -194,17 +195,15 @@ void Game::updateBoosts(){
         if (boost != nullptr) {
             boost->update();
         }
+        
     }
 }
 void Game::update(){
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
     SDL_RenderClear(m_renderer);    
-
-    
     updateBalls();
     generateBoosts();
     updateBoosts();
-
 }
 
 void Game::handleCollision(Ball* ball, GameObject* gameObject){
@@ -311,19 +310,17 @@ void Game::applyBoost(T& boost){
     velocity ballVelocity = {40, 40};
     objectSize ballsize = {BALLSIZE, BALLSIZE};
     if (dynamic_cast<BonusMultiBall*>(boost.get())) {
-        std::cout << "MultiBall" << std::endl;
-        m_balls.push_back(std::make_unique<Ball>(m_balls[0]->getPosition(), ballsize, ballVelocity));
-        std::cout << "Ball pushed" << std::endl;
-        std::cout << m_balls[0]->getPosition().x << "," <<m_balls[0]->getPosition().y << std::endl; 
+        m_balls.push_back(std::make_unique<Ball>(m_renderer,m_balls[0]->getPosition(), ballsize, ballVelocity));
+        // std::cout << "Ball pushed" << std::endl;
+        // std::cout << m_balls[0]->getPosition().x << "," <<m_balls[0]->getPosition().y << std::endl; 
+        std::cout << m_balls.size() << std::endl;
         m_numBalls++;
     }
     else if (dynamic_cast<BonusWidePaddle*>(boost.get())) {
-        std::cout << "WidePaddle" << std::endl;
-        m_paddle->setWidth(m_paddle->getWidth() + 90);
+        m_paddle->setWidth(m_paddle->getWidth() + 40);
     }
     else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
         // TO DO : if this Malus already applied then do nothing
-        std::cout << "NarrowPaddle" << std::endl;
         m_paddle->setWidth(m_paddle->getWidth() - 30);
     }
 }
@@ -331,7 +328,7 @@ void Game::applyBoost(T& boost){
 template <typename T>
 void Game::endBoost(T& boost){
     if (dynamic_cast<BonusWidePaddle*>(boost.get())) {
-        m_paddle->setWidth(m_paddle->getWidth() - 90);
+        m_paddle->setWidth(m_paddle->getWidth() - 40);
     }
     else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
         m_paddle->setWidth(m_paddle->getWidth() + 30);
