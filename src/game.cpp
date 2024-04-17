@@ -1,29 +1,7 @@
 #include "game.hpp"
 
 Game::Game() : m_distribution(5000, 10000){
-    m_boostTimer = m_distribution(m_randomEngine);
-
-    m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
-    m_brickGrid->initGridFromFile("grids/grid3.txt", INITX, INITY);
-    
-    position ballPosition = {BALLX, BALLY};
-    objectSize ballSize = {BALLSIZE, BALLSIZE};
-    velocity ballVelocity = {40, 40};
-    m_balls.push_back(std::make_unique<Ball>(ballPosition, ballSize, ballVelocity)); 
-    m_numBalls = 1;
-    
-    position paddlePosition = {PADDLEX, PADDLEY};
-    objectSize paddleSize = {PADDLEW, PADDLEH};
-    m_paddle = std::make_unique<Paddle>(paddlePosition, paddleSize);
-
-    position wallPosition = {WALLSX, WALLSY};
-    objectSize wallSize = {WALLSW, WALLSH};
-    m_wall = std::make_unique<Wall>(wallPosition, wallSize);
-    m_isWinner = false;
-};
-
-void Game::init(){
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return ;
     }
@@ -51,15 +29,39 @@ void Game::init(){
         std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
         return;
     }
-   
+    m_boostTimer = m_distribution(m_randomEngine);
+
+    m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
+    m_brickGrid->initGridFromFile("grids/grid3.txt", INITX, INITY);
+    
+    position ballPosition = {BALLX, BALLY};
+    objectSize ballSize = {BALLSIZE, BALLSIZE};
+    velocity ballVelocity = {40, 40};
+    m_balls.push_back(std::make_unique<Ball>(m_renderer,ballPosition, ballSize, ballVelocity)); 
+    m_numBalls = 1;
+    
+    position paddlePosition = {PADDLEX, PADDLEY};
+    objectSize paddleSize = {PADDLEW, PADDLEH};
+    m_paddle = std::make_unique<Paddle>(paddlePosition, paddleSize);
+
+    position wallPosition = {WALLSX, WALLSY};
+    objectSize wallSize = {WALLSW, WALLSH};
+    m_wall = std::make_unique<Wall>(wallPosition, wallSize);
+    m_isWinner = false;
+
     for(auto& ball : m_balls){
-        if(ball!=nullptr){
-            ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
-            ball->setMoving(true);
-            ball->setVelocityX(0);
-            ball->setVelocityY(-BALLSPEED);
-        }
+    if(ball!=nullptr){
+        // ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
+        ball->setMoving(true);
+        ball->setVelocityX(0);
+        ball->setVelocityY(-BALLSPEED);
     }
+    }
+};
+
+void Game::init(){
+
+   
 }
 
 
@@ -115,45 +117,45 @@ void Game::game_loop()
 }
 
 void Game::updateBalls(){
-    for(auto& ball : m_balls){
-        if(ball!=nullptr){
-            
-            std::cout <<"Before ball update" <<std::endl;
-            ball->update();
-            std::cout <<"After ball update" <<std::endl;
 
-            if(m_numBalls==1 && m_balls[0]->getPosition().y - m_balls[0]->getSize().height > SCREEN_HEIGHT){
-                SDL_RenderClear(m_renderer);   
-                std::cout << "Game Over" << std::endl;
-                m_numBalls=0;
-            }
-            if(m_brickGrid->allBricksDestroyed()){
-                SDL_RenderClear(m_renderer);   
-                m_isWinner = true;
-            }
+    for (size_t i = 0; i < m_balls.size(); /* no increment here */) {
+        if (m_balls[i] != nullptr) {
+            m_balls[i]->update();
 
-            if(ball->getPosition().x < WALLSX || ball->getPosition().x + ball->getSize().width > SCREEN_WIDTH - WALLSX){
-                ball->setVelocityX(-ball->getVelocityX());
-            }
-            if(ball->getPosition().y < WALLSY ){
-                ball->setVelocityY(-ball->getVelocityY());
-            }
-            
-            if(ball->collidesWith(*m_paddle)){
-                handleCollision(ball.get(), m_paddle.get());
-            }
+            if (m_balls[i]->getPosition().y - m_balls[i]->getSize().height > SCREEN_HEIGHT) {
+                m_balls.erase(m_balls.begin() + i);
+                m_numBalls--;
 
-            for(auto& brick_vector : m_brickGrid->getBricks()){
-                for(auto& brick : brick_vector){
-                    if(ball->collidesWith(*brick.get()) ){
-                        if(!brick->isDestroyed()){
-                            handleCollision(ball.get(), brick.get());
+                if (m_numBalls == 0) {
+                    SDL_RenderClear(m_renderer);
+                    std::cout << "Game Over" << std::endl;
+                }
+            } else {
+                if(m_balls[i]->getPosition().x < WALLSX || m_balls[i]->getPosition().x + m_balls[i]->getSize().width > SCREEN_WIDTH - WALLSX){
+                    m_balls[i]->setVelocityX(-m_balls[i]->getVelocityX());
+                }
+                if(m_balls[i]->getPosition().y < WALLSY ){
+                    m_balls[i]->setVelocityY(-m_balls[i]->getVelocityY());
+                }
+                
+                if(m_balls[i]->collidesWith(*m_paddle)){
+                    handleCollision(m_balls[i].get(), m_paddle.get());
+                }
+                for(auto& brick_vector : m_brickGrid->getBricks()){
+                    for(auto& brick : brick_vector){
+                        if(m_balls[i]->collidesWith(*brick.get()) ){
+                            if(!brick->isDestroyed()){
+                                handleCollision(m_balls[i].get(), brick.get());
+                            }
+                            
                         }
-                        
                     }
                 }
+                    // Only increment the index if we didn't erase a ball.
+                i++;
             }
         }
+        
     }
 }
 
@@ -202,6 +204,10 @@ void Game::update(){
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
     SDL_RenderClear(m_renderer);    
     updateBalls();
+    if(m_brickGrid->allBricksDestroyed()){
+        SDL_RenderClear(m_renderer);   
+        m_isWinner = true;
+    }
     generateBoosts();
     updateBoosts();
 }
@@ -289,7 +295,7 @@ void Game::draw()
 }
 
 void Game::drawMessage(const std::string& text, int x, int y) {
-    TTF_Font* font = TTF_OpenFont("./LoveDays-2v7Oe.ttf", 20);
+    TTF_Font* font = TTF_OpenFont("./LoveDays-2v7Oe.ttf", 30);
     SDL_Color color = {255,204,255,255}; 
 
     SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
@@ -311,8 +317,6 @@ void Game::applyBoost(T& boost){
     objectSize ballsize = {BALLSIZE, BALLSIZE};
     if (dynamic_cast<BonusMultiBall*>(boost.get())) {
         m_balls.push_back(std::make_unique<Ball>(m_renderer,m_balls[0]->getPosition(), ballsize, ballVelocity));
-        // std::cout << "Ball pushed" << std::endl;
-        // std::cout << m_balls[0]->getPosition().x << "," <<m_balls[0]->getPosition().y << std::endl; 
         std::cout << m_balls.size() << std::endl;
         m_numBalls++;
     }
