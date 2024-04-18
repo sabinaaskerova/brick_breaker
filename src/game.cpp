@@ -51,7 +51,6 @@ Game::Game() : m_distribution(5000, 10000){
 
     for(auto& ball : m_balls){
     if(ball!=nullptr){
-        // ball->init(m_renderer, ball->getPosition().x, ball->getPosition().y);
         ball->setMoving(true);
         ball->setVelocityX(0);
         ball->setVelocityY(-BALLSPEED);
@@ -59,10 +58,6 @@ Game::Game() : m_distribution(5000, 10000){
     }
 };
 
-void Game::init(){
-
-   
-}
 
 
 void Game::game_loop()
@@ -102,17 +97,6 @@ void Game::game_loop()
         m_frameStart = currentFrameTime;
         m_boostTimer -= deltaTime; // deltaTime is the time since the last frame
         
-        for (auto& boost : m_boosts) {  
-            if(boost!=nullptr){
-                if (boost->collidesWith(*m_paddle.get())) {
-                    applyBoost(boost);
-                    boost = nullptr;
-                    m_boosts.erase(std::remove_if(m_boosts.begin(), m_boosts.end(), [&](const auto& boost) { return boost == nullptr; }), m_boosts.end());
-                }
-            }          
-            
-        }
-    
     }
 }
 
@@ -151,8 +135,7 @@ void Game::updateBalls(){
                         }
                     }
                 }
-                    // Only increment the index if we didn't erase a ball.
-                i++;
+                i++; // only increment the index if we didn't erase a ball
             }
         }
         
@@ -199,6 +182,20 @@ void Game::updateBoosts(){
         }
         
     }
+    for (size_t i = 0; i < m_boosts.size(); /* no increment here */) {
+        if (m_boosts[i]->collidesWith(*m_paddle.get())) {
+            applyBoost(m_boosts[i]);
+            m_boosts[i] = nullptr;
+        }
+        if (m_boostTimer <= 0) {
+            endBoost(m_boosts[i]);
+            m_boosts.erase(m_boosts.begin() + i);
+        } else {
+            ++i;
+        }
+    }
+    m_boosts.erase(std::remove(m_boosts.begin(), m_boosts.end(), nullptr), m_boosts.end());
+
 }
 void Game::update(){
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); 
@@ -295,7 +292,7 @@ void Game::draw()
 }
 
 void Game::drawMessage(const std::string& text, int x, int y) {
-    TTF_Font* font = TTF_OpenFont("./LoveDays-2v7Oe.ttf", 30);
+    TTF_Font* font = TTF_OpenFont("./LoveDays-2v7Oe.ttf", 40);
     SDL_Color color = {255,204,255,255}; 
 
     SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
@@ -313,9 +310,10 @@ void Game::drawMessage(const std::string& text, int x, int y) {
 
 template <typename T>
 void Game::applyBoost(T& boost){
-    velocity ballVelocity = {40, 40};
+    velocity ballVelocity = {BALLSPEED, BALLSPEED};
     objectSize ballsize = {BALLSIZE, BALLSIZE};
     if (dynamic_cast<BonusMultiBall*>(boost.get())) {
+        std::cout << m_balls[0]->getPosition().x << " " << m_balls[0]->getPosition().y << std::endl;
         m_balls.push_back(std::make_unique<Ball>(m_renderer,m_balls[0]->getPosition(), ballsize, ballVelocity));
         std::cout << m_balls.size() << std::endl;
         m_numBalls++;

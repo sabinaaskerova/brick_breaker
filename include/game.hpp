@@ -55,7 +55,6 @@ class Game{
     public:
         Game();
         ~Game();
-        void init();
         void game_loop();
         void update();
         
@@ -65,9 +64,7 @@ class Game{
         void updateBoosts();
         void checkGameOver();
         void checkWinner();
-        void handleWallCollisions(Ball* ball);
-        void handlePaddleCollisions(Ball* ball);
-        void handleBrickCollisions(Ball* ball);
+
         void createRandomBoost();
 
         void handleEvents();
