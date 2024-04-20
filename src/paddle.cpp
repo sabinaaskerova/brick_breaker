@@ -4,6 +4,7 @@
 Paddle::Paddle(position& pos, objectSize& size): GameObject(pos, size){
     m_size.width = size.width;
     m_size.height = size.height;
+    m_type = PaddleType::NORMAL;
 }
 Paddle::~Paddle(){
 
@@ -50,4 +51,11 @@ void Paddle::handle_input(SDL_Event const &event)
         
             break;
     }
+}
+
+void Paddle::setType(PaddleType type){
+    m_type = type;
+}
+const PaddleType& Paddle::getType() const{
+    return m_type;
 }

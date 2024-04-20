@@ -2,7 +2,14 @@
 #define PADDLE_H
 #include "gameObject.hpp"
 
-class Paddle: public GameObject{        
+enum class PaddleType{
+    NORMAL,
+    WIDE,
+    NARROW
+};
+class Paddle: public GameObject{   
+    private:
+        PaddleType m_type;     
     public:
         Paddle(SDL_Renderer* renderer, position pos, objectSize size);
         Paddle(position& pos, objectSize& size); // & because we are not copying the object valgrind --leak-check=full ./your_program
@@ -15,6 +22,8 @@ class Paddle: public GameObject{
         bool collidesWith(const GameObject& obj) const override;
         void move(int x);
         const int& getWidth();
+        void setType(PaddleType type);
+        const PaddleType& getType() const;
 };
 
 

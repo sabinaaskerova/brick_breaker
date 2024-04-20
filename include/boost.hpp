@@ -4,19 +4,23 @@
 #include "gameObject.hpp"
 #include "ball.hpp"
 #include <type_traits>
+#include "SDL2/SDL.h"
 class Boost: public GameObject{
     protected:
-        int m_duration;
+        Uint32 m_activation_time;
+        Uint32 m_duration;        
         velocity m_speed;
+        bool wasApplied;
         
     public:
-        Boost(SDL_Renderer* renderer, position pos, objectSize size, velocity speed, int duration);
+        Boost(SDL_Renderer* renderer, position pos, objectSize size, velocity speed, Uint32 duration);
         virtual ~Boost();
         virtual void update();
-        // virtual void render();
         virtual void draw(SDL_Renderer* renderer);
         bool collidesWith( const GameObject& obj) const;
-        virtual void applyBoost() = 0;
+        bool isActive(Uint32 current_time) const;
+        bool getWasApplied() const;
+        
 };
 
 
@@ -26,8 +30,6 @@ class BonusMultiBall : public Boost{
         ~BonusMultiBall() override;
         void update() override;
         void draw(SDL_Renderer* renderer) override;
-        // bool collidesWith(const GameObject& obj) const override;
-        void applyBoost() override;
 };
 
 class BonusWidePaddle : public Boost{
@@ -36,8 +38,6 @@ class BonusWidePaddle : public Boost{
         ~BonusWidePaddle() override;
         void update() override;
         void draw(SDL_Renderer* renderer) override;
-        // bool collidesWith(const GameObject& obj) const override;
-        void applyBoost() override;
 };
 
 class MalusNarrowPaddle : public Boost{
@@ -46,8 +46,6 @@ class MalusNarrowPaddle : public Boost{
         ~MalusNarrowPaddle() override;
         void update() override;
         void draw(SDL_Renderer* renderer) override;
-        // bool collidesWith(const GameObject& obj) const override;
-        void applyBoost() override;
 };
 
 #endif // BOOST_H

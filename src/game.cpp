@@ -1,7 +1,7 @@
 #include "game.hpp"
 
 Game::Game() : m_distribution(5000, 10000){
-        if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return ;
     }
@@ -32,7 +32,7 @@ Game::Game() : m_distribution(5000, 10000){
     m_boostTimer = m_distribution(m_randomEngine);
 
     m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
-    m_brickGrid->initGridFromFile("grids/grid3.txt", INITX, INITY);
+    m_brickGrid->initGridFromFile("grids/grid4.txt", INITX, INITY);
     
     position ballPosition = {BALLX, BALLY};
     objectSize ballSize = {BALLSIZE, BALLSIZE};
@@ -144,7 +144,6 @@ void Game::updateBalls(){
 
 
 void Game::generateBoosts(){
-    // m_boosts.erase(std::remove_if(m_boosts.begin(), m_boosts.end(), [](const auto& boost) { return boost == nullptr; }), m_boosts.end());
     if (m_boostTimer <= 0) {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -176,25 +175,22 @@ void Game::generateBoosts(){
 }
 
 void Game::updateBoosts(){
-    for (auto& boost : m_boosts) {
-        if (boost != nullptr) {
-            boost->update();
+
+    for (size_t i = 0; i < m_boosts.size(); /* no increment here */) {
+        if (m_boosts[i]!= nullptr) {
+            m_boosts[i]->update();
+            if (m_boosts[i]->collidesWith(*m_paddle.get())) {
+                applyBoost(m_boosts[i]);
+                m_boosts[i] = nullptr;
+                m_boosts.erase(std::remove(m_boosts.begin(), m_boosts.end(), nullptr), m_boosts.end());
+            }
+            else {
+                ++i;
+            }
         }
         
     }
-    for (size_t i = 0; i < m_boosts.size(); /* no increment here */) {
-        if (m_boosts[i]->collidesWith(*m_paddle.get())) {
-            applyBoost(m_boosts[i]);
-            m_boosts[i] = nullptr;
-        }
-        if (m_boostTimer <= 0) {
-            endBoost(m_boosts[i]);
-            m_boosts.erase(m_boosts.begin() + i);
-        } else {
-            ++i;
-        }
-    }
-    m_boosts.erase(std::remove(m_boosts.begin(), m_boosts.end(), nullptr), m_boosts.end());
+   
 
 }
 void Game::update(){
@@ -319,21 +315,30 @@ void Game::applyBoost(T& boost){
         m_numBalls++;
     }
     else if (dynamic_cast<BonusWidePaddle*>(boost.get())) {
-        m_paddle->setWidth(m_paddle->getWidth() + 40);
+        if(m_paddle->getType() == PaddleType::NARROW){
+            m_paddle->setWidth(m_paddle->getWidth() + 40);
+        } else if (m_paddle->getType() == PaddleType::NORMAL){
+            m_paddle->setWidth(m_paddle->getWidth() + 30);
+        }
+        m_paddle->setType(PaddleType::WIDE);
     }
     else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
-        // TO DO : if this Malus already applied then do nothing
-        m_paddle->setWidth(m_paddle->getWidth() - 30);
+        if(m_paddle->getType() == PaddleType::WIDE){
+            m_paddle->setWidth(m_paddle->getWidth() - 40);
+        } else if (m_paddle->getType() == PaddleType::NORMAL){
+            m_paddle->setWidth(m_paddle->getWidth() - 30);
+        }
+        m_paddle->setType(PaddleType::NARROW);
     }
 }
 
 template <typename T>
 void Game::endBoost(T& boost){
     if (dynamic_cast<BonusWidePaddle*>(boost.get())) {
-        m_paddle->setWidth(m_paddle->getWidth() - 40);
+        m_paddle->setWidth(m_paddle->getWidth() - 20);
     }
     else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
-        m_paddle->setWidth(m_paddle->getWidth() + 30);
+        m_paddle->setWidth(m_paddle->getWidth() + 10);
     }
 }
 
