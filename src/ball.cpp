@@ -46,6 +46,7 @@ void Ball::setMoving(bool moving){
 }
 
 bool Ball::collidesWith(const GameObject& obj) const{
+    
     SDL_Rect ballBox = getBoundingBox();
     SDL_Rect objBox = obj.getBoundingBox();
     return SDL_HasIntersection(&ballBox, &objBox);

@@ -32,7 +32,7 @@ Game::Game() : m_distribution(5000, 10000){
     m_boostTimer = m_distribution(m_randomEngine);
 
     m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
-    m_brickGrid->initGridFromFile("grids/grid4.txt", INITX, INITY);
+    m_brickGrid->initGridFromFile("grids/grid5.txt", INITX, INITY);
     
     position ballPosition = {BALLX, BALLY};
     objectSize ballSize = {BALLSIZE, BALLSIZE};
@@ -115,12 +115,23 @@ void Game::updateBalls(){
                     std::cout << "Game Over" << std::endl;
                 }
             } else {
-                if(m_balls[i]->getPosition().x < WALLSX || m_balls[i]->getPosition().x + m_balls[i]->getSize().width > SCREEN_WIDTH - WALLSX){
+                // if(m_balls[i]->getPosition().x < WALLSX +BALLSIZE/3|| m_balls[i]->getPosition().x + m_balls[i]->getSize().width > SCREEN_WIDTH - WALLSX -BALLSIZE/3){
+                //     m_balls[i]->setVelocityX(-m_balls[i]->getVelocityX());
+                // }
+               
+
+                if (m_balls[i]->getPosition().x < WALLSX) {
+                    m_balls[i]->setPositionX(WALLSX);
+                    m_balls[i]->setVelocityX(-m_balls[i]->getVelocityX());
+                } 
+                else if (m_balls[i]->getPosition().x + m_balls[i]->getSize().width > SCREEN_WIDTH - WALLSX) {
+                    m_balls[i]->setPositionX(SCREEN_WIDTH - WALLSX - m_balls[i]->getSize().width);
                     m_balls[i]->setVelocityX(-m_balls[i]->getVelocityX());
                 }
-                if(m_balls[i]->getPosition().y < WALLSY ){
+                if(m_balls[i]->getPosition().y < WALLSY - 1){
                     m_balls[i]->setVelocityY(-m_balls[i]->getVelocityY());
                 }
+
                 
                 if(m_balls[i]->collidesWith(*m_paddle)){
                     handleCollision(m_balls[i].get(), m_paddle.get());

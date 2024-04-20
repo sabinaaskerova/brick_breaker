@@ -29,8 +29,8 @@
 
 
 typedef struct position {
-    double x;
-    double y;
+    double x; // q in axial coordinates for hexagonal bricks
+    double y; // r
 } position;
 
 

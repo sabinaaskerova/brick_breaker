@@ -8,8 +8,6 @@ Wall::Wall(){
 void Wall::update() {
 }
 
-// void Wall::render() {
-// }
 
 void Wall::draw(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

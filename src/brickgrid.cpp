@@ -64,13 +64,6 @@ void BrickGrid::initGridFromFile(const std::string& filename, const int initX, c
 
 
 void BrickGrid::update(){
-    // for (auto& row : m_bricks) {
-    //     for (auto& brick : row) {
-    //         if (brick != nullptr) {
-    //             brick->update();
-    //         }
-    //     }
-    // }
 }
 
 void BrickGrid::draw(SDL_Renderer* renderer){
@@ -78,11 +71,7 @@ void BrickGrid::draw(SDL_Renderer* renderer){
         for (const std::unique_ptr<Brick>& brick : row) {
             if (brick != nullptr) {
                 if(brick->getType()!=typeBrick::EMPTY && !brick->isDestroyed()){
-                    SDL_Rect rect;
-                    rect.x = brick->getPosition().x;
-                    rect.y = brick->getPosition().y;
-                    rect.w = brick->getSize().width;
-                    rect.h = brick->getSize().height;
+                    
                     if(brick->getType() == typeBrick::NORMAL)
                     {
                         SDL_SetRenderDrawColor(renderer, 255, 204, 255, 50); 
@@ -97,7 +86,8 @@ void BrickGrid::draw(SDL_Renderer* renderer){
                         
                         SDL_SetRenderDrawColor(renderer, 153, 0, 153, 255);
                     } 
-                    SDL_RenderFillRect(renderer, &rect);
+                    // SDL_RenderFillRect(renderer, &rect);
+                    brick->draw(renderer);
                 }
 
             }

@@ -47,4 +47,6 @@ class BrickGrid
 };
 
 
+
+
 #endif // BRICKGRID_H
