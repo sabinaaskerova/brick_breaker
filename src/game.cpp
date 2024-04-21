@@ -31,7 +31,9 @@ Game::Game() : m_distribution(5000, 10000){
     }
     m_boostTimer = m_distribution(m_randomEngine);
 
-    m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
+    // m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
+    // m_brickGrid = std::make_unique<ClassicBrickGrid>(BRICKW, BRICKW);
+    m_brickGrid = std::make_unique<HexagonalBrickGrid>(BRICKW, BRICKW);
     m_brickGrid->initGridFromFile("grids/grid5.txt", INITX, INITY);
     
     position ballPosition = {BALLX, BALLY};
@@ -115,11 +117,6 @@ void Game::updateBalls(){
                     std::cout << "Game Over" << std::endl;
                 }
             } else {
-                // if(m_balls[i]->getPosition().x < WALLSX +BALLSIZE/3|| m_balls[i]->getPosition().x + m_balls[i]->getSize().width > SCREEN_WIDTH - WALLSX -BALLSIZE/3){
-                //     m_balls[i]->setVelocityX(-m_balls[i]->getVelocityX());
-                // }
-               
-
                 if (m_balls[i]->getPosition().x < WALLSX) {
                     m_balls[i]->setPositionX(WALLSX);
                     m_balls[i]->setVelocityX(-m_balls[i]->getVelocityX());

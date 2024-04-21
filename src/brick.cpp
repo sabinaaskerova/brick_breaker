@@ -1,25 +1,12 @@
 #include "brick.hpp"
 
-Brick::Brick(position pos, objectSize size, typeBrick type) : m_type(type), m_destroyed(false)
+Brick::Brick(position pos, objectSize size, typeBrick type) : m_destroyed(false)
 {
     m_position.x = pos.x;
     m_position.y = pos.y;
     m_size.height = size.height;
     m_size.width = size.width;
-}
-Brick::~Brick() = default;
-
-objectSize Brick::getSize()
-{
-    return m_size;
-}
-position Brick::getPosition()
-{
-    return m_position;
-}
-
-bool Brick::isDestroyed() const {
-    return m_destroyed;
+    m_type = type;
 }
 
 const typeBrick& Brick::getType(){
@@ -30,44 +17,73 @@ void Brick::setType(typeBrick type){
     m_type = type;
 }
 
-void Brick::update() {
+bool Brick::isDestroyed() const {
+    return m_destroyed;
 }
 
-bool Brick::collidesWith(const GameObject& obj) const{
-    return false;
+Brick::~Brick() = default;
+
+objectSize Brick::getSize()
+{
+    return m_size;
 }
 
-void Brick::printProperties() const {
-        std::cout <<  static_cast<int>(m_type) ;
+position Brick::getPosition()
+{
+    return m_position;
 }
-void Brick::draw(SDL_Renderer* renderer) {
+
+
+void Brick::setDestroyed(bool destroyed){
+    m_destroyed = destroyed;
+}
+
+
+
+ClassicBrick::~ClassicBrick() {
+}
+
+ClassicBrick::ClassicBrick(position pos, objectSize size, typeBrick type) 
+    : Brick(pos, size, type)
+{
+}
+
+
+void ClassicBrick::update() {
+}
+
+void ClassicBrick::draw(SDL_Renderer* renderer) {
     SDL_Rect rect;
     rect.x = getPosition().x;
     rect.y = getPosition().y;
     rect.w = getSize().width;
     rect.h = getSize().height;
-       SDL_RenderFillRect(renderer, &rect);
-}
-void Brick::setDestroyed(bool destroyed){
-    m_destroyed = destroyed;
+    SDL_RenderFillRect(renderer, &rect);
 }
 
-SDL_Rect Brick::getBoundingBox() const{
+bool ClassicBrick::collidesWith(const GameObject& obj) const{
+    return false;
+}
+
+void Brick::printProperties() const {
+    std::cout <<  static_cast<int>(m_type) ;
+}
+
+SDL_Rect ClassicBrick::getBoundingBox() const{
     return {(int)m_position.x, (int)m_position.y, (int)m_size.width, (int)m_size.height};
 }
 
 
-HexagonalBrick::HexagonalBrick(double q, double r, objectSize size, typeBrick type, double radius) 
-    : Brick(position(), size, type), m_q(q), m_r(r), m_radius(radius){
-    double x = m_size.width * (3.0 / 2.0) * m_q;
-    double y = m_size.height * sqrt(3) * (m_r + m_q / 2.0);
+
+HexagonalBrick::HexagonalBrick(double q, double r, objectSize size, typeBrick type) 
+    : Brick(position(), size, type), m_q(q), m_r(r){
+
     m_center.x = m_size.width * (3.0 / 2.0) * m_q;
     m_center.y = m_size.height * sqrt(3) * (m_r + m_q / 2.0);
+    m_radius = m_size.width / 2.0;
 }
 
-
-bool HexagonalBrick::collidesWith(const GameObject& obj) const{
-    return false;
+void HexagonalBrick::update() {
 }
 
 void HexagonalBrick::draw(SDL_Renderer* renderer) {
@@ -82,6 +98,9 @@ void HexagonalBrick::draw(SDL_Renderer* renderer) {
     }
 }
 
+bool HexagonalBrick::collidesWith(const GameObject& obj) const{
+    return false;
+}
 
 std::vector<position> HexagonalBrick::getVertices() const {
     std::vector<position> vertices(6);
@@ -126,8 +145,5 @@ SDL_Rect HexagonalBrick::getBoundingBox() const {
     }
 
     return boundingBox;
-}
-
-void HexagonalBrick::update() {
 }
 
