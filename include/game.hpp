@@ -1,23 +1,25 @@
 #ifndef GAME_H
 #define GAME_H
+#include </usr/include/SDL2/SDL_ttf.h>
 #include <SDL2/SDL.h>
 
-#include <vector>
-#include "gameObject.hpp"
-#include "brick.hpp"
-#include "brickgrid.hpp"
-#include "paddle.hpp"
-#include "ball.hpp"
-#include "wall.hpp"
-#include "boost.hpp"
-#include <iostream>
-#include "structs.hpp"
-#include </usr/include/SDL2/SDL_ttf.h>
-#include <memory>
+#include <algorithm>
 #include <cassert>
 #include <deque>
+#include <iostream>
+#include <memory>
 #include <random>
-#include <algorithm>
+#include <vector>
+
+#include "ball.hpp"
+#include "boost.hpp"
+#include "brick.hpp"
+#include "brickgrid.hpp"
+#include "gameObject.hpp"
+#include "paddle.hpp"
+#include "sdl.hpp"
+#include "structs.hpp"
+#include "wall.hpp"
 
 enum GameStates{
     MENU,
@@ -33,6 +35,7 @@ class Game{
         bool running;
         bool m_isWinner;
         Uint32 m_frameStart;
+        SDLWrapper m_sdlWrapper;
 
         std::default_random_engine m_randomEngine;
         std::uniform_int_distribution<int> m_distribution;

@@ -30,39 +30,36 @@ class BrickGrid
 
 };
 
+class ClassicBrickGrid : public BrickGrid {
+ public:
+  ClassicBrickGrid(int rows, int cols, int brickWidth, int brickHeight);
+  ClassicBrickGrid(int brickWidth, int brickHeight);
+  ~ClassicBrickGrid();
 
-class ClassicBrickGrid : public BrickGrid
-{
-    public:
-        ClassicBrickGrid(int rows, int cols, int brickWidth, int brickHeight);
-        ClassicBrickGrid(int brickWidth, int brickHeight);
-        ~ClassicBrickGrid();
-
-        void initGridFromFile(const std::string& filename, const int initX, const int initY) override;
-        void draw(SDL_Renderer* renderer) override;
-        void update() override;
-        std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() override;
-        void setRows(int rows) override;
-        void printAllBricks() const override;
-        bool allBricksDestroyed() override;
+  void initGridFromFile(const std::string& filename, const int initX,
+                        const int initY) override;
+  void draw(SDL_Renderer* renderer) override;
+  void update() override;
+  std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() override;
+  void setRows(int rows) override;
+  void printAllBricks() const override;
+  bool allBricksDestroyed() override;
 };
 
-class HexagonalBrickGrid : public BrickGrid{
+class HexagonalBrickGrid : public BrickGrid {
+ public:
+  HexagonalBrickGrid(int rows, int cols, int brickWidth, int brickHeight);
+  HexagonalBrickGrid(int brickWidth, int brickHeight);
+  ~HexagonalBrickGrid();
 
-    public:
-        HexagonalBrickGrid(int rows, int cols, int brickWidth, int brickHeight);
-        HexagonalBrickGrid(int brickWidth, int brickHeight);
-        ~HexagonalBrickGrid();
-
-        void initGridFromFile(const std::string& filename, const int initX, const int initY) override;
-        void draw(SDL_Renderer* renderer) override;
-        void update() override;
-        std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() override;
-        void setRows(int rows) override;
-        void printAllBricks() const override;
-        bool allBricksDestroyed() override;
-
+  void initGridFromFile(const std::string& filename, const int initX,
+                        const int initY) override;
+  void draw(SDL_Renderer* renderer) override;
+  void update() override;
+  std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() override;
+  void setRows(int rows) override;
+  void printAllBricks() const override;
+  bool allBricksDestroyed() override;
 };
-
 
 #endif // BRICKGRID_H

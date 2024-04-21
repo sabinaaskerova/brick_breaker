@@ -1,66 +1,63 @@
 #include "game.hpp"
 
-Game::Game() : m_distribution(5000, 10000){
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
-        return ;
-    }
-    if(TTF_Init() == -1) {
-        printf("TTF_Init: %s\n", TTF_GetError());
-        exit(2);
-    }
+Game::Game() : m_distribution(5000, 10000), m_sdlWrapper(SDL_INIT_VIDEO) {
+  //   m_sdlWrapper = SDLWrapper(SDL_INIT_VIDEO);
+  // m_window = m_sdlWrapper.createWindow(
+  //   "Kirpish syndyru", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+  //   SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+  //   m_renderer =
+  //     m_sdlWrapper.createRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
 
-    m_window = SDL_CreateWindow("Kirpish syndyru", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    if (m_window == nullptr) {
-        std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;
-        throw std::runtime_error(SDL_GetError());
-        return;
-    }
+  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+    return;
+  }
+  if (TTF_Init() == -1) {
+    printf("TTF_Init: %s\n", TTF_GetError());
+    exit(2);
+  }
 
-    m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
-    if (m_renderer == nullptr) {
-        std::cerr << "Failed to create renderer: " << SDL_GetError() << std::endl;
-        throw std::runtime_error(SDL_GetError());
-        return ;
-    }
+  m_window = SDL_CreateWindow("Kirpish syndyru", SDL_WINDOWPOS_CENTERED,
+                              SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH,
+                              SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
-    backgroundImage = IMG_LoadTexture(m_renderer, "img/qazaqyurt.png");
-    if (backgroundImage == nullptr) {
-        std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
-        return;
-    }
-    m_boostTimer = m_distribution(m_randomEngine);
+  m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
 
-    // m_brickGrid = std::make_unique<BrickGrid>(BRICKW, BRICKW);
-    // m_brickGrid = std::make_unique<ClassicBrickGrid>(BRICKW, BRICKW);
-    m_brickGrid = std::make_unique<HexagonalBrickGrid>(BRICKW, BRICKW);
-    m_brickGrid->initGridFromFile("grids/grid5.txt", INITX, INITY);
-    
-    position ballPosition = {BALLX, BALLY};
-    objectSize ballSize = {BALLSIZE, BALLSIZE};
-    velocity ballVelocity = {40, 40};
-    m_balls.push_back(std::make_unique<Ball>(m_renderer,ballPosition, ballSize, ballVelocity)); 
-    m_numBalls = 1;
-    
-    position paddlePosition = {PADDLEX, PADDLEY};
-    objectSize paddleSize = {PADDLEW, PADDLEH};
-    m_paddle = std::make_unique<Paddle>(paddlePosition, paddleSize);
+  backgroundImage = IMG_LoadTexture(m_renderer, "img/qazaqyurt.png");
+  if (backgroundImage == nullptr) {
+    std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+    return;
+  }
+  m_boostTimer = m_distribution(m_randomEngine);
 
-    position wallPosition = {WALLSX, WALLSY};
-    objectSize wallSize = {WALLSW, WALLSH};
-    m_wall = std::make_unique<Wall>(wallPosition, wallSize);
-    m_isWinner = false;
+  m_brickGrid = std::make_unique<ClassicBrickGrid>(BRICKW, BRICKW);
+  //   m_brickGrid = std::make_unique<HexagonalBrickGrid>(BRICKW, BRICKW);
+  m_brickGrid->initGridFromFile("grids/grid5.txt", INITX, INITY);
 
-    for(auto& ball : m_balls){
-    if(ball!=nullptr){
-        ball->setMoving(true);
-        ball->setVelocityX(0);
-        ball->setVelocityY(-BALLSPEED);
+  position ballPosition = {BALLX, BALLY};
+  objectSize ballSize = {BALLSIZE, BALLSIZE};
+  velocity ballVelocity = {40, 40};
+  m_balls.push_back(
+      std::make_unique<Ball>(m_renderer, ballPosition, ballSize, ballVelocity));
+  m_numBalls = 1;
+
+  position paddlePosition = {PADDLEX, PADDLEY};
+  objectSize paddleSize = {PADDLEW, PADDLEH};
+  m_paddle = std::make_unique<Paddle>(paddlePosition, paddleSize);
+
+  position wallPosition = {WALLSX, WALLSY};
+  objectSize wallSize = {WALLSW, WALLSH};
+  m_wall = std::make_unique<Wall>(wallPosition, wallSize);
+  m_isWinner = false;
+
+  for (auto& ball : m_balls) {
+    if (ball != nullptr) {
+      ball->setMoving(true);
+      ball->setVelocityX(0);
+      ball->setVelocityY(-BALLSPEED);
     }
-    }
+  }
 };
-
-
 
 void Game::game_loop()
 {
@@ -352,7 +349,7 @@ void Game::endBoost(T& boost){
 
 
 Game::~Game(){
-    SDL_DestroyRenderer(m_renderer);
-    SDL_DestroyWindow(m_window);
-    SDL_Quit();
+  SDL_DestroyRenderer(m_renderer);
+  SDL_DestroyWindow(m_window);
+  SDL_Quit();
 }

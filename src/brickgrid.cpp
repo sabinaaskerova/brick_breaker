@@ -75,26 +75,18 @@ void ClassicBrickGrid::draw(SDL_Renderer* renderer){
     for (const std::vector<std::shared_ptr<Brick>>& row : m_bricks) {
         for (const std::shared_ptr<Brick>& brick : row) {
             if (brick != nullptr) {
-                if(brick->getType()!=typeBrick::EMPTY && !brick->isDestroyed()){
-                    
-                    if(brick->getType() == typeBrick::NORMAL)
-                    {
-                        SDL_SetRenderDrawColor(renderer, 255, 204, 255, 50); 
-                    }
-                    else if(brick->getType() == typeBrick::DOUBLE)
-                    {
-                        SDL_SetRenderDrawColor(renderer, 255, 51, 153, 250); 
-                        
-                    }
-                    else if(brick->getType() == typeBrick::TRIPLE)
-                    {
-                        
-                        SDL_SetRenderDrawColor(renderer, 153, 0, 153, 255);
-                    } 
-                    // SDL_RenderFillRect(renderer, &rect);
-                    brick->draw(renderer);
+              if (brick->getType() != typeBrick::EMPTY &&
+                  !brick->isDestroyed()) {
+                if (brick->getType() == typeBrick::NORMAL) {
+                  SDL_SetRenderDrawColor(renderer, 255, 204, 255, 50);
+                } else if (brick->getType() == typeBrick::DOUBLE) {
+                  SDL_SetRenderDrawColor(renderer, 255, 51, 153, 250);
+                } else if (brick->getType() == typeBrick::TRIPLE) {
+                  SDL_SetRenderDrawColor(renderer, 153, 0, 153, 255);
                 }
-
+                // SDL_RenderFillRect(renderer, &rect);
+                brick->draw(renderer);
+              }
             }
         }
     }
@@ -232,26 +224,25 @@ void HexagonalBrickGrid::setRows(int rows) {
 }
 
 void HexagonalBrickGrid::printAllBricks() const {
-    for (const auto& row : m_bricks) {
-        for (const auto& brick : row) {
-            if (brick != nullptr) {
-                brick->printProperties();
-            }
-        }
-        std::cout << std::endl;
+  for (const auto& row : m_bricks) {
+    for (const auto& brick : row) {
+      if (brick != nullptr) {
+        brick->printProperties();
+      }
     }
+    std::cout << std::endl;
+  }
 }
 
-
 bool HexagonalBrickGrid::allBricksDestroyed() {
-    for(auto& brick_vector : m_bricks){
-        for(auto& brick : brick_vector){
-            if(!brick->isDestroyed() && brick->getType()!=typeBrick::EMPTY){
-                return false;
-            }
-        }
+  for (auto& brick_vector : m_bricks) {
+    for (auto& brick : brick_vector) {
+      if (!brick->isDestroyed() && brick->getType() != typeBrick::EMPTY) {
+        return false;
+      }
     }
-    return true;
+  }
+  return true;
 }
 
 void HexagonalBrickGrid::update(){

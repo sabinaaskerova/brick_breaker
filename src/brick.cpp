@@ -92,7 +92,8 @@ void HexagonalBrick::draw(SDL_Renderer* renderer) {
         points[i].x = m_center.x + m_radius * cos(i * M_PI / 3);
         points[i].y = m_center.y + m_radius * sin(i * M_PI / 3);
     }
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    // SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    std::cout << "raidus =" << m_radius << std::endl;
     for (int i = 0; i < 6; ++i) {
         SDL_RenderDrawLine(renderer, points[i].x, points[i].y, points[(i + 1) % 6].x, points[(i + 1) % 6].y);
     }
