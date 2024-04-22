@@ -4,7 +4,7 @@ INCLUDES = -I./include
 
 OBJDIR = ./obj
 
-CPPFLAGS = -Wall -std=c++14 $(INCLUDES) -I/usr/include/SDL2 
+CPPFLAGS = -Wall -std=c++14 $(INCLUDES) -I/usr/include/SDL2 -g
 # CXXFLAGS = -std=c++14 -Wall -Wextra  $(INCLUDES) -pedantic
 
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
