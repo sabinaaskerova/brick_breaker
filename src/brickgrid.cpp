@@ -198,7 +198,6 @@ void HexagonalBrickGrid::draw(SDL_Renderer* renderer){
           } else if (brick->getType() == typeBrick::TRIPLE) {
             SDL_SetRenderDrawColor(renderer, 153, 0, 153, 255);
           }
-          // SDL_RenderFillRect(renderer, &rect);
           brick->draw(renderer);
         }
       }

@@ -30,8 +30,8 @@ Game::Game() : m_distribution(5000, 10000), m_sdlWrapper(SDL_INIT_VIDEO) {
   //   }
   m_boostTimer = m_distribution(m_randomEngine);
 
-  m_brickGrid = std::make_unique<ClassicBrickGrid>(BRICKW, BRICKW);
-  //   m_brickGrid = std::make_unique<HexagonalBrickGrid>(BRICKW, BRICKW);
+  //   m_brickGrid = std::make_unique<ClassicBrickGrid>(BRICKW, BRICKW);
+  m_brickGrid = std::make_unique<HexagonalBrickGrid>(BRICKW, BRICKW);
   m_brickGrid->initGridFromFile("grids/grid5.txt", INITX, INITY);
 
   position ballPosition = {BALLX, BALLY};

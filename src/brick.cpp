@@ -87,15 +87,15 @@ void HexagonalBrick::update() {
 void HexagonalBrick::draw(SDL_Renderer* renderer) {
   std::vector<SDL_Point> points(6);
   for (int i = 0; i < 6; ++i) {
-    points[i].x = m_center.x + m_radius * cos(i * M_PI / 3);
-    points[i].y = m_center.y + m_radius * sin(i * M_PI / 3);
+    points[i].x = getPosition().x + m_radius * cos(i * M_PI / 3);
+    points[i].y = getPosition().y + m_radius * sin(i * M_PI / 3);
   }
   // SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-  std::cout << "raidus =" << m_radius << std::endl;
   for (int i = 0; i < 6; ++i) {
     SDL_RenderDrawLine(renderer, points[i].x, points[i].y,
                        points[(i + 1) % 6].x, points[(i + 1) % 6].y);
   }
+
   //   SDL_Rect rect;
   //   rect.x = getPosition().x;
   //   rect.y = getPosition().y;
@@ -126,7 +126,6 @@ SDL_Rect HexagonalBrick::getBoundingBox() const {
     // Get the vertices of the hexagon
     std::vector<position> vertices = getVertices();
 
-    // Initialize the bounding box to the first vertex
     SDL_Rect boundingBox;
     boundingBox.x = vertices[0].x;
     boundingBox.y = vertices[0].y;
