@@ -40,8 +40,8 @@ typedef struct velocity {
 } velocity;
 
 typedef struct size {
-    int width;
-    int height;
+  double width;
+  double height;
 } objectSize;
 
 enum typeBrick {

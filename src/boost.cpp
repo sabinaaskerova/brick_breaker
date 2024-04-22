@@ -14,14 +14,13 @@ void Boost::update()
     m_position.y += 1;
 }
 bool Boost::collidesWith(const GameObject& obj)  const {
-    if (const Paddle* paddle = dynamic_cast<const Paddle*>(&obj)) {
-        SDL_Rect boostBox = getBoundingBox();
-        SDL_Rect paddleBox = obj.getBoundingBox();
-        return SDL_HasIntersection(&boostBox, &paddleBox);
-    } else{
-        return false;
-    }
-    
+  if (dynamic_cast<const Paddle*>(&obj)) {
+    SDL_Rect boostBox = getBoundingBox();
+    SDL_Rect paddleBox = obj.getBoundingBox();
+    return SDL_HasIntersection(&boostBox, &paddleBox);
+  } else {
+    return false;
+  }
 }
 
 bool Boost::isActive(Uint32 current_time) const {

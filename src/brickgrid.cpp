@@ -19,57 +19,55 @@ ClassicBrickGrid::~ClassicBrickGrid()
 {
 }
 
-void ClassicBrickGrid::initGridFromFile(const std::string& filename, const int initX, const int initY)
-        {
-            const int padding = 5;
-            std::ifstream file(filename);
-            if(file.is_open())
-            {
-                objectSize size = {m_brickWidth - padding, m_brickHeight - padding};
-                std::string line;
-                int rowNumber = 0;
-                while(std::getline(file, line))
-                {
-                    
-                    std::vector<std::shared_ptr<Brick>> row;
-                    for(int colNumber = 0; colNumber < static_cast<int>(line.size()); colNumber++){
-                        char c = line[colNumber];
-                        
-                        position pos = {(colNumber * m_brickWidth)+initX, (rowNumber * m_brickHeight)+initY};
-                        std::shared_ptr<Brick> brick = nullptr;
-                        switch(c){
-                            case '#':{
-                                brick=std::make_shared<ClassicBrick>(pos, size, typeBrick::NORMAL);
-                                row.push_back(brick);
-                                break;
-                            }
-                            case '*':{
-                                brick=std::make_shared<ClassicBrick>(pos, size, typeBrick::DOUBLE);
-                                row.push_back(brick);
-                                break;
-                            }
-                            case '@':{
-                                brick=std::make_shared<ClassicBrick>(pos, size, typeBrick::TRIPLE);
-                                row.push_back(brick);
-                                break;
-                            }
-                            case ' ':
-                                brick=std::make_shared<ClassicBrick>(pos, size, typeBrick::EMPTY);
-                                row.push_back(brick);
-                                break;
-                        }
-                        
-                    }
-                    // m_bricks.push_back(row);
-                    m_bricks.emplace_back(row);
-                    rowNumber++;
-                }
-            }
+void ClassicBrickGrid::initGridFromFile(const std::string& filename,
+                                        const int initX, const int initY) {
+  const double padding = 5;
+  std::ifstream file(filename);
+  if (file.is_open()) {
+    objectSize size = {m_brickWidth - padding, m_brickHeight - padding};
+    std::string line;
+    int rowNumber = 0;
+    while (std::getline(file, line)) {
+      std::vector<std::shared_ptr<Brick>> row;
+      for (int colNumber = 0; colNumber < static_cast<int>(line.size());
+           colNumber++) {
+        char c = line[colNumber];
+
+        position pos = {
+            (colNumber * m_brickWidth) + static_cast<double>(initX),
+            (rowNumber * m_brickHeight) + static_cast<double>(initY)};
+        std::shared_ptr<Brick> brick = nullptr;
+        switch (c) {
+          case '#': {
+            brick =
+                std::make_shared<ClassicBrick>(pos, size, typeBrick::NORMAL);
+            row.push_back(brick);
+            break;
+          }
+          case '*': {
+            brick =
+                std::make_shared<ClassicBrick>(pos, size, typeBrick::DOUBLE);
+            row.push_back(brick);
+            break;
+          }
+          case '@': {
+            brick =
+                std::make_shared<ClassicBrick>(pos, size, typeBrick::TRIPLE);
+            row.push_back(brick);
+            break;
+          }
+          case ' ':
+            brick = std::make_shared<ClassicBrick>(pos, size, typeBrick::EMPTY);
+            row.push_back(brick);
+            break;
         }
-
-
-
-
+      }
+      // m_bricks.push_back(row);
+      m_bricks.emplace_back(row);
+      rowNumber++;
+    }
+  }
+}
 
 void ClassicBrickGrid::draw(SDL_Renderer* renderer){
     for (const std::vector<std::shared_ptr<Brick>>& row : m_bricks) {
@@ -84,7 +82,6 @@ void ClassicBrickGrid::draw(SDL_Renderer* renderer){
                 } else if (brick->getType() == typeBrick::TRIPLE) {
                   SDL_SetRenderDrawColor(renderer, 153, 0, 153, 255);
                 }
-                // SDL_RenderFillRect(renderer, &rect);
                 brick->draw(renderer);
               }
             }
@@ -139,78 +136,74 @@ HexagonalBrickGrid::~HexagonalBrickGrid()
 {
 }
 void HexagonalBrickGrid::initGridFromFile(const std::string& filename, const int initX, const int initY){
-        const int padding = 5;
-        std::ifstream file(filename);
-        if(file.is_open())
-        {
-            objectSize size = {m_brickWidth - padding, m_brickHeight - padding};
-            std::string line;
-            int rowNumber = 0;
-            while(std::getline(file, line))
-            {
-                
-                std::vector<std::shared_ptr<Brick>> row;
-                for(int colNumber = 0; colNumber < static_cast<int>(line.size()); colNumber++){
-                    char c = line[colNumber];
-                    position pos = {(colNumber * m_brickWidth) + (rowNumber % 2 == 0 ? 0 : m_brickWidth / 2) + initX, 
-                        (rowNumber * m_brickHeight * 3 / 4) + initY};
-                    std::shared_ptr<Brick> brick = nullptr;
-                    switch(c){
-                        case '#':{
-                            brick=std::make_shared<HexagonalBrick>(pos.x, pos.y, size, typeBrick::NORMAL);
-                            row.push_back(brick);
-                            break;
-                        }
-                        case '*':{
-                            brick=std::make_shared<HexagonalBrick>(pos.x, pos.y, size, typeBrick::DOUBLE);
-                            row.push_back(brick);
-                            break;
-                        }
-                        case '@':{
-                            brick=std::make_shared<HexagonalBrick>(pos.x, pos.y, size, typeBrick::TRIPLE);
-                            row.push_back(brick);
-                            break;
-                        }
-                        case ' ':
-                            brick=std::make_shared<HexagonalBrick>(pos.x, pos.y, size, typeBrick::EMPTY);
-                            row.push_back(brick);
-                            break;
-                    }
-                    
-                }
-                m_bricks.emplace_back(row);
-                rowNumber++;
-            }
+  const double padding = 5;
+  std::ifstream file(filename);
+  if (file.is_open()) {
+    objectSize size = {m_brickWidth - padding, m_brickHeight - padding};
+    std::string line;
+    int rowNumber = 0;
+    while (std::getline(file, line)) {
+      std::vector<std::shared_ptr<Brick>> row;
+      for (int colNumber = 0; colNumber < static_cast<int>(line.size());
+           colNumber++) {
+        char c = line[colNumber];
+        position pos = {
+            (colNumber * m_brickWidth) +
+                (rowNumber % 2 == 0 ? 0 : m_brickWidth / 2) +
+                static_cast<double>(initX),
+            (rowNumber * m_brickHeight * 3 / 4) + static_cast<double>(initY)};
+        std::shared_ptr<Brick> brick = nullptr;
+        switch (c) {
+          case '#': {
+            brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
+                                                     typeBrick::NORMAL);
+            row.push_back(brick);
+            break;
+          }
+          case '*': {
+            brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
+                                                     typeBrick::DOUBLE);
+            row.push_back(brick);
+            break;
+          }
+          case '@': {
+            brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
+                                                     typeBrick::TRIPLE);
+            row.push_back(brick);
+            break;
+          }
+          case ' ':
+            brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
+                                                     typeBrick::EMPTY);
+            row.push_back(brick);
+            break;
         }
+      }
+      m_bricks.emplace_back(row);
+      rowNumber++;
+    }
+  }
     }
 
 void HexagonalBrickGrid::draw(SDL_Renderer* renderer){
-    for (const std::vector<std::shared_ptr<Brick>>& row : m_bricks) {
-        for (const std::shared_ptr<Brick>& brick : row) {
-            if (brick != nullptr) {
-                if(brick->getType()!=typeBrick::EMPTY && !brick->isDestroyed()){
-                    
-                    if(brick->getType() == typeBrick::NORMAL)
-                    {
-                        SDL_SetRenderDrawColor(renderer, 255, 204, 255, 50); 
-                    }
-                    else if(brick->getType() == typeBrick::DOUBLE)
-                    {
-                        SDL_SetRenderDrawColor(renderer, 255, 51, 153, 250); 
-                        
-                    }
-                    else if(brick->getType() == typeBrick::TRIPLE)
-                    {
-                        
-                        SDL_SetRenderDrawColor(renderer, 153, 0, 153, 255);
-                    } 
-                    // SDL_RenderFillRect(renderer, &rect);
-                    brick->draw(renderer);
-                }
+  for (const std::vector<std::shared_ptr<Brick>>& row : m_bricks) {
+    for (const std::shared_ptr<Brick>& brick : row) {
+      if (brick != nullptr) {
+        if (brick->getType() != typeBrick::EMPTY && !brick->isDestroyed()) {
+          if (brick->getType() == typeBrick::NORMAL) {
+            SDL_SetRenderDrawColor(renderer, 255, 204, 255, 50);
+          } else if (brick->getType() == typeBrick::DOUBLE) {
+            SDL_SetRenderDrawColor(renderer, 255, 51, 153, 250);
 
-            }
+          } else if (brick->getType() == typeBrick::TRIPLE) {
+            SDL_SetRenderDrawColor(renderer, 153, 0, 153, 255);
+          }
+          // SDL_RenderFillRect(renderer, &rect);
+          brick->draw(renderer);
         }
+      }
     }
+  }
 }
 
 

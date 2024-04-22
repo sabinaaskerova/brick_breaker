@@ -73,30 +73,35 @@ SDL_Rect ClassicBrick::getBoundingBox() const{
     return {(int)m_position.x, (int)m_position.y, (int)m_size.width, (int)m_size.height};
 }
 
-
-
-HexagonalBrick::HexagonalBrick(double q, double r, objectSize size, typeBrick type) 
-    : Brick(position(), size, type), m_q(q), m_r(r){
-
-    m_center.x = m_size.width * (3.0 / 2.0) * m_q;
-    m_center.y = m_size.height * sqrt(3) * (m_r + m_q / 2.0);
-    m_radius = m_size.width / 2.0;
+HexagonalBrick::HexagonalBrick(double q, double r, objectSize size,
+                               typeBrick type)
+    : Brick({q, r}, size, type), m_q(q), m_r(r) {
+  m_center.x = m_size.width * (3.0 / 2.0) * m_q;
+  m_center.y = m_size.height * sqrt(3) * (m_r + m_q / 2.0);
+  m_radius = m_size.width / 2.0;
 }
 
 void HexagonalBrick::update() {
 }
 
 void HexagonalBrick::draw(SDL_Renderer* renderer) {
-    std::vector<SDL_Point> points(6);
-    for (int i = 0; i < 6; ++i) {
-        points[i].x = m_center.x + m_radius * cos(i * M_PI / 3);
-        points[i].y = m_center.y + m_radius * sin(i * M_PI / 3);
-    }
-    // SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    std::cout << "raidus =" << m_radius << std::endl;
-    for (int i = 0; i < 6; ++i) {
-        SDL_RenderDrawLine(renderer, points[i].x, points[i].y, points[(i + 1) % 6].x, points[(i + 1) % 6].y);
-    }
+  std::vector<SDL_Point> points(6);
+  for (int i = 0; i < 6; ++i) {
+    points[i].x = m_center.x + m_radius * cos(i * M_PI / 3);
+    points[i].y = m_center.y + m_radius * sin(i * M_PI / 3);
+  }
+  // SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+  std::cout << "raidus =" << m_radius << std::endl;
+  for (int i = 0; i < 6; ++i) {
+    SDL_RenderDrawLine(renderer, points[i].x, points[i].y,
+                       points[(i + 1) % 6].x, points[(i + 1) % 6].y);
+  }
+  //   SDL_Rect rect;
+  //   rect.x = getPosition().x;
+  //   rect.y = getPosition().y;
+  //   rect.w = getSize().width;
+  //   rect.h = getSize().height;
+  //   SDL_RenderFillRect(renderer, &rect);
 }
 
 bool HexagonalBrick::collidesWith(const GameObject& obj) const{

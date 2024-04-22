@@ -23,15 +23,15 @@ Game::Game() : m_distribution(5000, 10000), m_sdlWrapper(SDL_INIT_VIDEO) {
 
   m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
 
-  backgroundImage = IMG_LoadTexture(m_renderer, "img/qazaqyurt.png");
-  if (backgroundImage == nullptr) {
-    std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
-    return;
-  }
+  //   backgroundImage = IMG_LoadTexture(m_renderer, "img/qazaqyurt.png");
+  //   if (backgroundImage == nullptr) {
+  //     std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+  //     return;
+  //   }
   m_boostTimer = m_distribution(m_randomEngine);
 
-  m_brickGrid = std::make_unique<ClassicBrickGrid>(BRICKW, BRICKW);
-  //   m_brickGrid = std::make_unique<HexagonalBrickGrid>(BRICKW, BRICKW);
+  //   m_brickGrid = std::make_unique<ClassicBrickGrid>(BRICKW, BRICKW);
+  m_brickGrid = std::make_unique<HexagonalBrickGrid>(BRICKW, BRICKW);
   m_brickGrid->initGridFromFile("grids/grid5.txt", INITX, INITY);
 
   position ballPosition = {BALLX, BALLY};
