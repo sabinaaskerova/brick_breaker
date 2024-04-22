@@ -21,7 +21,7 @@ class Paddle: public GameObject{
 
         bool collidesWith(const GameObject& obj) const override;
         void move(int x);
-        const int& getWidth();
+        const double& getWidth();
         void setType(PaddleType type);
         const PaddleType& getType() const;
 };

@@ -23,9 +23,7 @@ void Paddle::move(int x){
     m_position.x += x;
 }
 
-const int& Paddle::getWidth(){
-    return m_size.width;
-}
+const double& Paddle::getWidth() { return m_size.width; }
 
 void Paddle::setWidth(int width){
     m_size.width = width;
