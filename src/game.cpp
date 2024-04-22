@@ -332,7 +332,8 @@ void Game::applyBoost(T& boost){
           std::cout << "Width before: " << m_paddle->getWidth() << std::endl;
           m_paddle->setWidth(m_paddle->getWidth() + 30);
         }
-        std::cout << "Paddle width: " << m_paddle->getWidth() << std::endl;
+        std::cout << "Paddle width: "
+                  << static_cast<double>(m_paddle->getWidth()) << std::endl;
         m_paddle->setType(PaddleType::WIDE);
     }
     else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
@@ -345,7 +346,8 @@ void Game::applyBoost(T& boost){
           std::cout << "Width before: " << m_paddle->getWidth() << std::endl;
           m_paddle->setWidth(m_paddle->getWidth() - 30);
         }
-        std::cout << "Paddle width: " << m_paddle->getWidth() << std::endl;
+        std::cout << "Paddle width: "
+                  << static_cast<double>(m_paddle->getWidth()) << std::endl;
         m_paddle->setType(PaddleType::NARROW);
     }
 }
