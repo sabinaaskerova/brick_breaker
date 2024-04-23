@@ -4,15 +4,12 @@ INCLUDES = -I./include
 
 OBJDIR = ./obj
 
-CPPFLAGS = -Wall -std=c++14 $(INCLUDES) -I/usr/include/SDL2 -g
-# CXXFLAGS = -std=c++14 -Wall -Wextra  $(INCLUDES) -pedantic
+CPPFLAGS = -Wall -std=c++14 $(INCLUDES) -I/usr/include/SDL2
 
-LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
+LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_gfx
 
-# SRCS = main.cpp game.cpp gameObject.cpp brick.cpp brickgrid.cpp paddle.cpp ball.cpp
 SRCS = $(wildcard src/*.cpp)
 
-# OBJS = $(SRCS:.cpp=.o)
 OBJS = $(patsubst src/%.cpp,$(OBJDIR)/%.o,$(SRCS))
 
 MAIN = game

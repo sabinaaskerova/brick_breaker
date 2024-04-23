@@ -1,12 +1,13 @@
 #ifndef BRICKGRID_H
 #define BRICKGRID_H
+
 #include <fstream>
+#include <memory>
 #include <vector>
+
 #include "brick.hpp"
 #include "gameObject.hpp"
 #include "structs.hpp"
-#include <memory>
-
 class BrickGrid
 {
  protected:

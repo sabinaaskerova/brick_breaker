@@ -85,16 +85,24 @@ void HexagonalBrick::update() {
 }
 
 void HexagonalBrick::draw(SDL_Renderer* renderer) {
-  std::vector<SDL_Point> points(6);
+  Sint16 pointsX[6];
+  Sint16 pointsY[6];
   for (int i = 0; i < 6; ++i) {
-    points[i].x = getPosition().x + m_radius * cos(i * M_PI / 3);
-    points[i].y = getPosition().y + m_radius * sin(i * M_PI / 3);
+    pointsX[i] = getPosition().x + m_radius * cos(i * M_PI / 3);
+    pointsY[i] = getPosition().y + m_radius * sin(i * M_PI / 3);
   }
-  // SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-  for (int i = 0; i < 6; ++i) {
-    SDL_RenderDrawLine(renderer, points[i].x, points[i].y,
-                       points[(i + 1) % 6].x, points[(i + 1) % 6].y);
-  }
+  filledPolygonRGBA(renderer, pointsX, pointsY, 6, 255, 255, 255, 255);
+
+  //   std::vector<SDL_Point> points(6);
+  //   for (int i = 0; i < 6; ++i) {
+  //     points[i].x = getPosition().x + m_radius * cos(i * M_PI / 3);
+  //     points[i].y = getPosition().y + m_radius * sin(i * M_PI / 3);
+  //   }
+
+  //   for (int i = 0; i < 6; ++i) {
+  //     SDL_RenderDrawLine(renderer, points[i].x, points[i].y,
+  //                        points[(i + 1) % 6].x, points[(i + 1) % 6].y);
+  //   }
 
   //   SDL_Rect rect;
   //   rect.x = getPosition().x;

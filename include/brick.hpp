@@ -1,10 +1,12 @@
 #ifndef BRICK_H
 #define BRICK_H
-#include "gameObject.hpp"
-#include "structs.hpp"
+#include <SDL2/SDL2_gfxPrimitives.h>
+
 #include <iostream>
 #include <vector>
 
+#include "gameObject.hpp"
+#include "structs.hpp"
 class Brick : public GameObject {
  protected:
   bool m_destroyed;
