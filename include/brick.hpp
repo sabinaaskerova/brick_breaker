@@ -22,8 +22,8 @@ class Brick : public GameObject {
   virtual bool collidesWith(const GameObject& obj) const override = 0;
   bool isDestroyed() const;
 
-  position getPosition();
-  objectSize getSize();
+  position getPosition() const;
+  objectSize getSize() const;
   void setDestroyed(bool destroyed);
   virtual SDL_Rect getBoundingBox() const = 0;
   void printProperties() const;

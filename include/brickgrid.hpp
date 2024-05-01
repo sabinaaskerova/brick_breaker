@@ -28,7 +28,6 @@ class BrickGrid
   virtual void update() = 0;
   virtual std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() = 0;
   virtual void setRows(int rows) = 0;
-  virtual void printAllBricks() const = 0;
   virtual bool allBricksDestroyed() = 0;
 
 };
@@ -45,7 +44,6 @@ class ClassicBrickGrid : public BrickGrid {
   void update() override;
   std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() override;
   void setRows(int rows) override;
-  void printAllBricks() const override;
   bool allBricksDestroyed() override;
 };
 
@@ -61,7 +59,6 @@ class HexagonalBrickGrid : public BrickGrid {
   void update() override;
   std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() override;
   void setRows(int rows) override;
-  void printAllBricks() const override;
   bool allBricksDestroyed() override;
 };
 

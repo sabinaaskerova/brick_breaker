@@ -44,11 +44,24 @@ void Ball::draw(SDL_Renderer *renderer)
 void Ball::setMoving(bool moving){
     m_moving = moving;
 }
-
 bool Ball::collidesWith(const GameObject& obj) const {
-  SDL_Rect ballBox = getBoundingBox();
-  SDL_Rect objBox = obj.getBoundingBox();
-  return SDL_HasIntersection(&ballBox, &objBox);
+    auto hexagonalBrick = dynamic_cast<const HexagonalBrick*>(&obj);
+    if (hexagonalBrick != nullptr) {
+        for (int i = 0; i < 6; ++i) {
+            position point = {hexagonalBrick->getPosition().x + hexagonalBrick->getSize().height * cos(i * M_PI / 3),
+                                                hexagonalBrick->getPosition().y + hexagonalBrick->getSize().width * sin(i * M_PI / 3)};
+            position difference = m_position - point;
+            if (difference.length() <= m_size.width / 2.0) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        // Existing collision detection method
+        SDL_Rect ballBox = getBoundingBox();
+        SDL_Rect objBox = obj.getBoundingBox();
+        return SDL_HasIntersection(&ballBox, &objBox);
+    }
 }
 
 void Ball::setVelocityX(double x){

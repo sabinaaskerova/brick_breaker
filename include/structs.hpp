@@ -36,6 +36,10 @@ typedef struct position {
   position() : x(0), y(0) {}  // Default constructor
   position(double x_, double y_)
       : x(x_), y(y_) {}  // TO DO: use the constructor wherever possible
+  position operator-(const position& other) const {
+    return position{x - other.x, y - other.y};
+  }
+  double length() const { return std::sqrt(x * x + y * y); }
 } position;
 
 

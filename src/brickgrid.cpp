@@ -99,18 +99,6 @@ void ClassicBrickGrid::setRows(int rows) {
     m_rows = rows;
 }
 
-void ClassicBrickGrid::printAllBricks() const {
-    for (const auto& row : m_bricks) {
-        for (const auto& brick : row) {
-            if (brick != nullptr) {
-                brick->printProperties();
-            }
-        }
-        std::cout << std::endl;
-    }
-}
-
-
 bool ClassicBrickGrid::allBricksDestroyed() {
     for(auto& brick_vector : m_bricks){
         for(auto& brick : brick_vector){
@@ -136,7 +124,7 @@ HexagonalBrickGrid::~HexagonalBrickGrid()
 }
 void HexagonalBrickGrid::initGridFromFile(const std::string& filename,
                                           const int initX, const int initY) {
-  const double padding = 10;
+  const double padding = 6;
   std::ifstream file(filename);
   if (file.is_open()) {
     
@@ -184,17 +172,13 @@ void HexagonalBrickGrid::draw(SDL_Renderer* renderer){
         if (brick->getType() != typeBrick::EMPTY && !brick->isDestroyed()) {
           Color color = {255, 204, 255, 50};
           if (brick->getType() == typeBrick::NORMAL) {
-            // SDL_SetRenderDrawColor(renderer, 255, 204, 255, 50);
             color = {255, 204, 255, 50};
           } else if (brick->getType() == typeBrick::DOUBLE) {
-            // SDL_SetRenderDrawColor(renderer, 255, 51, 153, 250);
             color = {255, 51, 153, 250};
 
           } else if (brick->getType() == typeBrick::TRIPLE) {
-            // SDL_SetRenderDrawColor(renderer, 153, 0, 153, 255);
             color = {153, 0, 153, 255};
           }
-          // brick->draw(renderer);
           auto hexagonalBrick = dynamic_cast<HexagonalBrick*>(brick.get());
           if (hexagonalBrick != nullptr) {
             hexagonalBrick->draw(renderer, color);
@@ -213,17 +197,6 @@ std::vector<std::vector<std::shared_ptr<Brick>>>& HexagonalBrickGrid::getBricks(
 
 void HexagonalBrickGrid::setRows(int rows) {
     m_rows = rows;
-}
-
-void HexagonalBrickGrid::printAllBricks() const {
-  for (const auto& row : m_bricks) {
-    for (const auto& brick : row) {
-      if (brick != nullptr) {
-        brick->printProperties();
-      }
-    }
-    std::cout << std::endl;
-  }
 }
 
 bool HexagonalBrickGrid::allBricksDestroyed() {

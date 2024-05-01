@@ -23,12 +23,12 @@ bool Brick::isDestroyed() const {
 
 Brick::~Brick() = default;
 
-objectSize Brick::getSize()
+objectSize Brick::getSize() const
 {
     return m_size;
 }
 
-position Brick::getPosition()
+position Brick::getPosition() const
 {
     return m_position;
 }
@@ -81,7 +81,7 @@ HexagonalBrick::HexagonalBrick(double q, double r, objectSize size,
   if (int(r) % 2 == 0) {
     m_position.x += m_size.width / 2.0;
   }
-  m_position.y = m_size.height * 3.0 / 2.0 * m_r + static_cast<double>(INITY);
+  m_position.y = m_size.height * 3.0 / 2.5 * m_r + static_cast<double>(INITY);
   
   if (int(q) % 2 == 0) {
     m_position.y += m_size.height / 2.0;
