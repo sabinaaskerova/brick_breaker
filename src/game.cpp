@@ -22,16 +22,11 @@ Game::Game() : m_distribution(5000, 10000), m_sdlWrapper(SDL_INIT_VIDEO) {
                               SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
   m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
-
-  //   backgroundImage = IMG_LoadTexture(m_renderer, "img/qazaqyurt.png");
-  //   if (backgroundImage == nullptr) {
-  //     std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
-  //     return;
-  //   }
   m_boostTimer = m_distribution(m_randomEngine);
 
   //   m_brickGrid = std::make_unique<ClassicBrickGrid>(BRICKW, BRICKW);
-  m_brickGrid = std::make_unique<HexagonalBrickGrid>(BRICKW, BRICKW);
+  m_brickGrid = std::make_unique<HexagonalBrickGrid>(
+      BRICKW, BRICKW);  // TO DO: parameter in main for grid type
   m_brickGrid->initGridFromFile("grids/grid5.txt", INITX, INITY);
 
   position ballPosition = {BALLX, BALLY};
@@ -264,9 +259,6 @@ void Game::handleCollision(Ball* ball, GameObject* gameObject){
 
 void Game::draw()
 {
-    // SDL_RenderCopy(m_renderer, backgroundImage, nullptr, nullptr); // background image
-    // SDL_SetRenderDrawColor(m_renderer, 250, 212, 216, 255);
-    // SDL_RenderClear(m_renderer);
     m_brickGrid->draw(m_renderer);
     m_wall->draw(m_renderer);
     m_paddle->draw(m_renderer);
@@ -313,42 +305,27 @@ template <typename T>
 void Game::applyBoost(T& boost){
     velocity ballVelocity = {BALLSPEED, BALLSPEED};
     objectSize ballsize = {BALLSIZE, BALLSIZE};
+
     if (dynamic_cast<BonusMultiBall*>(boost.get())) {
-      // std::cout << m_balls[0]->getPosition().x << " " <<
-      // m_balls[0]->getPosition().y << std::endl;
       m_balls.push_back(std::make_unique<Ball>(
           m_renderer, m_balls[0]->getPosition(), ballsize, ballVelocity));
-      // std::cout << m_balls.size() << std::endl;
       m_numBalls++;
-    }
-    else if (dynamic_cast<BonusWidePaddle*>(boost.get())) {
-        if(m_paddle->getType() == PaddleType::NARROW){
-          std::cout << "Narrow to wide" << std::endl;
-          std::cout << "Width before: " << std::endl;
-          std::cout << m_paddle->getWidth() << std::endl;
-          m_paddle->setWidth(m_paddle->getWidth() + 40);
-        } else if (m_paddle->getType() == PaddleType::NORMAL){
-          std::cout << "Normal to wide" << std::endl;
-          std::cout << "Width before: " << m_paddle->getWidth() << std::endl;
-          m_paddle->setWidth(m_paddle->getWidth() + 30);
-        }
-        std::cout << "Paddle width: "
-                  << static_cast<double>(m_paddle->getWidth()) << std::endl;
-        m_paddle->setType(PaddleType::WIDE);
-    }
-    else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
-        if(m_paddle->getType() == PaddleType::WIDE){
-          std::cout << "Wide to narrow" << std::endl;
-          std::cout << "Width before: " << m_paddle->getWidth() << std::endl;
-          m_paddle->setWidth(m_paddle->getWidth() - 40);
-        } else if (m_paddle->getType() == PaddleType::NORMAL){
-          std::cout << "Normal to narrow" << std::endl;
-          std::cout << "Width before: " << m_paddle->getWidth() << std::endl;
-          m_paddle->setWidth(m_paddle->getWidth() - 30);
-        }
-        std::cout << "Paddle width: "
-                  << static_cast<double>(m_paddle->getWidth()) << std::endl;
-        m_paddle->setType(PaddleType::NARROW);
+
+    } else if (dynamic_cast<BonusWidePaddle*>(boost.get())) {
+      if (m_paddle->getType() == PaddleType::NARROW) {
+        m_paddle->setWidth(m_paddle->getWidth() + 40);
+      } else if (m_paddle->getType() == PaddleType::NORMAL) {
+        m_paddle->setWidth(m_paddle->getWidth() + 30);
+      }
+      m_paddle->setType(PaddleType::WIDE);
+
+    } else if (dynamic_cast<MalusNarrowPaddle*>(boost.get())) {
+      if (m_paddle->getType() == PaddleType::WIDE) {
+        m_paddle->setWidth(m_paddle->getWidth() - 40);
+      } else if (m_paddle->getType() == PaddleType::NORMAL) {
+        m_paddle->setWidth(m_paddle->getWidth() - 30);
+      }
+      m_paddle->setType(PaddleType::NARROW);
     }
 }
 

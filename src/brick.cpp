@@ -76,8 +76,16 @@ SDL_Rect ClassicBrick::getBoundingBox() const{
 HexagonalBrick::HexagonalBrick(double q, double r, objectSize size,
                                typeBrick type)
     : Brick({q, r}, size, type), m_q(q), m_r(r) {
-  m_center.x = m_size.width * (3.0 / 2.0) * m_q;
-  m_center.y = m_size.height * sqrt(3) * (m_r + m_q / 2.0);
+  m_position.x = m_size.width * sqrt(1.5) * (m_q + 0.5 * (int(r) & 1)) +
+                 static_cast<double>(INITX);
+  if (int(r) % 2 == 0) {
+    m_position.x += m_size.width / 2.0;
+  }
+  m_position.y = m_size.height * 3.0 / 2.0 * m_r + static_cast<double>(INITY);
+  
+  if (int(q) % 2 == 0) {
+    m_position.y += m_size.height / 2.0;
+  }
   m_radius = m_size.width / 2.0;
 }
 
@@ -92,24 +100,6 @@ void HexagonalBrick::draw(SDL_Renderer* renderer) {
     pointsY[i] = getPosition().y + m_radius * sin(i * M_PI / 3);
   }
   filledPolygonRGBA(renderer, pointsX, pointsY, 6, 255, 255, 255, 255);
-
-  //   std::vector<SDL_Point> points(6);
-  //   for (int i = 0; i < 6; ++i) {
-  //     points[i].x = getPosition().x + m_radius * cos(i * M_PI / 3);
-  //     points[i].y = getPosition().y + m_radius * sin(i * M_PI / 3);
-  //   }
-
-  //   for (int i = 0; i < 6; ++i) {
-  //     SDL_RenderDrawLine(renderer, points[i].x, points[i].y,
-  //                        points[(i + 1) % 6].x, points[(i + 1) % 6].y);
-  //   }
-
-  //   SDL_Rect rect;
-  //   rect.x = getPosition().x;
-  //   rect.y = getPosition().y;
-  //   rect.w = getSize().width;
-  //   rect.h = getSize().height;
-  //   SDL_RenderFillRect(renderer, &rect);
 }
 
 bool HexagonalBrick::collidesWith(const GameObject& obj) const{

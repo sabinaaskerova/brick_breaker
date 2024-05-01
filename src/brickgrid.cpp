@@ -62,7 +62,6 @@ void ClassicBrickGrid::initGridFromFile(const std::string& filename,
             break;
         }
       }
-      // m_bricks.push_back(row);
       m_bricks.emplace_back(row);
       rowNumber++;
     }
@@ -135,10 +134,12 @@ HexagonalBrickGrid::HexagonalBrickGrid(int brickWidth, int brickHeight) :
 HexagonalBrickGrid::~HexagonalBrickGrid()
 {
 }
-void HexagonalBrickGrid::initGridFromFile(const std::string& filename, const int initX, const int initY){
-  const double padding = 5;
+void HexagonalBrickGrid::initGridFromFile(const std::string& filename,
+                                          const int initX, const int initY) {
+  const double padding = 10;
   std::ifstream file(filename);
   if (file.is_open()) {
+    
     objectSize size = {m_brickWidth - padding, m_brickHeight - padding};
     std::string line;
     int rowNumber = 0;
@@ -147,43 +148,86 @@ void HexagonalBrickGrid::initGridFromFile(const std::string& filename, const int
       for (int colNumber = 0; colNumber < static_cast<int>(line.size());
            colNumber++) {
         char c = line[colNumber];
-        position pos = {
-            (colNumber * m_brickWidth) +
-                (rowNumber % 2 == 0 ? 0 : m_brickWidth / 2) +
-                static_cast<double>(initX),
-            (rowNumber * m_brickHeight * 3 / 4) + static_cast<double>(initY)};
+        double q = colNumber;
+        double r = rowNumber;
         std::shared_ptr<Brick> brick = nullptr;
         switch (c) {
-          case '#': {
-            brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
-                                                     typeBrick::NORMAL);
-            row.push_back(brick);
+          case '#':
+            brick =
+                std::make_shared<HexagonalBrick>(q, r, size, typeBrick::NORMAL);
             break;
-          }
-          case '*': {
-            brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
-                                                     typeBrick::DOUBLE);
-            row.push_back(brick);
+          case '*':
+            brick =
+                std::make_shared<HexagonalBrick>(q, r, size, typeBrick::DOUBLE);
             break;
-          }
-          case '@': {
-            brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
-                                                     typeBrick::TRIPLE);
-            row.push_back(brick);
+          case '@':
+            brick =
+                std::make_shared<HexagonalBrick>(q, r, size, typeBrick::TRIPLE);
             break;
-          }
           case ' ':
-            brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
-                                                     typeBrick::EMPTY);
-            row.push_back(brick);
+            brick =
+                std::make_shared<HexagonalBrick>(q, r, size, typeBrick::EMPTY);
             break;
         }
+        row.push_back(brick);
       }
       m_bricks.emplace_back(row);
       rowNumber++;
     }
   }
-    }
+}
+
+// void HexagonalBrickGrid::initGridFromFile(const std::string& filename, const
+// int initX, const int initY){
+//   const double padding = 5;
+//   std::ifstream file(filename);
+//   if (file.is_open()) {
+//     objectSize size = {m_brickWidth - padding, m_brickHeight - padding};
+//     std::string line;
+//     int rowNumber = 0;
+//     while (std::getline(file, line)) {
+//       std::vector<std::shared_ptr<Brick>> row;
+//       for (int colNumber = 0; colNumber < static_cast<int>(line.size());
+//            colNumber++) {
+//         char c = line[colNumber];
+//         position pos = {
+//             (colNumber * m_brickWidth) +
+//                 (rowNumber % 2 == 0 ? 0 : m_brickWidth / 2) +
+//                 static_cast<double>(initX),
+//             (rowNumber * m_brickHeight * 3 / 4) +
+//             static_cast<double>(initY)};
+//         std::shared_ptr<Brick> brick = nullptr;
+//         switch (c) {
+//           case '#': {
+//             brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
+//                                                      typeBrick::NORMAL);
+//             row.push_back(brick);
+//             break;
+//           }
+//           case '*': {
+//             brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
+//                                                      typeBrick::DOUBLE);
+//             row.push_back(brick);
+//             break;
+//           }
+//           case '@': {
+//             brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
+//                                                      typeBrick::TRIPLE);
+//             row.push_back(brick);
+//             break;
+//           }
+//           case ' ':
+//             brick = std::make_shared<HexagonalBrick>(pos.x, pos.y, size,
+//                                                      typeBrick::EMPTY);
+//             row.push_back(brick);
+//             break;
+//         }
+//       }
+//       m_bricks.emplace_back(row);
+//       rowNumber++;
+//     }
+//   }
+// }
 
 void HexagonalBrickGrid::draw(SDL_Renderer* renderer){
   for (const std::vector<std::shared_ptr<Brick>>& row : m_bricks) {

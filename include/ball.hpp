@@ -2,6 +2,7 @@
 #define BALL_H
 #include "gameObject.hpp"
 #include "structs.hpp"
+#include "brick.hpp"
 
 class Ball: public GameObject
 {

@@ -29,8 +29,11 @@
 
 
 typedef struct position {
-    double x; // q in axial coordinates for hexagonal bricks
-    double y; // r
+  double x;
+  double y;
+  position() : x(0), y(0) {}  // Default constructor
+  position(double x_, double y_)
+      : x(x_), y(y_) {}  // TO DO: use the constructor wherever possible
 } position;
 
 
@@ -57,5 +60,38 @@ enum class BoostType {
     WidePaddle,
     NarrowPaddle
 };
+
+// struct Hex {  // Cube storage, axial constructor
+//   const int q, r, s;
+//   Hex(int q_, int r_) : q(q_), r(r_), s(-q_ - r_) {}
+// };
+
+// struct Orientation {
+//   const double f0, f1, f2, f3;
+//   const double b0, b1, b2, b3;
+//   const double start_angle;  // in multiples of 60°
+//   Orientation(double f0_, double f1_, double f2_, double f3_, double b0_,
+//               double b1_, double b2_, double b3_, double start_angle_)
+//       : f0(f0_),
+//         f1(f1_),
+//         f2(f2_),
+//         f3(f3_),
+//         b0(b0_),
+//         b1(b1_),
+//         b2(b2_),
+//         b3(b3_),
+//         start_angle(start_angle_) {}
+// };
+// const Orientation layout_flat =
+//     Orientation(3.0 / 2.0, 0.0, sqrt(3.0) / 2.0, sqrt(3.0), 2.0 / 3.0, 0.0,
+//                 -1.0 / 3.0, sqrt(3.0) / 3.0, 0.0);
+
+// struct Layout {
+//   const Orientation orientation;
+//   const position size;
+//   const position origin;
+//   Layout(Orientation orientation_, position size_, position origin_)
+//       : orientation(orientation_), size(size_), origin(origin_) {}
+// };
 
 #endif // STRUCTS_H

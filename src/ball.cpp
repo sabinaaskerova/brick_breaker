@@ -45,11 +45,10 @@ void Ball::setMoving(bool moving){
     m_moving = moving;
 }
 
-bool Ball::collidesWith(const GameObject& obj) const{
-    
-    SDL_Rect ballBox = getBoundingBox();
-    SDL_Rect objBox = obj.getBoundingBox();
-    return SDL_HasIntersection(&ballBox, &objBox);
+bool Ball::collidesWith(const GameObject& obj) const {
+  SDL_Rect ballBox = getBoundingBox();
+  SDL_Rect objBox = obj.getBoundingBox();
+  return SDL_HasIntersection(&ballBox, &objBox);
 }
 
 void Ball::setVelocityX(double x){

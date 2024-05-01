@@ -46,7 +46,6 @@ class HexagonalBrick : public Brick {
  private:
   double m_q;  // Axial q-coordinate
   double m_r;  // Axial r-coordinate
-  position m_center;
   double m_radius;
   SDL_Renderer* m_renderer;
 
