@@ -52,6 +52,7 @@ class HexagonalBrick : public Brick {
  public:
   HexagonalBrick(double q, double r, objectSize size, typeBrick type);
   void draw(SDL_Renderer* renderer) override;
+  void draw(SDL_Renderer* renderer, Color color);
   void update() override;
   bool collidesWith(const GameObject& obj) const override;
   std::vector<position> getVertices() const;

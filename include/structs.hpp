@@ -1,6 +1,8 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+#include <SDL2/SDL.h>
+
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 1000
 #define WALLSW 600
@@ -61,37 +63,11 @@ enum class BoostType {
     NarrowPaddle
 };
 
-// struct Hex {  // Cube storage, axial constructor
-//   const int q, r, s;
-//   Hex(int q_, int r_) : q(q_), r(r_), s(-q_ - r_) {}
-// };
-
-// struct Orientation {
-//   const double f0, f1, f2, f3;
-//   const double b0, b1, b2, b3;
-//   const double start_angle;  // in multiples of 60°
-//   Orientation(double f0_, double f1_, double f2_, double f3_, double b0_,
-//               double b1_, double b2_, double b3_, double start_angle_)
-//       : f0(f0_),
-//         f1(f1_),
-//         f2(f2_),
-//         f3(f3_),
-//         b0(b0_),
-//         b1(b1_),
-//         b2(b2_),
-//         b3(b3_),
-//         start_angle(start_angle_) {}
-// };
-// const Orientation layout_flat =
-//     Orientation(3.0 / 2.0, 0.0, sqrt(3.0) / 2.0, sqrt(3.0), 2.0 / 3.0, 0.0,
-//                 -1.0 / 3.0, sqrt(3.0) / 3.0, 0.0);
-
-// struct Layout {
-//   const Orientation orientation;
-//   const position size;
-//   const position origin;
-//   Layout(Orientation orientation_, position size_, position origin_)
-//       : orientation(orientation_), size(size_), origin(origin_) {}
-// };
+struct Color {
+        Uint8 r;
+        Uint8 g;
+        Uint8 b;
+        Uint8 a;
+};
 
 #endif // STRUCTS_H

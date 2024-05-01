@@ -102,6 +102,16 @@ void HexagonalBrick::draw(SDL_Renderer* renderer) {
   filledPolygonRGBA(renderer, pointsX, pointsY, 6, 255, 255, 255, 255);
 }
 
+void HexagonalBrick::draw(SDL_Renderer* renderer, Color color) {
+    Sint16 pointsX[6];
+    Sint16 pointsY[6];
+    for (int i = 0; i < 6; ++i) {
+        pointsX[i] = getPosition().x + m_radius * cos(i * M_PI / 3);
+        pointsY[i] = getPosition().y + m_radius * sin(i * M_PI / 3);
+    }
+    filledPolygonRGBA(renderer, pointsX, pointsY, 6, color.r, color.g, color.b, color.a);
+}
+
 bool HexagonalBrick::collidesWith(const GameObject& obj) const{
     return false;
 }
