@@ -76,7 +76,7 @@ SDL_Rect ClassicBrick::getBoundingBox() const{
 HexagonalBrick::HexagonalBrick(double q, double r, objectSize size,
                                typeBrick type)
     : Brick({q, r}, size, type), m_q(q), m_r(r) {
-  m_position.x = m_size.width * sqrt(1.5) * (m_q + 0.5 * (int(r) & 1)) +
+  m_position.x = m_size.width * sqrt(1.2) * (m_q + 0.5 * (int(r) & 1)) +
                  static_cast<double>(INITX);
   if (int(r) % 2 == 0) {
     m_position.x += m_size.width / 2.0;

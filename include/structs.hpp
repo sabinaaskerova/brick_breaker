@@ -28,7 +28,7 @@
 #define BOOSTDURATION 5000 
 #define BOOSTSPEED 2000
 
-
+#define GRIDN 7
 
 typedef struct position {
   double x;

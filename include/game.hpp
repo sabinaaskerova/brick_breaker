@@ -58,6 +58,7 @@ class Game{
 
     public:
         Game();
+        Game(const std::string& gridType, const int gridNumber);
         ~Game();
         void game_loop();
         void update();

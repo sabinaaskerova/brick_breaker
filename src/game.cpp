@@ -1,33 +1,25 @@
 #include "game.hpp"
 
-Game::Game() : m_distribution(5000, 10000), m_sdlWrapper(SDL_INIT_VIDEO) {
-  //   m_sdlWrapper = SDLWrapper(SDL_INIT_VIDEO);
-  // m_window = m_sdlWrapper.createWindow(
-  //   "Kirpish syndyru", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-  //   SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-  //   m_renderer =
-  //     m_sdlWrapper.createRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
+Game::Game(const std::string& gridType, const int gridNumber)
+    : m_distribution(5000, 10000), m_sdlWrapper(SDL_INIT_VIDEO) {
+  m_sdlWrapper = SDLWrapper(SDL_INIT_VIDEO);
+  m_window = m_sdlWrapper.createWindow(
+      "Kirpish syndyru", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+      SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+  m_renderer =
+      m_sdlWrapper.createRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
 
-  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-    SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
-    return;
-  }
-  if (TTF_Init() == -1) {
-    printf("TTF_Init: %s\n", TTF_GetError());
-    exit(2);
-  }
-
-  m_window = SDL_CreateWindow("Kirpish syndyru", SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH,
-                              SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-
-  m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
   m_boostTimer = m_distribution(m_randomEngine);
 
-  //   m_brickGrid = std::make_unique<ClassicBrickGrid>(BRICKW, BRICKW);
-  m_brickGrid = std::make_unique<HexagonalBrickGrid>(
-      BRICKW, BRICKW);  // TO DO: parameter in main for grid type
-  m_brickGrid->initGridFromFile("grids/grid5.txt", INITX, INITY);
+  if (gridType == "classic") {
+    m_brickGrid = std::make_unique<ClassicBrickGrid>(BRICKW, BRICKW);
+  } else if (gridType == "hexagonal") {
+    m_brickGrid = std::make_unique<HexagonalBrickGrid>(BRICKW, BRICKW);
+  } else {
+    throw std::invalid_argument("Invalid grid type");
+  }
+  std::string gridFile = "grids/grid" + std::to_string(gridNumber) + ".txt";
+  m_brickGrid->initGridFromFile(gridFile, INITX, INITY);
 
   position ballPosition = {BALLX, BALLY};
   objectSize ballSize = {BALLSIZE, BALLSIZE};

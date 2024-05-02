@@ -124,7 +124,7 @@ HexagonalBrickGrid::~HexagonalBrickGrid()
 }
 void HexagonalBrickGrid::initGridFromFile(const std::string& filename,
                                           const int initX, const int initY) {
-  const double padding = 6;
+  const double padding = 5;
   std::ifstream file(filename);
   if (file.is_open()) {
     
