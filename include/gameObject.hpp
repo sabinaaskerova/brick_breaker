@@ -1,8 +1,18 @@
+/**
+ * @file gameObject.hpp
+ * @author Sabina Askerova
+ * @brief 
+ * 
+ */
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "structs.hpp"
+/**
+ * @brief Game Object abstract class.
+ * 
+ */
 class GameObject
 {
 protected:

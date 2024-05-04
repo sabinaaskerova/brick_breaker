@@ -1,3 +1,9 @@
+/**
+ * @file structs.hpp
+ * @author Sabina Askerova
+ * @brief This file contains the structures used in the game
+ *
+ */
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
@@ -5,13 +11,19 @@
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 1000
-#define WALLSW 600
-#define WALLSH 800
+
+#define WALLSW 600  // the width of the area inside the walls
+#define WALLSH 800  // the height of the area inside the walls
+// the x coordinate of the top left corner of the area inside the walls
 #define WALLSX ((SCREEN_WIDTH - WALLSW) / 2)
+// the y coordinate of the top left corner of the area inside the walls
 #define WALLSY ((SCREEN_HEIGHT - WALLSH) / 2)
 
+// the width of the bricks
 #define BRICKW 35
+// the x coordinate of the top left corner of the first brick
 #define INITX (WALLSX) + (BRICKW)
+// the y coordinate of the top left corner of the first brick
 #define INITY (WALLSY) + (BRICKW)
 
 #define PADDLEW 100

@@ -8,6 +8,11 @@
 #include "brick.hpp"
 #include "gameObject.hpp"
 #include "structs.hpp"
+
+/**
+ * @brief Brick Grid abstract class.
+ *
+ */
 class BrickGrid
 {
  protected:
@@ -32,6 +37,11 @@ class BrickGrid
 
 };
 
+/**
+ * @brief Classic Brick Grid class.
+ * Implements a grid with classic rectangular bricks.
+ *
+ */
 class ClassicBrickGrid : public BrickGrid {
  public:
   ClassicBrickGrid(int rows, int cols, int brickWidth, int brickHeight);
@@ -47,6 +57,11 @@ class ClassicBrickGrid : public BrickGrid {
   bool allBricksDestroyed() override;
 };
 
+/**
+ * @brief Hexagonal Brick Grid class.
+ * Implements a grid with hexagonal bricks.
+ *
+ */
 class HexagonalBrickGrid : public BrickGrid {
  public:
   HexagonalBrickGrid(int rows, int cols, int brickWidth, int brickHeight);

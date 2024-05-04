@@ -1,3 +1,8 @@
+/**
+ * @file brickgrid.cpp
+ * @brief Initializes and draws the brick grid.
+ *
+ */
 #include "brickgrid.hpp"
 #include <iostream>
 
@@ -19,6 +24,17 @@ ClassicBrickGrid::~ClassicBrickGrid()
 {
 }
 
+/**
+ * @brief
+ *
+ * @param filename the name of the file containing the grid
+ * @param initX the x position of the first brick
+ * @param initY the y position of the first brick
+ * @pre filename is a valid file
+ * @pre file contains '#' for normal bricks, '*' for double bricks, '@' for
+ * triple bricks, and ' ' for empty bricks
+ * @post m_bricks contains the grid
+ */
 void ClassicBrickGrid::initGridFromFile(const std::string& filename,
                                         const int initX, const int initY) {
   const double padding = 5;
@@ -67,7 +83,11 @@ void ClassicBrickGrid::initGridFromFile(const std::string& filename,
     }
   }
 }
-
+/**
+ * @brief draws the grid
+ *
+ * @param renderer
+ */
 void ClassicBrickGrid::draw(SDL_Renderer* renderer){
     for (const std::vector<std::shared_ptr<Brick>>& row : m_bricks) {
         for (const std::shared_ptr<Brick>& brick : row) {
@@ -99,6 +119,13 @@ void ClassicBrickGrid::setRows(int rows) {
     m_rows = rows;
 }
 
+/**
+ * @brief checks if all bricks are destroyed
+ * used to determine if the game is over
+ *
+ * @return true
+ * @return false
+ */
 bool ClassicBrickGrid::allBricksDestroyed() {
     for(auto& brick_vector : m_bricks){
         for(auto& brick : brick_vector){
@@ -122,9 +149,20 @@ HexagonalBrickGrid::HexagonalBrickGrid(int brickWidth, int brickHeight) :
 HexagonalBrickGrid::~HexagonalBrickGrid()
 {
 }
+/**
+ * @brief initializes the grid from a file
+ *
+ * @param filename
+ * @param initX
+ * @param initY
+ * @pre filename is a valid file
+ * @pre file contains '#' for normal bricks, '*' for double bricks, '@' for
+ * triple bricks, and ' ' for empty bricks
+ * @post m_bricks contains the grid
+ */
 void HexagonalBrickGrid::initGridFromFile(const std::string& filename,
                                           const int initX, const int initY) {
-  const double padding = 5;
+  const double padding = 3;
   std::ifstream file(filename);
   if (file.is_open()) {
     
@@ -165,6 +203,11 @@ void HexagonalBrickGrid::initGridFromFile(const std::string& filename,
   }
 }
 
+/**
+ * @brief draws the grid
+ *
+ * @param renderer
+ */
 void HexagonalBrickGrid::draw(SDL_Renderer* renderer){
   for (const std::vector<std::shared_ptr<Brick>>& row : m_bricks) {
     for (const std::shared_ptr<Brick>& brick : row) {
@@ -198,7 +241,13 @@ std::vector<std::vector<std::shared_ptr<Brick>>>& HexagonalBrickGrid::getBricks(
 void HexagonalBrickGrid::setRows(int rows) {
     m_rows = rows;
 }
-
+/**
+ * @brief checks if all bricks are destroyed
+ * used to determine if the game is over
+ *
+ * @return true
+ * @return false
+ */
 bool HexagonalBrickGrid::allBricksDestroyed() {
   for (auto& brick_vector : m_bricks) {
     for (auto& brick : brick_vector) {
