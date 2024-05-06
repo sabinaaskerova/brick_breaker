@@ -9,38 +9,38 @@
 
 #include <SDL2/SDL.h>
 
-#define SCREEN_WIDTH 1000
-#define SCREEN_HEIGHT 1000
+const int SCREEN_WIDTH =  1000;
+const int SCREEN_HEIGHT = 1000;
 
-#define WALLSW 600  // the width of the area inside the walls
-#define WALLSH 800  // the height of the area inside the walls
+const int WALLSW = 600;  // the width of the area inside the walls
+const int WALLSH = 800;  // the height of the area inside the walls
 // the x coordinate of the top left corner of the area inside the walls
-#define WALLSX ((SCREEN_WIDTH - WALLSW) / 2)
+const int WALLSX = ((SCREEN_WIDTH - WALLSW) / 2);
 // the y coordinate of the top left corner of the area inside the walls
-#define WALLSY ((SCREEN_HEIGHT - WALLSH) / 2)
+const int WALLSY = ((SCREEN_HEIGHT - WALLSH) / 2);
 
 // the width of the bricks
-#define BRICKW 35
+const int BRICKW = 35;
 // the x coordinate of the top left corner of the first brick
-#define INITX (WALLSX) + (BRICKW)
+const int INITX = (WALLSX) + (BRICKW);
 // the y coordinate of the top left corner of the first brick
-#define INITY (WALLSY) + (BRICKW)
+const int INITY = (WALLSY) + (BRICKW);
 
-#define PADDLEW 100
-#define PADDLEH 30
-#define PADDLEX (WALLSW-PADDLEW)/2 + WALLSX
-#define PADDLEY (WALLSY + WALLSH - PADDLEH) - 40
+const int PADDLEW = 100;
+const int PADDLEH = 30;
+const int PADDLEX = (WALLSW-PADDLEW)/2 + WALLSX;
+const int PADDLEY =(WALLSY + WALLSH - PADDLEH) - 40;
 
-#define BALLSIZE 25
-#define BALLX PADDLEX + PADDLEW/2 - BALLSIZE/2
-#define BALLY PADDLEY - BALLSIZE
-#define BALLSPEED 8
+const int BALLSIZE = 25;
+const int BALLX = PADDLEX + PADDLEW/2 - BALLSIZE/2;
+const int BALLY = PADDLEY - BALLSIZE;
+const int BALLSPEED = 8;
 
-#define BOOSTSIZE BALLSIZE
-#define BOOSTDURATION 5000 
-#define BOOSTSPEED 2000
+const int BOOSTSIZE = BALLSIZE;
+const int BOOSTDURATION = 5000;
+const int BOOSTSPEED = 2000;
 
-#define GRIDN 7
+const int GRIDN = 7;
 
 typedef struct position {
   double x;

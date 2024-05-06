@@ -4,7 +4,7 @@ Game::Game(const std::string& gridType, const int gridNumber)
     : m_distribution(5000, 10000), m_sdlWrapper(SDL_INIT_VIDEO) {
   m_sdlWrapper = SDLWrapper(SDL_INIT_VIDEO);
   m_window = m_sdlWrapper.createWindow(
-      "Kirpish syndyru", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+      "Brick Breaker", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
       SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
   m_renderer =
       m_sdlWrapper.createRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
