@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Paddle::Paddle(position& pos, objectSize& size)
+Paddle::Paddle(const position& pos, const objectSize& size)
     : GameObject(pos, size), m_type(PaddleType::NORMAL) {}
 
 Paddle::~Paddle() {}

@@ -1,29 +1,69 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 #include "gameObject.hpp"
-
-enum class PaddleType{
-    NORMAL,
-    WIDE,
-    NARROW
+/**
+ * @brief Enum representing the type of paddle.
+ */
+enum class PaddleType {
+  NORMAL,  ///< Normal paddle type.
+  WIDE,    ///< Wide paddle type.
+  NARROW   ///< Narrow paddle type.
 };
+/**
+ * @brief Class representing a paddle object in the game.
+ */
 class Paddle: public GameObject{   
     private:
         PaddleType m_type;     
     public:
-        Paddle(SDL_Renderer* renderer, position pos, objectSize size);
-        Paddle(position& pos, objectSize& size); // & because we are not copying the object valgrind --leak-check=full ./your_program
-        ~Paddle();
-        void update() override;
-        void draw(SDL_Renderer* renderer) override;
-        void handle_input(const SDL_Event& event);
-        void setWidth(int);
+     /**
+      * @brief Constructor to initialize a paddle.
+      * @param pos The position of the paddle.
+      * @param size The size of the paddle.
+      */
+     Paddle(
+         const position& pos,
+         const objectSize& size);  // & because we are not copying the object
+                                   // valgrind --leak-check=full ./your_program
+     ~Paddle();
+     void update() override;
+     /**
+      * @brief Draws the paddle rectangle on the screen.
+      * @param renderer The SDL renderer.
+      */
+     void draw(SDL_Renderer* renderer) override;
+     /**
+      * @brief Handles nouse events for the paddle.
+      * @param event The SDL event to handle.
+      */
+     void handle_input(const SDL_Event& event);
+     /**
+      * @brief Sets the width of the paddle.
+      * @param width The width of the paddle.
+      */
+     void setWidth(int);
 
-        bool collidesWith(const GameObject& obj) const override;
-        void move(int x);
-        const double& getWidth() const;
-        void setType(PaddleType type);
-        const PaddleType& getType() const;
+     bool collidesWith(const GameObject& obj) const override;
+     /**
+      * @brief Moves the paddle horizontally.
+      * @param x The amount of pixels to move the paddle.
+      */
+     void move(int x);
+     /**
+      * @brief Gets the width of the paddle.
+      * @return The width of the paddle.
+      */
+     const double& getWidth() const;
+     /**
+      * @brief Sets the type of the paddle.
+      * @param type The type of the paddle.
+      */
+     void setType(PaddleType type);
+     /**
+      * @brief Gets the type of the paddle.
+      * @return The type of the paddle.
+      */
+     const PaddleType& getType() const;
 };
 
 

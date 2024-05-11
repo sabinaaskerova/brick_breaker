@@ -16,11 +16,7 @@ SDLWrapper::SDLWrapper(Uint32 flags) {
   }
 }
 
-void SDLWrapper::init(Uint32 flags) {}
 SDLWrapper::~SDLWrapper() {
-  // SDL_DestroyRenderer(renderer);
-  // SDL_DestroyWindow(window);
-  // SDL_Quit();
 }
 
 SDL_Window* SDLWrapper::createWindow(const char* title, int x, int y, int w,
