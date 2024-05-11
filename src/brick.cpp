@@ -65,9 +65,6 @@ bool ClassicBrick::collidesWith(const GameObject& obj) const{
     return false;
 }
 
-void Brick::printProperties() const {
-    std::cout <<  static_cast<int>(m_type) ;
-}
 
 SDL_Rect ClassicBrick::getBoundingBox() const{
     return {(int)m_position.x, (int)m_position.y, (int)m_size.width, (int)m_size.height};

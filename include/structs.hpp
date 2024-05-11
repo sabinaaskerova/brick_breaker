@@ -12,8 +12,8 @@
 const int SCREEN_WIDTH =  1000;
 const int SCREEN_HEIGHT = 1000;
 
-const int WALLSW = 600;  // the width of the area inside the walls
-const int WALLSH = 800;  // the height of the area inside the walls
+const int WALLSW = 600;  /**< The width of the area inside the walls. */
+const int WALLSH = 800;  /**< The height of the area inside the walls. */
 // the x coordinate of the top left corner of the area inside the walls
 const int WALLSX = ((SCREEN_WIDTH - WALLSW) / 2);
 // the y coordinate of the top left corner of the area inside the walls

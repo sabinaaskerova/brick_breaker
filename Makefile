@@ -29,5 +29,9 @@ $(MAIN): $(OBJS)
 
 $(OBJDIR)/%.o: src/%.cpp
 	$(CXX) $(CPPFLAGS) -c $<  -o $@
+
+docs : 
+	doxygen Doxyfile
+
 clean:
 	$(RM) $(OBJDIR)/*.o *~ $(MAIN)

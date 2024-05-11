@@ -15,10 +15,6 @@ class SDLWrapper {
   SDL_Renderer* createRenderer(SDL_Window* window, int index, Uint32 flags);
 
   void init(Uint32 flags);
-
-  //  private:
-  //   SDL_Window* window;
-  //   SDL_Renderer* renderer;
 };
 
 #endif
