@@ -1,9 +1,8 @@
 #include "ball.hpp"
 #include <iostream>
 
-Ball::Ball(SDL_Renderer* renderer, position& pos, objectSize& size, velocity& vel): GameObject(renderer, pos, size){
+Ball::Ball(SDL_Renderer* renderer, const position& pos, const objectSize& size, const velocity& vel): GameObject(renderer, pos, size){
     m_velocity = vel;
-    m_moving = false;
     IMG_Init(IMG_INIT_PNG);
 
     SDL_Surface *image = IMG_Load("./img/ball.png");
@@ -41,9 +40,6 @@ void Ball::draw(SDL_Renderer *renderer)
     SDL_RenderCopy(renderer, m_image, nullptr, &rect);
 }
 
-void Ball::setMoving(bool moving){
-    m_moving = moving;
-}
 bool Ball::collidesWith(const GameObject& obj) const {
     auto hexagonalBrick = dynamic_cast<const HexagonalBrick*>(&obj);
     if (hexagonalBrick != nullptr) {
@@ -57,7 +53,6 @@ bool Ball::collidesWith(const GameObject& obj) const {
         }
         return false;
     } else {
-        // Existing collision detection method
         SDL_Rect ballBox = getBoundingBox();
         SDL_Rect objBox = obj.getBoundingBox();
         return SDL_HasIntersection(&ballBox, &objBox);
@@ -71,11 +66,11 @@ void Ball::setVelocityX(double x){
 void Ball::setVelocityY(double y){
     m_velocity.y = y;
 }
-double Ball::getVelocityX(){
+double Ball::getVelocityX() const{
     return m_velocity.x;
 }
 
-double Ball::getVelocityY(){
+double Ball::getVelocityY() const{
     return m_velocity.y;
 }
 

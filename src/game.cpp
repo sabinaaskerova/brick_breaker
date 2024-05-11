@@ -1,7 +1,9 @@
 #include "game.hpp"
 
 Game::Game(const std::string& gridType, const int gridNumber)
-    : m_distribution(5000, 10000), m_sdlWrapper(SDL_INIT_VIDEO) {
+    : m_distribution(5000, 10000),
+      m_sdlWrapper(SDL_INIT_VIDEO),
+      m_isWinner(false) {
   m_sdlWrapper = SDLWrapper(SDL_INIT_VIDEO);
   m_window = m_sdlWrapper.createWindow(
       "Brick Breaker", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -35,11 +37,9 @@ Game::Game(const std::string& gridType, const int gridNumber)
   position wallPosition = {WALLSX, WALLSY};
   objectSize wallSize = {WALLSW, WALLSH};
   m_wall = std::make_unique<Wall>(wallPosition, wallSize);
-  m_isWinner = false;
 
   for (auto& ball : m_balls) {
     if (ball != nullptr) {
-      ball->setMoving(true);
       ball->setVelocityX(0);
       ball->setVelocityY(-BALLSPEED);
     }
@@ -294,7 +294,7 @@ void Game::drawMessage(const std::string& text, int x, int y) {
 }
 
 template <typename T>
-void Game::applyBoost(T& boost){
+void Game::applyBoost(const T& boost){
     velocity ballVelocity = {BALLSPEED, BALLSPEED};
     objectSize ballsize = {BALLSIZE, BALLSIZE};
 
@@ -322,7 +322,7 @@ void Game::applyBoost(T& boost){
 }
 
 template <typename T>
-void Game::endBoost(T& boost){
+void Game::endBoost(const T& boost){
     if (dynamic_cast<BonusWidePaddle*>(boost.get())) {
         m_paddle->setWidth(m_paddle->getWidth() - 20);
     }

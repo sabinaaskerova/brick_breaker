@@ -8,25 +8,23 @@
 class Boost: public GameObject{
     protected:
         Uint32 m_activation_time;
-        Uint32 m_duration;        
+        const Uint32 m_duration;        
         velocity m_speed;
         bool wasApplied;
         
     public:
-        Boost(SDL_Renderer* renderer, position pos, objectSize size, velocity speed, Uint32 duration);
+        Boost(SDL_Renderer* renderer, const position pos, const objectSize size, const velocity speed, const Uint32 duration);
         virtual ~Boost();
         virtual void update();
         virtual void draw(SDL_Renderer* renderer);
         bool collidesWith( const GameObject& obj) const;
         bool isActive(Uint32 current_time) const;
-        bool getWasApplied() const;
-        
+        bool getWasApplied() const;      
 };
-
 
 class BonusMultiBall : public Boost{
     public:
-        BonusMultiBall(SDL_Renderer* renderer, position pos, objectSize size, velocity speed, int duration);
+        BonusMultiBall(SDL_Renderer* renderer, const position pos, const objectSize size, const velocity speed, const Uint32 duration);
         ~BonusMultiBall() override;
         void update() override;
         void draw(SDL_Renderer* renderer) override;

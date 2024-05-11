@@ -27,7 +27,7 @@ class Brick : public GameObject {
   void setDestroyed(bool destroyed);
   virtual SDL_Rect getBoundingBox() const = 0;
   void printProperties() const;
-  const typeBrick& getType();
+  const typeBrick& getType() const;
   void setType(typeBrick type);
 };
 

@@ -9,7 +9,7 @@ Brick::Brick(position pos, objectSize size, typeBrick type) : m_destroyed(false)
     m_type = type;
 }
 
-const typeBrick& Brick::getType(){
+const typeBrick& Brick::getType() const{
     return m_type;
 }
 

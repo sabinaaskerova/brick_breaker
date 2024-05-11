@@ -17,10 +17,10 @@ class BrickGrid
 {
  protected:
   std::vector<std::vector<std::shared_ptr<Brick>>> m_bricks;
-  int m_rows;
-  int m_cols;
-  int m_brickWidth;
-  int m_brickHeight;
+  const int m_rows;
+  const int m_cols;
+  const int m_brickWidth;
+  const int m_brickHeight;
 
  public:
   BrickGrid(int rows, int cols, int brickWidth, int brickHeight);
@@ -31,9 +31,8 @@ class BrickGrid
                                 const int initY) = 0;
   virtual void draw(SDL_Renderer* renderer) = 0;
   virtual void update() = 0;
-  virtual std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() = 0;
-  virtual void setRows(int rows) = 0;
-  virtual bool allBricksDestroyed() = 0;
+  virtual const std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() const = 0;
+  virtual bool allBricksDestroyed() const = 0;
 
 };
 
@@ -52,9 +51,8 @@ class ClassicBrickGrid : public BrickGrid {
                         const int initY) override;
   void draw(SDL_Renderer* renderer) override;
   void update() override;
-  std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() override;
-  void setRows(int rows) override;
-  bool allBricksDestroyed() override;
+  const std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() const override;
+  bool allBricksDestroyed() const override;
 };
 
 /**
@@ -72,9 +70,8 @@ class HexagonalBrickGrid : public BrickGrid {
                         const int initY) override;
   void draw(SDL_Renderer* renderer) override;
   void update() override;
-  std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() override;
-  void setRows(int rows) override;
-  bool allBricksDestroyed() override;
+  const std::vector<std::vector<std::shared_ptr<Brick>>>& getBricks() const override;
+  bool allBricksDestroyed() const override;
 };
 
 #endif // BRICKGRID_H

@@ -16,12 +16,12 @@ class Paddle: public GameObject{
         ~Paddle();
         void update() override;
         void draw(SDL_Renderer* renderer) override;
-        void handle_input(SDL_Event const &event);
+        void handle_input(const SDL_Event& event);
         void setWidth(int);
 
         bool collidesWith(const GameObject& obj) const override;
         void move(int x);
-        const double& getWidth();
+        const double& getWidth() const;
         void setType(PaddleType type);
         const PaddleType& getType() const;
 };

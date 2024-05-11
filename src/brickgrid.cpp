@@ -8,8 +8,12 @@
 
 BrickGrid::BrickGrid(int rows, int cols, int brickWidth, int brickHeight) : 
     m_rows(rows), m_cols(cols), m_brickWidth{brickWidth}, m_brickHeight{brickHeight} {}
-    BrickGrid::BrickGrid(int brickWidth, int brickHeight) : 
-    m_brickWidth{brickWidth}, m_brickHeight{brickHeight} {}
+
+BrickGrid::BrickGrid(int brickWidth, int brickHeight)
+    : m_rows(0),
+      m_cols(0),
+      m_brickWidth{brickWidth},
+      m_brickHeight{brickHeight} {}
 
 ClassicBrickGrid::ClassicBrickGrid(int rows, int cols, int brickWidth, int brickHeight) : 
     BrickGrid(rows, cols, brickWidth, brickHeight)
@@ -110,13 +114,9 @@ void ClassicBrickGrid::draw(SDL_Renderer* renderer){
 void ClassicBrickGrid::update(){
 }
 
-std::vector<std::vector<std::shared_ptr<Brick>>>& ClassicBrickGrid::getBricks()
-{
-    return m_bricks;
-}
-
-void ClassicBrickGrid::setRows(int rows) {
-    m_rows = rows;
+const std::vector<std::vector<std::shared_ptr<Brick>>>&
+ClassicBrickGrid::getBricks() const {
+  return m_bricks;
 }
 
 /**
@@ -126,15 +126,15 @@ void ClassicBrickGrid::setRows(int rows) {
  * @return true
  * @return false
  */
-bool ClassicBrickGrid::allBricksDestroyed() {
-    for(auto& brick_vector : m_bricks){
-        for(auto& brick : brick_vector){
-            if(!brick->isDestroyed() && brick->getType()!=typeBrick::EMPTY){
-                return false;
-            }
-        }
+bool ClassicBrickGrid::allBricksDestroyed() const {
+  for (auto& brick_vector : m_bricks) {
+    for (auto& brick : brick_vector) {
+      if (!brick->isDestroyed() && brick->getType() != typeBrick::EMPTY) {
+        return false;
+      }
     }
-    return true;
+  }
+  return true;
 }
 
 HexagonalBrickGrid::HexagonalBrickGrid(int rows, int cols, int brickWidth, int brickHeight) : 
@@ -232,15 +232,11 @@ void HexagonalBrickGrid::draw(SDL_Renderer* renderer){
   }
 }
 
-
-std::vector<std::vector<std::shared_ptr<Brick>>>& HexagonalBrickGrid::getBricks()
-{
-    return m_bricks;
+const std::vector<std::vector<std::shared_ptr<Brick>>>&
+HexagonalBrickGrid::getBricks() const {
+  return m_bricks;
 }
 
-void HexagonalBrickGrid::setRows(int rows) {
-    m_rows = rows;
-}
 /**
  * @brief checks if all bricks are destroyed
  * used to determine if the game is over
@@ -248,7 +244,7 @@ void HexagonalBrickGrid::setRows(int rows) {
  * @return true
  * @return false
  */
-bool HexagonalBrickGrid::allBricksDestroyed() {
+bool HexagonalBrickGrid::allBricksDestroyed() const {
   for (auto& brick_vector : m_bricks) {
     for (auto& brick : brick_vector) {
       if (!brick->isDestroyed() && brick->getType() != typeBrick::EMPTY) {

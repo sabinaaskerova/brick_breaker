@@ -1,15 +1,10 @@
 #include "wall.hpp"
 
-Wall::Wall(position& pos, objectSize& size): GameObject(pos, size) {}
+Wall::Wall(const position& pos, const objectSize& size): GameObject(pos, size) {}
 
-Wall::Wall(){
-}
+Wall::Wall() {}
 
-void Wall::update() {
-}
-
-
-void Wall::draw(SDL_Renderer* renderer) {
+void Wall::draw(SDL_Renderer* const renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_Rect wallRect = getBoundingBox();
     int thickness = 5; // Set the thickness of the wall
@@ -31,3 +26,4 @@ bool Wall::collidesWith(const GameObject& obj) const {
 
     return false;
 }
+void Wall::update() {}

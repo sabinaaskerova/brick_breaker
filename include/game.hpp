@@ -29,10 +29,6 @@ enum GameStates{
 };
 class Game{
     private:
-        int score;
-        int level;
-        int lives;
-        bool running;
         bool m_isWinner;
         Uint32 m_frameStart;
         SDLWrapper m_sdlWrapper;
@@ -50,7 +46,6 @@ class Game{
 
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;
-        SDL_Texture* backgroundImage;
         SDL_Texture  *m_image;
         SDL_Rect      m_render_viewport;
         SDL_Event     m_window_event;
@@ -62,40 +57,20 @@ class Game{
         void game_loop();
         void update();
         
-        void removeNullBoosts();
         void updateBalls();
         void generateBoosts();
         void updateBoosts();
-        void checkGameOver();
-        void checkWinner();
 
-        void createRandomBoost();
-
-        void handleEvents();
-        void clean();
         void draw();  
         void drawMessage(const std::string& text, int x, int y);  
-
-
-        void setGameOver(bool);
-        const bool getGameOver();
-        const int& getScore();
-        const int& getLevel();
-        const int getLives();
 
         void handleCollision(Ball* ball, GameObject* gameObject);
 
         template <typename T>
-        void applyBoost(T& boost);
+        void applyBoost(const T& boost);
 
         template <typename T>
-        void endBoost(T& boost);
+        void endBoost(const T& boost);
 
-        void setRunning(bool);
-        void setLives(int);   
-
-        void reset();
-        void increaseScore(int);
-        void increaseLevel();
 };
 #endif // GAME_H

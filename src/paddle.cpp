@@ -2,18 +2,12 @@
 
 #include <iostream>
 
-Paddle::Paddle(position& pos, objectSize& size): GameObject(pos, size){
-    m_size.width = size.width;
-    m_size.height = size.height;
-    m_type = PaddleType::NORMAL;
-}
-Paddle::~Paddle(){
+Paddle::Paddle(position& pos, objectSize& size)
+    : GameObject(pos, size), m_type(PaddleType::NORMAL) {}
 
-}
+Paddle::~Paddle() {}
 
-void Paddle::update(){
-
-}
+void Paddle::update() {}
 
 bool Paddle::collidesWith(const GameObject& obj) const{
     return false;
@@ -23,7 +17,7 @@ void Paddle::move(int x){
     m_position.x += x;
 }
 
-const double& Paddle::getWidth() { return m_size.width; }
+const double& Paddle::getWidth() const { return m_size.width; }
 
 void Paddle::setWidth(int width){
     m_size.width = width;
@@ -35,7 +29,7 @@ void Paddle::draw(SDL_Renderer* renderer){
     SDL_RenderFillRect(renderer, &paddle);
 }
 
-void Paddle::handle_input(SDL_Event const &event)
+void Paddle::handle_input(const SDL_Event& event)
 {
     switch(event.type)
     {

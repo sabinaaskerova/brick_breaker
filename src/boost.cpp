@@ -1,10 +1,12 @@
 #include "boost.hpp"
 #include "paddle.hpp"
 #include <iostream>
-Boost::Boost(SDL_Renderer* renderer, position pos, objectSize size, velocity speed, Uint32 duration)
-: GameObject(renderer, pos, size), m_duration(duration), m_activation_time(SDL_GetTicks())
-{
-    m_speed = speed;
+Boost::Boost(SDL_Renderer* renderer, const position pos, const objectSize size,
+             const velocity speed, const Uint32 duration)
+    : GameObject(renderer, pos, size),
+      m_duration(duration),
+      m_activation_time(SDL_GetTicks()) {
+  m_speed = speed;
 }
 
 Boost::~Boost(){
@@ -39,10 +41,10 @@ void Boost::draw(SDL_Renderer* renderer){
     SDL_RenderCopy(m_renderer, m_image, NULL, &dest);
 }
 
-BonusMultiBall::BonusMultiBall(SDL_Renderer* renderer, position pos, objectSize size, velocity speed, int duration) : Boost(renderer, pos, size, speed, duration)
-{
-}
-
+BonusMultiBall::BonusMultiBall(SDL_Renderer* renderer, const position pos,
+                               const objectSize size, const velocity speed,
+                               const Uint32 duration)
+    : Boost(renderer, pos, size, speed, duration) {}
 
 BonusMultiBall::~BonusMultiBall(){
 }
@@ -54,7 +56,6 @@ void BonusMultiBall::update()
 }
 
 void BonusMultiBall::draw(SDL_Renderer* renderer){
-    SDL_SetRenderDrawColor(m_renderer, 144, 255, 117, 255); 
     SDL_Rect dest;
     dest.x = m_position.x;
     dest.y = m_position.y;
@@ -67,8 +68,6 @@ void BonusMultiBall::draw(SDL_Renderer* renderer){
 
     SDL_RenderCopy(m_renderer, m_image, NULL, &dest);
 }
-
-//TO DO: templated function to draw boosts
 
 BonusWidePaddle::BonusWidePaddle(SDL_Renderer* renderer, position pos, objectSize size, velocity speed, int duration) : Boost(renderer, pos, size, speed, duration)
 {
@@ -119,11 +118,3 @@ void MalusNarrowPaddle::draw(SDL_Renderer* renderer){
 
     SDL_RenderCopy(m_renderer, m_image, NULL, &dest);
 }
-
-// take into account : finish the game when no balls are left BEFORE this verification
-// bool BonusMultiBall::collidesWith(const GameObject& other) const {
-//     if (const Paddle* paddle = dynamic_cast<const Paddle*>(&other)) {
-        
-
-//     } 
-// }

@@ -8,13 +8,10 @@ class Ball: public GameObject
 {
     private:
         velocity m_velocity;
-        bool m_moving;
-
         bool m_gameStarted;
         
-        void setVelocity(velocity);
     public:
-        Ball(SDL_Renderer* renderer, position& pos, objectSize& size, velocity& vel);
+        Ball(SDL_Renderer* renderer, const position& pos, const objectSize& size, const velocity& vel);
         Ball(position& pos, objectSize& size, velocity& vel);
         ~Ball() override;
         void init(SDL_Renderer *renderer, double x, double y);
@@ -28,10 +25,8 @@ class Ball: public GameObject
         void setPositionX(double x);
         void setPositionY(double y);
         
-        double getVelocityX();
-        double getVelocityY();
-        const velocity& getVelocity();
-        bool isMoving();
-        void setMoving(bool);
+        double getVelocityX() const;
+        double getVelocityY() const;
+        const velocity& getVelocity() const;
 };
 #endif // BALL_H
