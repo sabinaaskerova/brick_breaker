@@ -99,9 +99,9 @@ void ClassicBrickGrid::draw(SDL_Renderer* renderer){
               if (brick->getType() != typeBrick::EMPTY &&
                   !brick->isDestroyed()) {
                 if (brick->getType() == typeBrick::NORMAL) {
-                  SDL_SetRenderDrawColor(renderer, 255, 204, 255, 50);
+                  SDL_SetRenderDrawColor(renderer, 255, 204, 255, 255);
                 } else if (brick->getType() == typeBrick::DOUBLE) {
-                  SDL_SetRenderDrawColor(renderer, 255, 51, 153, 250);
+                  SDL_SetRenderDrawColor(renderer, 255, 51, 153, 255);
                 } else if (brick->getType() == typeBrick::TRIPLE) {
                   SDL_SetRenderDrawColor(renderer, 153, 0, 153, 255);
                 }
@@ -215,9 +215,9 @@ void HexagonalBrickGrid::draw(SDL_Renderer* renderer){
         if (brick->getType() != typeBrick::EMPTY && !brick->isDestroyed()) {
           Color color = {255, 204, 255, 50};
           if (brick->getType() == typeBrick::NORMAL) {
-            color = {255, 204, 255, 50};
+            color = {255, 204, 255, 255};
           } else if (brick->getType() == typeBrick::DOUBLE) {
-            color = {255, 51, 153, 250};
+            color = {255, 51, 153, 255};
 
           } else if (brick->getType() == typeBrick::TRIPLE) {
             color = {153, 0, 153, 255};
