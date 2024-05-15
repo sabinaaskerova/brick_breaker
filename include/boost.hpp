@@ -1,3 +1,13 @@
+/**
+ * @file Boost.h
+ * @brief Declaration of the Boost classes.
+ *
+ * This file declares the Boost base class and its derived classes representing
+ * different types of boosts in the game. Boosts provide temporary enhancements
+ * or penalties to the gameplay mechanics, such as speed boosts or paddle
+ * modifications.
+ */
+
 #ifndef BOOST_H
 #define BOOST_H
 #include "structs.hpp"

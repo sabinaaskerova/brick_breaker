@@ -1,3 +1,13 @@
+/**
+ * @file Paddle.h
+ * @brief Declaration of the Paddle class.
+ *
+ * This file declares the Paddle class, which represents a paddle object in the
+ * game. It inherits from the GameObject class and provides functionality
+ * specific to paddles, such as handling input events, moving horizontally, and
+ * managing paddle width and type.
+ */
+
 #ifndef PADDLE_H
 #define PADDLE_H
 #include "gameObject.hpp"

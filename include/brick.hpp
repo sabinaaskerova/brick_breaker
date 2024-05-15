@@ -1,3 +1,14 @@
+/**
+ * @file Brick.h
+ * @brief Declaration of the Brick classes.
+ *
+ * This file declares the Brick base class and its derived classes representing
+ * different types of bricks in the game. Bricks are objects that can be
+ * destroyed by the player's interactions, such as hitting them with a ball. The
+ * file defines both classic rectangular bricks and hexagonal bricks, each with
+ * their specific properties and behavior.
+ */
+
 #ifndef BRICK_H
 #define BRICK_H
 #include <SDL2/SDL2_gfxPrimitives.h>

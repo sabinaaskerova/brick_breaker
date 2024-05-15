@@ -1,8 +1,11 @@
 /**
  * @file gameObject.hpp
  * @author Sabina Askerova
- * @brief 
- * 
+ * @brief Header file for the GameObject class.
+ *
+ * This file contains the declaration of the GameObject class, which is an abstract class representing
+ * objects within the game environment. GameObject provides common functionality and properties
+ * for all game objects.
  */
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H

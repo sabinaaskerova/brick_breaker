@@ -1,3 +1,11 @@
+/**
+ * @file Wall.h
+ * @brief Declaration of the Wall class.
+ *
+ * This file declares the Wall class, which represents a wall object in the game
+ * environment.
+ */
+
 #ifndef WALL_H
 #define WALL_H
 #include "gameObject.hpp"

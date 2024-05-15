@@ -1,3 +1,13 @@
+/**
+ * @file Ball.h
+ * @brief Declaration of the Ball class.
+ * 
+ * This file declares the Ball class, which represents a ball object in the game. 
+ * It inherits from the GameObject class and provides functionality specific to the ball, 
+ * such as updating its position and velocity, drawing it on the screen, and handling collisions 
+ * with other game objects.
+ */
+
 #ifndef BALL_H
 #define BALL_H
 #include "gameObject.hpp"

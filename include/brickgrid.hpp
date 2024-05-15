@@ -1,3 +1,13 @@
+/**
+ * @file BrickGrid.h
+ * @brief Declaration of the BrickGrid classes.
+ *
+ * This file declares the BrickGrid base class and its derived classes
+ * representing different types of brick grids in the game. Brick grids are
+ * structures that hold collections of bricks, defining the layout of bricks in
+ * the game environment.
+ */
+
 #ifndef BRICKGRID_H
 #define BRICKGRID_H
 

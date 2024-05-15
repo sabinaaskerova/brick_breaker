@@ -1,3 +1,10 @@
+/**
+ * @file SDL.hpp
+ * @brief Declaration of the SDLWrapper class.
+ *
+ * This file declares the SDLWrapper class, which is responsible for managing
+ * SDL initialization and resource creation such as windows and renderers.
+ */
 #ifndef SDL_HPP
 #define SDL_HPP
 #include </usr/include/SDL2/SDL_ttf.h>

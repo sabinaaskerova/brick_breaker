@@ -1,3 +1,12 @@
+/**
+ * @file Game.h
+ * @brief Declaration of the Game class.
+ *
+ * This file declares the main Game class responsible for managing the game
+ * logic. It handles game initialization, updating game state, rendering game
+ * objects, and managing game events.
+ */
+
 #ifndef GAME_H
 #define GAME_H
 #include </usr/include/SDL2/SDL_ttf.h>
